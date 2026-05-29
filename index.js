@@ -61,10 +61,11 @@ app.post("/api/businesses", async (req, res) => {
 
     if (error) throw error;
 
-    // Send welcome WhatsApp message
-    await sendWhatsApp(
+    // Send welcome WhatsApp template message
+    await sendWhatsAppTemplate(
       whatsapp_number || phone,
-      `Hi ${owner_name}! 👋 Welcome to *ReputeIndia*.\n\nYour 15-day free trial has started for *${business_name}*.\n\nWe will now monitor your reviews and send you instant alerts. Sit back and let AI protect your reputation! 🌟`
+      "welcome_business",
+      [business_name]
     );
 
     res.json({ success: true, business: data });
@@ -291,9 +292,12 @@ app.post("/api/review-requests", async (req, res) => {
 
     const review_link = business.google_maps_url || `https://search.google.com/local/writereview?placeid=${business.google_place_id}`;
 
-    const message = `Hi ${customer_name || "there"}! 😊\n\nThank you for visiting *${business.business_name}*.\n\nWe'd love to hear your feedback! Please take 1 minute to leave us a review:\n👉 ${review_link}\n\nYour review helps us serve you better. 🙏`;
-
-    const waResult = await sendWhatsApp(customer_phone, message);
+    // Use approved template: review_request
+    const waResult = await sendWhatsAppTemplate(customer_phone, "review_request", [
+      customer_name || "there",
+      business.business_name,
+      review_link
+    ]);
 
     const { data, error } = await supabase
       .from("review_requests")
@@ -400,7 +404,7 @@ app.post("/webhook", async (req, res) => {
 });
 
 // ============================================================
-// HELPER: Send WhatsApp Message
+// HELPER: Send WhatsApp Free-form Message (only works if user messaged first)
 // ============================================================
 async function sendWhatsApp(to, message) {
   try {
@@ -428,16 +432,52 @@ async function sendWhatsApp(to, message) {
 }
 
 // ============================================================
+// HELPER: Send WhatsApp Template Message (works for all users)
+// ============================================================
+async function sendWhatsAppTemplate(to, templateName, parameters = []) {
+  try {
+    const phone = to.replace(/\D/g, "");
+    const response = await axios.post(
+      `https://graph.facebook.com/v18.0/${WA_PHONE_ID}/messages`,
+      {
+        messaging_product: "whatsapp",
+        to: phone,
+        type: "template",
+        template: {
+          name: templateName,
+          language: { code: "en" },
+          components: parameters.length > 0 ? [{
+            type: "body",
+            parameters: parameters.map(p => ({ type: "text", text: String(p) }))
+          }] : []
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${WA_TOKEN}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+    return response.data;
+  } catch (err) {
+    console.error("WhatsApp template send error:", err.response?.data || err.message);
+    return null;
+  }
+}
+
+// ============================================================
 // HELPER: Send Review Alert to Business Owner
 // ============================================================
 async function sendReviewAlert(business, review) {
-  const stars = "⭐".repeat(review.rating);
-  const emoji = review.rating >= 4 ? "😊" : review.rating === 3 ? "😐" : "😟";
-
-  const message = `${emoji} *New Review Alert!*\n\n*${business.business_name}*\n\n${stars} (${review.rating}/5)\n👤 ${review.reviewer_name || "Anonymous"}\n\n"${review.review_text?.substring(0, 200) || "No text"}"\n\n_ReputeIndia is generating your AI reply..._`;
-
   const alertTo = business.whatsapp_number || business.phone;
-  const result = await sendWhatsApp(alertTo, message);
+
+  // Use approved template: new_review_alert
+  const result = await sendWhatsAppTemplate(alertTo, "new_review_alert", [
+    review.rating,
+    business.business_name,
+    (review.review_text || "No text provided").substring(0, 200)
+  ]);
 
   // Log the alert
   await supabase.from("whatsapp_alerts").insert([{
@@ -445,7 +485,7 @@ async function sendReviewAlert(business, review) {
     review_id: review.id,
     to_number: alertTo,
     message_type: "new_review",
-    message_text: message,
+    message_text: `Template: new_review_alert | ${review.rating}★ | ${business.business_name}`,
     status: result ? "sent" : "failed",
     wa_message_id: result?.messages?.[0]?.id
   }]);
