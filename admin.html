@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — ReputeIndia</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white: #FFFFFF;
+  --off-white: #F8F6F2;
+  --paper: #F2EFE9;
+  --gold: #B8952A;
+  --gold-light: #D4AF50;
+  --gold-pale: #F5EDD6;
+  --ink: #1A1612;
+  --ink2: #2E2A25;
+  --muted: #8A8480;
+  --muted2: #C4BFB8;
+  --border: #E8E3DB;
+  --border2: #D4CFC7;
+  --green: #2D7D4F;
+  --green-bg: #EEF7F2;
+  --red: #C0392B;
+  --red-bg: #FDF0EE;
+  --amber: #B7791F;
+  --amber-bg: #FEF3E2;
+  --blue: #1E5FA8;
+  --blue-bg: #EEF4FC;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--off-white);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── LOGIN ── */
+.login-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--off-white);
+  background-image: radial-gradient(circle at 20% 80%, rgba(184,149,42,0.06) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(184,149,42,0.04) 0%, transparent 50%);
+  padding: 20px;
+}
+.login-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  padding: 56px 52px;
+  width: 100%;
+  max-width: 440px;
+}
+.login-eyebrow {
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.login-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+.login-sub {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 40px;
+  font-weight: 300;
+}
+.field-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ink2);
+  margin-bottom: 8px;
+}
+.field-input {
+  width: 100%;
+  background: var(--off-white);
+  border: 1.5px solid var(--border);
+  color: var(--ink);
+  padding: 13px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  border-radius: 2px;
+  margin-bottom: 24px;
+}
+.field-input:focus {
+  border-color: var(--gold);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(184,149,42,0.08);
+}
+.field-input::placeholder { color: var(--muted2); }
+.btn-primary {
+  width: 100%;
+  background: var(--ink);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 15px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s;
+  border-radius: 2px;
+}
+.btn-primary:hover { background: var(--ink2); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+.login-error {
+  font-size: 12px;
+  color: var(--red);
+  margin-top: 14px;
+  display: none;
+  padding: 10px 14px;
+  background: var(--red-bg);
+  border-left: 3px solid var(--red);
+}
+.login-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 40px 0 24px;
+}
+.login-footer {
+  font-size: 11px;
+  color: var(--muted2);
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+/* ── TOP NAV ── */
+.topnav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 48px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 0 var(--border), 0 2px 8px rgba(0,0,0,0.03);
+}
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.nav-wordmark {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.5px;
+}
+.nav-wordmark span { color: var(--gold); }
+.nav-center {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-pill {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: var(--gold-pale);
+  color: var(--gold);
+  border: 1px solid rgba(184,149,42,0.25);
+  padding: 5px 14px;
+  border-radius: 20px;
+}
+.nav-dot {
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(45,125,79,0.4);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100%{opacity:1;} 50%{opacity:0.4;}
+}
+.nav-live-text {
+  font-size: 10px;
+  color: var(--green);
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+.btn-logout {
+  background: transparent;
+  border: 1.5px solid var(--border2);
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 2px;
+}
+.btn-logout:hover { border-color: var(--ink); color: var(--ink); }
+
+/* ── PAGE BODY ── */
+.admin-wrap { max-width: 1360px; margin: 0 auto; padding: 40px 48px; }
+
+/* ── PAGE HEADER ── */
+.page-header { margin-bottom: 36px; }
+.page-eyebrow {
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.page-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.15;
+}
+.page-title em { font-style: italic; color: var(--gold); }
+.page-subtitle { font-size: 13px; color: var(--muted); margin-top: 6px; font-weight: 300; }
+
+/* ── STAT CARDS ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+.stat-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  padding: 28px 24px;
+  box-shadow: var(--shadow);
+  border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.stat-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-1px); }
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.stat-card.gold::before { background: var(--gold); }
+.stat-card.green::before { background: var(--green); }
+.stat-card.red::before { background: var(--red); }
+.stat-card.amber::before { background: var(--amber); }
+.stat-card.blue::before { background: var(--blue); }
+.stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.stat-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-card.gold .stat-value { color: var(--gold); }
+.stat-card.green .stat-value { color: var(--green); }
+.stat-card.red .stat-value { color: var(--red); }
+.stat-card.amber .stat-value { color: var(--amber); }
+.stat-card.blue .stat-value { color: var(--blue); }
+.stat-sub { font-size: 11px; color: var(--muted2); font-weight: 400; }
+
+/* ── TABLE SECTION ── */
+.table-section {
+  background: var(--white);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.table-header {
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.table-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.table-title span { color: var(--muted); font-family:'DM Sans',sans-serif; font-size: 14px; font-weight: 400; margin-left: 8px; }
+.filter-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.filter-input {
+  background: var(--off-white);
+  border: 1.5px solid var(--border);
+  color: var(--ink);
+  padding: 9px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  outline: none;
+  transition: border-color 0.2s;
+  border-radius: 2px;
+  width: 260px;
+}
+.filter-input:focus { border-color: var(--gold); }
+.filter-input::placeholder { color: var(--muted2); }
+.filter-select {
+  background: var(--off-white);
+  border: 1.5px solid var(--border);
+  color: var(--ink2);
+  padding: 9px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  outline: none;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: border-color 0.2s;
+}
+.filter-select:focus { border-color: var(--gold); }
+.btn-refresh {
+  background: var(--ink);
+  border: none;
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 9px 18px;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+.btn-refresh:hover { background: var(--gold); }
+
+/* ── TABLE ── */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+thead tr { background: var(--off-white); border-bottom: 1.5px solid var(--border); }
+th {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 14px 20px;
+  text-align: left;
+  white-space: nowrap;
+}
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--gold-pale); }
+td {
+  padding: 16px 20px;
+  font-size: 13px;
+  color: var(--ink2);
+  vertical-align: middle;
+}
+td.num { color: var(--muted2); font-size: 12px; }
+td.biz-name { font-weight: 600; color: var(--ink); }
+td.light { color: var(--muted); font-size: 12px; }
+
+/* ── BADGES ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+.badge-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.badge.trial { background: var(--amber-bg); color: var(--amber); }
+.badge.trial .badge-dot { background: var(--amber); }
+.badge.active { background: var(--green-bg); color: var(--green); }
+.badge.active .badge-dot { background: var(--green); }
+.badge.expired { background: var(--red-bg); color: var(--red); }
+.badge.expired .badge-dot { background: var(--red); }
+
+.cat-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 2px;
+  letter-spacing: 0.5px;
+}
+.cat-badge.restaurant { background: #EEF4FC; color: var(--blue); }
+.cat-badge.clinic,.cat-badge.doctor { background: var(--green-bg); color: var(--green); }
+.cat-badge.salon { background: #F5EEF8; color: #7D3C98; }
+.cat-badge.coaching_institute,.cat-badge.education { background: var(--amber-bg); color: var(--amber); }
+.cat-badge.other,.cat-badge.default { background: var(--paper); color: var(--muted); }
+
+/* ── EMPTY & LOADING ── */
+.empty-state {
+  padding: 80px 40px;
+  text-align: center;
+}
+.empty-icon { font-size: 36px; margin-bottom: 14px; }
+.empty-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.empty-text { font-size: 13px; color: var(--muted); }
+.loading-state {
+  padding: 80px 40px;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted2);
+}
+
+/* ── DRAWER ── */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(26,22,18,0.35);
+  z-index: 200;
+  display: none;
+  backdrop-filter: blur(3px);
+  animation: fadeIn 0.2s;
+}
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+.drawer {
+  position: fixed; right: 0; top: 0; bottom: 0;
+  width: 500px; max-width: 100vw;
+  background: var(--white);
+  border-left: 1px solid var(--border);
+  z-index: 201;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: -8px 0 32px rgba(0,0,0,0.08);
+}
+.drawer.open { transform: translateX(0); }
+.drawer-top {
+  padding: 28px 32px 24px;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0;
+  background: var(--white);
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.drawer-biz { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; color: var(--ink); line-height: 1.2; }
+.drawer-owner { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.drawer-close {
+  background: var(--off-white);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.drawer-close:hover { background: var(--ink); color: var(--white); border-color: var(--ink); }
+.drawer-body { padding: 28px 32px; }
+.d-section { margin-bottom: 28px; }
+.d-section-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 14px;
+}
+.d-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--off-white);
+}
+.d-key { font-size: 11px; color: var(--muted); }
+.d-val { font-size: 12px; color: var(--ink); font-weight: 500; text-align: right; max-width: 65%; }
+.d-val a { color: var(--gold); text-decoration: none; }
+.d-val a:hover { text-decoration: underline; }
+.d-val.big { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--gold); }
+.btn-wa {
+  display: block;
+  width: 100%;
+  background: #25D366;
+  color: var(--white);
+  text-align: center;
+  padding: 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: all 0.2s;
+  margin-top: 8px;
+}
+.btn-wa:hover { background: #20BA5A; box-shadow: 0 4px 16px rgba(37,211,102,0.3); }
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .stats-grid { grid-template-columns: repeat(3,1fr); }
+  .topnav,.admin-wrap { padding-left: 24px; padding-right: 24px; }
+}
+@media(max-width:768px){
+  .stats-grid { grid-template-columns: repeat(2,1fr); }
+  .drawer { width: 100vw; }
+  th:nth-child(4),td:nth-child(4),
+  th:nth-child(5),td:nth-child(5) { display: none; }
+}
+@media(max-width:500px){
+  .stats-grid { grid-template-columns: 1fr; }
+  .login-card { padding: 36px 28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════
+     LOGIN
+═══════════════════════════════ -->
+<div id="loginScreen">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-eyebrow">ReputeIndia</div>
+      <div class="login-heading">Admin Access</div>
+      <div class="login-sub">Restricted to authorised personnel only.</div>
+
+      <label class="field-label">Password</label>
+      <input type="password" class="field-input" id="adminPass"
+        placeholder="Enter your admin password"
+        onkeydown="if(event.key==='Enter') doLogin()">
+
+      <button class="btn-primary" onclick="doLogin()">Enter Dashboard</button>
+      <div class="login-error" id="loginError">Incorrect password. Please try again.</div>
+
+      <div class="login-divider"></div>
+      <div class="login-footer">© 2024 ReputeIndia · All rights reserved</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     MAIN PANEL
+═══════════════════════════════ -->
+<div id="adminPanel" style="display:none;">
+
+  <!-- NAV -->
+  <nav class="topnav">
+    <a class="nav-brand" href="index.html">
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+        <circle cx="16" cy="16" r="15" stroke="#B8952A" stroke-width="1.5"/>
+        <polygon points="16,7 18.2,12.8 24.5,12.8 19.5,16.5 21.3,22.5 16,19 10.7,22.5 12.5,16.5 7.5,12.8 13.8,12.8" fill="#B8952A"/>
+      </svg>
+      <span class="nav-wordmark">Repute<span>India</span></span>
+    </a>
+    <div class="nav-center">
+      <div class="nav-dot"></div>
+      <span class="nav-live-text">Live</span>
+      <span style="color:var(--border2);margin:0 8px;">|</span>
+      <span class="nav-pill">Admin Panel</span>
+    </div>
+    <button class="btn-logout" onclick="adminLogout()">Sign Out</button>
+  </nav>
+
+  <div class="admin-wrap">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div class="page-eyebrow">Command Centre</div>
+      <div class="page-title">Client <em>Overview</em></div>
+      <div class="page-subtitle">All registered businesses and their current status.</div>
+    </div>
+
+    <!-- LOADING -->
+    <div class="loading-state" id="adminLoading">Loading client data...</div>
+
+    <div id="adminContent" style="display:none;">
+
+      <!-- STATS -->
+      <div class="stats-grid">
+        <div class="stat-card gold">
+          <div class="stat-label">Total Clients</div>
+          <div class="stat-value" id="sTotalClients">0</div>
+          <div class="stat-sub">Registered businesses</div>
+        </div>
+        <div class="stat-card amber">
+          <div class="stat-label">On Trial</div>
+          <div class="stat-value" id="sTrialClients">0</div>
+          <div class="stat-sub">Free trial active</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-label">Paid Active</div>
+          <div class="stat-value" id="sActiveClients">0</div>
+          <div class="stat-sub">Subscribed</div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-label">Trial Expired</div>
+          <div class="stat-value" id="sExpiredClients">0</div>
+          <div class="stat-sub">Need follow-up</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-label">New This Week</div>
+          <div class="stat-value" id="sNewClients">0</div>
+          <div class="stat-sub">Last 7 days</div>
+        </div>
+      </div>
+
+      <!-- TABLE SECTION -->
+      <div class="table-section">
+        <div class="table-header">
+          <div class="table-title">
+            All Clients
+            <span id="clientCountLabel"></span>
+          </div>
+          <div class="filter-row">
+            <input type="text" class="filter-input" id="searchInput"
+              placeholder="Search name, business, city, phone…"
+              oninput="filterClients()">
+            <select class="filter-select" id="planFilter" onchange="filterClients()">
+              <option value="">All Plans</option>
+              <option value="trial">Trial</option>
+              <option value="active">Active</option>
+              <option value="expired">Expired</option>
+            </select>
+            <select class="filter-select" id="catFilter" onchange="filterClients()">
+              <option value="">All Categories</option>
+              <option value="restaurant">Restaurant</option>
+              <option value="clinic">Clinic</option>
+              <option value="salon">Salon</option>
+              <option value="coaching">Coaching</option>
+              <option value="real estate">Real Estate</option>
+            </select>
+            <button class="btn-refresh" onclick="loadClients()">↻ Refresh</button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Business</th>
+                <th>Owner</th>
+                <th>City</th>
+                <th>Category</th>
+                <th>Phone</th>
+                <th>Status</th>
+                <th>Trial Ends</th>
+                <th>Joined</th>
+              </tr>
+            </thead>
+            <tbody id="clientsTableBody">
+              <tr><td colspan="9"><div class="loading-state">Loading…</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /adminContent -->
+  </div><!-- /admin-wrap -->
+</div><!-- /adminPanel -->
+
+<!-- ═══════════════════════════════
+     CLIENT DRAWER
+═══════════════════════════════ -->
+<div class="overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="clientDrawer">
+  <div class="drawer-top">
+    <div>
+      <div class="drawer-biz" id="drawerBizName">—</div>
+      <div class="drawer-owner" id="drawerOwnerName">—</div>
+    </div>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+</div>
+
+<script>
+const BACKEND = 'https://repute-india.onrender.com';
+const ADMIN_PASSWORD = 'RI@Admin2024'; // ← Change this to your password
+
+let allClients = [];
+
+// ── AUTH ────────────────────────────────────
+function doLogin() {
+  const pass = document.getElementById('adminPass').value;
+  const err  = document.getElementById('loginError');
+  if (pass === ADMIN_PASSWORD) {
+    sessionStorage.setItem('ri_admin', '1');
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'block';
+    loadClients();
+  } else {
+    err.style.display = 'block';
+    document.getElementById('adminPass').value = '';
+    document.getElementById('adminPass').focus();
+  }
+}
+function adminLogout() {
+  sessionStorage.removeItem('ri_admin');
+  location.reload();
+}
+window.addEventListener('load', () => {
+  if (sessionStorage.getItem('ri_admin') === '1') {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'block';
+    loadClients();
+  }
+});
+
+// ── LOAD DATA ───────────────────────────────
+async function loadClients() {
+  document.getElementById('adminLoading').style.display = 'block';
+  document.getElementById('adminContent').style.display = 'none';
+  try {
+    const res  = await fetch(`${BACKEND}/api/businesses`);
+    const data = await res.json();
+    if (!data.success) throw new Error(data.error);
+    allClients = data.businesses || [];
+    renderStats(allClients);
+    renderTable(allClients);
+    document.getElementById('adminLoading').style.display = 'none';
+    document.getElementById('adminContent').style.display = 'block';
+  } catch(e) {
+    document.getElementById('adminLoading').textContent = '❌ Failed to load. Check connection.';
+  }
+}
+
+// ── STATS ────────────────────────────────────
+function renderStats(clients) {
+  const now = new Date();
+  const week = new Date(now - 7*24*60*60*1000);
+  const total   = clients.length;
+  const onTrial = clients.filter(c => { const e = c.trial_ends_at ? new Date(c.trial_ends_at) : null; return c.plan==='trial' && e && e > now; }).length;
+  const active  = clients.filter(c => c.subscription_active === true).length;
+  const expired = clients.filter(c => { const e = c.trial_ends_at ? new Date(c.trial_ends_at) : null; return c.plan==='trial' && e && e < now && !c.subscription_active; }).length;
+  const newW    = clients.filter(c => c.created_at && new Date(c.created_at) > week).length;
+  document.getElementById('sTotalClients').textContent = total;
+  document.getElementById('sTrialClients').textContent = onTrial;
+  document.getElementById('sActiveClients').textContent = active;
+  document.getElementById('sExpiredClients').textContent = expired;
+  document.getElementById('sNewClients').textContent = newW;
+}
+
+// ── FILTER ───────────────────────────────────
+function filterClients() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const plan   = document.getElementById('planFilter').value;
+  const cat    = document.getElementById('catFilter').value.toLowerCase();
+  const now    = new Date();
+  const filtered = allClients.filter(c => {
+    const ms = !search ||
+      (c.business_name||'').toLowerCase().includes(search) ||
+      (c.owner_name||'').toLowerCase().includes(search) ||
+      (c.city||'').toLowerCase().includes(search) ||
+      (c.phone||'').includes(search) ||
+      (c.whatsapp_number||'').includes(search);
+    let mp = true;
+    if (plan === 'trial')   { const e = c.trial_ends_at ? new Date(c.trial_ends_at) : null; mp = c.plan==='trial' && e && e > now; }
+    if (plan === 'active')  { mp = c.subscription_active === true; }
+    if (plan === 'expired') { const e = c.trial_ends_at ? new Date(c.trial_ends_at) : null; mp = c.plan==='trial' && e && e < now && !c.subscription_active; }
+    const mc = !cat || (c.category||'').toLowerCase().includes(cat);
+    return ms && mp && mc;
+  });
+  renderTable(filtered);
+}
+
+// ── RENDER TABLE ─────────────────────────────
+function renderTable(clients) {
+  const tbody = document.getElementById('clientsTableBody');
+  document.getElementById('clientCountLabel').textContent = `(${clients.length})`;
+  if (!clients.length) {
+    tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-heading">No clients found</div><p class="empty-text">Try adjusting your search or filters.</p></div></td></tr>`;
+    return;
+  }
+  const now = new Date();
+  tbody.innerHTML = clients.map((c,i) => {
+    const trialEnd = c.trial_ends_at ? new Date(c.trial_ends_at) : null;
+    const isActive  = c.subscription_active === true;
+    const isExpired = trialEnd && trialEnd < now && !isActive;
+    const isTrial   = !isActive && trialEnd && trialEnd > now;
+    const statusBadge = isActive
+      ? `<span class="badge active"><span class="badge-dot"></span>Active</span>`
+      : isExpired
+        ? `<span class="badge expired"><span class="badge-dot"></span>Expired</span>`
+        : `<span class="badge trial"><span class="badge-dot"></span>Trial</span>`;
+    const trialStr = trialEnd ? trialEnd.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}) : '—';
+    const regStr   = c.created_at ? new Date(c.created_at).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}) : '—';
+    const catKey   = (c.category||'other').toLowerCase().replace(/\s+/g,'_');
+    const globalIdx = allClients.indexOf(c);
+    return `<tr onclick="openDrawer(${globalIdx})">
+      <td class="num">${globalIdx+1}</td>
+      <td class="biz-name">${c.business_name||'—'}</td>
+      <td>${c.owner_name||'—'}</td>
+      <td class="light">${c.city||'—'}</td>
+      <td><span class="cat-badge ${catKey}">${c.category||'Other'}</span></td>
+      <td class="light">${c.phone||c.whatsapp_number||'—'}</td>
+      <td>${statusBadge}</td>
+      <td class="light">${trialStr}</td>
+      <td class="light">${regStr}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── DRAWER ───────────────────────────────────
+function openDrawer(idx) {
+  const c = allClients[idx];
+  if (!c) return;
+  const now = new Date();
+  const trialEnd = c.trial_ends_at ? new Date(c.trial_ends_at) : null;
+  const isActive  = c.subscription_active === true;
+  const isExpired = trialEnd && trialEnd < now && !isActive;
+  const daysLeft  = trialEnd ? Math.max(0, Math.ceil((trialEnd - now)/(1000*60*60*24))) : null;
+  const statusBadge = isActive
+    ? `<span class="badge active"><span class="badge-dot"></span>Active Subscriber</span>`
+    : isExpired
+      ? `<span class="badge expired"><span class="badge-dot"></span>Trial Expired</span>`
+      : `<span class="badge trial"><span class="badge-dot"></span>Trial — ${daysLeft} days left</span>`;
+
+  document.getElementById('drawerBizName').textContent  = c.business_name || '—';
+  document.getElementById('drawerOwnerName').textContent = c.owner_name ? `Owner: ${c.owner_name}` : '';
+
+  document.getElementById('drawerBody').innerHTML = `
+    <div class="d-section">
+      <div class="d-section-label">Business Details</div>
+      <div class="d-row"><span class="d-key">Business Name</span><span class="d-val">${c.business_name||'—'}</span></div>
+      <div class="d-row"><span class="d-key">Category</span><span class="d-val">${c.category||'—'}</span></div>
+      <div class="d-row"><span class="d-key">City</span><span class="d-val">${c.city||'—'}</span></div>
+      <div class="d-row"><span class="d-key">Plan Status</span><span class="d-val">${statusBadge}</span></div>
+    </div>
+    <div class="d-section">
+      <div class="d-section-label">Owner Contact</div>
+      <div class="d-row"><span class="d-key">Name</span><span class="d-val">${c.owner_name||'—'}</span></div>
+      <div class="d-row"><span class="d-key">Phone</span><span class="d-val"><a href="tel:${c.phone}">${c.phone||'—'}</a></span></div>
+      <div class="d-row"><span class="d-key">WhatsApp</span><span class="d-val"><a href="https://wa.me/${c.whatsapp_number}" target="_blank">${c.whatsapp_number||'—'}</a></span></div>
+      <div class="d-row"><span class="d-key">Email</span><span class="d-val"><a href="mailto:${c.email}">${c.email||'—'}</a></span></div>
+    </div>
+    <div class="d-section">
+      <div class="d-section-label">Google Presence</div>
+      <div class="d-row"><span class="d-key">Place ID</span><span class="d-val" style="font-size:10px;word-break:break-all;">${c.google_place_id||'Not set'}</span></div>
+      <div class="d-row"><span class="d-key">Maps Link</span><span class="d-val">${c.google_maps_url ? `<a href="${c.google_maps_url}" target="_blank">Open ↗</a>` : 'Not set'}</span></div>
+    </div>
+    <div class="d-section">
+      <div class="d-section-label">Timeline</div>
+      <div class="d-row"><span class="d-key">Registered</span><span class="d-val">${c.created_at ? new Date(c.created_at).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}) : '—'}</span></div>
+      <div class="d-row"><span class="d-key">Trial Started</span><span class="d-val">${c.trial_started_at ? new Date(c.trial_started_at).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}) : '—'}</span></div>
+      <div class="d-row"><span class="d-key">Trial Ends</span><span class="d-val">${trialEnd ? trialEnd.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}) : '—'}</span></div>
+    </div>
+    <a class="btn-wa" href="https://wa.me/${(c.whatsapp_number||c.phone||'').replace(/\D/g,'')}?text=Hello%20${encodeURIComponent(c.owner_name||'')}%2C%20this%20is%20Kushal%20from%20ReputeIndia%20%F0%9F%8C%9F" target="_blank">
+      💬 Message on WhatsApp
+    </a>
+  `;
+
+  document.getElementById('drawerOverlay').style.display = 'block';
+  document.getElementById('clientDrawer').classList.add('open');
+}
+function closeDrawer() {
+  document.getElementById('drawerOverlay').style.display = 'none';
+  document.getElementById('clientDrawer').classList.remove('open');
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeDrawer(); });
+</script>
+</body>
+</html>
