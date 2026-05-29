@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — ReputeIndia</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--black:#0A0A0A;--black2:#111111;--black3:#1a1a1a;--gold:#C9A84C;--gold-light:#E8C96A;--gold-dark:#A07830;--white:#F5F0E8;--grey:#888888;--grey2:#444444;--green:#4CAF50;--red:#F44336;--yellow:#FFC107;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-serif;min-height:100vh;}
+
+/* TOP NAV */
+.topnav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;background:var(--black2);border-bottom:1px solid #1a1a1a;position:sticky;top:0;z-index:100;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--gold);letter-spacing:2px;}
+.biz-name{font-size:11px;color:var(--grey);letter-spacing:1px;}
+.btn-logout{background:transparent;border:1px solid #333;color:var(--grey);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;cursor:pointer;transition:all 0.3s;}
+.btn-logout:hover{border-color:var(--gold-dark);color:var(--gold);}
+
+/* LAYOUT */
+.dash-wrap{max-width:1200px;margin:0 auto;padding:40px 40px;}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:32px;}
+.stat-card{background:var(--black2);border:1px solid #1a1a1a;padding:28px 24px;}
+.stat-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--grey);margin-bottom:10px;}
+.stat-value{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:600;color:var(--white);line-height:1;}
+.stat-value.gold{color:var(--gold);}
+.stat-value.green{color:var(--green);}
+.stat-value.red{color:var(--red);}
+.stat-sub{font-size:10px;color:var(--grey2);margin-top:6px;}
+
+/* SECTION */
+.section-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--white);margin-bottom:20px;}
+.section-title span{color:var(--gold);}
+
+/* REVIEW CARD */
+.reviews-grid{display:flex;flex-direction:column;gap:2px;}
+.review-card{background:var(--black2);border:1px solid #1a1a1a;padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:start;transition:border 0.3s;}
+.review-card:hover{border-color:#2a2a2a;}
+.review-stars{font-size:22px;letter-spacing:2px;margin-bottom:6px;}
+.review-date{font-size:9px;color:var(--grey2);letter-spacing:2px;}
+.review-author{font-size:12px;font-weight:600;color:var(--white);margin-bottom:6px;}
+.review-text{font-size:11px;color:var(--grey);line-height:1.7;font-style:italic;}
+.sentiment-badge{display:inline-block;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;margin-top:8px;}
+.sentiment-badge.positive{background:rgba(76,175,80,0.12);color:var(--green);border:1px solid rgba(76,175,80,0.3);}
+.sentiment-badge.neutral{background:rgba(255,193,7,0.12);color:var(--yellow);border:1px solid rgba(255,193,7,0.3);}
+.sentiment-badge.negative{background:rgba(244,67,54,0.12);color:var(--red);border:1px solid rgba(244,67,54,0.3);}
+.review-actions{display:flex;flex-direction:column;gap:8px;align-items:flex-end;}
+.replied-tag{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--green);padding:4px 10px;border:1px solid rgba(76,175,80,0.3);}
+.pending-tag{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);padding:4px 10px;border:1px solid rgba(255,193,7,0.3);}
+
+/* AI REPLY BOX */
+.ai-reply-box{background:rgba(201,168,76,0.05);border:1px solid var(--gold-dark);padding:16px 20px;margin-top:12px;border-radius:0;}
+.ai-reply-label{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.ai-reply-text{font-size:11px;color:var(--white);line-height:1.7;}
+.btn-approve{background:var(--gold);color:var(--black);font-size:8px;letter-spacing:2px;text-transform:uppercase;font-weight:700;padding:8px 16px;border:none;cursor:pointer;margin-top:10px;transition:all 0.3s;}
+.btn-approve:hover{background:var(--gold-light);}
+
+/* TRIAL BANNER */
+.trial-banner{background:linear-gradient(90deg,#1a1200,#0f0900);border:1px solid var(--gold-dark);padding:20px 28px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;}
+.trial-text{font-size:12px;color:var(--white);}
+.trial-text strong{color:var(--gold);}
+.trial-days{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;color:var(--gold);}
+
+/* EMPTY STATE */
+.empty-state{background:var(--black2);border:1px solid #1a1a1a;padding:60px;text-align:center;}
+.empty-icon{font-size:48px;margin-bottom:16px;}
+.empty-title{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--white);margin-bottom:8px;}
+.empty-text{font-size:12px;color:var(--grey);line-height:1.7;}
+
+/* REQUEST FORM */
+.request-form{background:var(--black2);border:1px solid #1a1a1a;padding:28px;margin-bottom:32px;}
+.request-row{display:grid;grid-template-columns:1fr 1fr auto;gap:16px;align-items:end;}
+.form-label{display:block;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.form-input{width:100%;background:var(--black);border:1px solid #2a2a2a;color:var(--white);padding:11px 14px;font-family:'Montserrat',sans-serif;font-size:11px;outline:none;transition:border 0.3s;}
+.form-input:focus{border-color:var(--gold-dark);}
+.form-input::placeholder{color:var(--grey2);}
+.btn-send{background:var(--gold);color:var(--black);font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:700;padding:11px 20px;border:none;cursor:pointer;white-space:nowrap;}
+.btn-send:hover{background:var(--gold-light);}
+
+/* LOADING */
+.loading{text-align:center;padding:60px;color:var(--grey);font-size:12px;letter-spacing:2px;}
+
+@media(max-width:900px){
+  .topnav,.dash-wrap{padding:16px 20px;}
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .review-card{grid-template-columns:1fr;}
+  .request-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<div class="topnav">
+  <a class="nav-logo" href="index.html">
+    <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="15" stroke="#C9A84C" stroke-width="1"/><polygon points="16,6 18.5,12.5 25.5,12.5 20,16.5 22,23 16,19.5 10,23 12,16.5 6.5,12.5 13.5,12.5" fill="#C9A84C"/></svg>
+    <span class="nav-logo-text">ReputeIndia</span>
+  </a>
+  <div class="biz-name" id="bizNameNav">Loading...</div>
+  <button class="btn-logout" onclick="logout()">Logout</button>
+</div>
+
+<div class="dash-wrap">
+
+  <!-- LOADING STATE -->
+  <div class="loading" id="loadingState">Loading your dashboard...</div>
+
+  <!-- DASHBOARD CONTENT (hidden until loaded) -->
+  <div id="dashContent" style="display:none;">
+
+    <!-- TRIAL BANNER -->
+    <div class="trial-banner">
+      <div class="trial-text">
+        <strong>Free Trial Active</strong> — Your reputation is being monitored 24/7
+      </div>
+      <div class="trial-days" id="trialDays">15 days left</div>
+    </div>
+
+    <!-- STATS ROW -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Average Rating</div>
+        <div class="stat-value gold" id="statRating">—</div>
+        <div class="stat-sub">Google Stars</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Reviews</div>
+        <div class="stat-value" id="statTotal">0</div>
+        <div class="stat-sub">All time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Awaiting Reply</div>
+        <div class="stat-value red" id="statUnreplied">0</div>
+        <div class="stat-sub">Need response</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Positive Reviews</div>
+        <div class="stat-value green" id="statPositive">0</div>
+        <div class="stat-sub">Sentiment analysis</div>
+      </div>
+    </div>
+
+    <!-- REQUEST REVIEWS SECTION -->
+    <div class="section-title">Send Review Request <span>via WhatsApp</span></div>
+    <div class="request-form">
+      <div class="request-row">
+        <div>
+          <label class="form-label">Customer Name</label>
+          <input type="text" class="form-input" id="custName" placeholder="Customer name">
+        </div>
+        <div>
+          <label class="form-label">Customer WhatsApp Number</label>
+          <input type="tel" class="form-input" id="custPhone" placeholder="10-digit number">
+        </div>
+        <button class="btn-send" onclick="sendReviewRequest()">Send Request 📲</button>
+      </div>
+      <div id="reqStatus" style="font-size:10px;color:var(--green);margin-top:10px;display:none;"></div>
+    </div>
+
+    <!-- RECENT REVIEWS -->
+    <div class="section-title">Recent Reviews</div>
+    <div class="reviews-grid" id="reviewsGrid">
+      <div class="empty-state">
+        <div class="empty-icon">⭐</div>
+        <div class="empty-title">No Reviews Yet</div>
+        <p class="empty-text">Your reviews will appear here automatically as they come in. Send review requests to your customers above to get started!</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const BACKEND = 'https://repute-india.onrender.com';
+
+async function loadDashboard() {
+  const bizId = localStorage.getItem('ri_business_id');
+  const bizName = localStorage.getItem('ri_business_name');
+
+  if (!bizId) {
+    window.location.href = 'login.html';
+    return;
+  }
+
+  document.getElementById('bizNameNav').textContent = bizName || 'Dashboard';
+
+  try {
+    const res = await fetch(`${BACKEND}/api/dashboard/${bizId}`);
+    const data = await res.json();
+
+    if (data.success) {
+      const { business, stats } = data;
+
+      // Trial days remaining
+      if (business.trial_ends_at) {
+        const trialEnd = new Date(business.trial_ends_at);
+        const now = new Date();
+        const daysLeft = Math.max(0, Math.ceil((trialEnd - now) / (1000*60*60*24)));
+        document.getElementById('trialDays').textContent = daysLeft + ' days left';
+      }
+
+      // Stats
+      document.getElementById('statRating').textContent = stats.avg_rating > 0 ? stats.avg_rating.toFixed(1) + '★' : '—';
+      document.getElementById('statTotal').textContent = stats.total_reviews;
+      document.getElementById('statUnreplied').textContent = stats.unreplied_count;
+      document.getElementById('statPositive').textContent = stats.sentiment?.positive || 0;
+
+      // Load reviews
+      await loadReviews(bizId);
+
+      document.getElementById('loadingState').style.display = 'none';
+      document.getElementById('dashContent').style.display = 'block';
+    }
+  } catch(e) {
+    document.getElementById('loadingState').textContent = 'Error loading dashboard. Check your connection.';
+  }
+}
+
+async function loadReviews(bizId) {
+  try {
+    const res = await fetch(`${BACKEND}/api/reviews/${bizId}?limit=20`);
+    const data = await res.json();
+
+    if (data.success && data.reviews.length > 0) {
+      const grid = document.getElementById('reviewsGrid');
+      grid.innerHTML = '';
+
+      data.reviews.forEach(review => {
+        const stars = '⭐'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+        const sentiment = review.sentiment || 'neutral';
+        const sentimentLabel = sentiment === 'positive' ? '😊 Positive' : sentiment === 'negative' ? '😟 Negative' : '😐 Neutral';
+
+        const aiReplies = review.ai_replies || [];
+        const pendingReply = aiReplies.find(r => r.status === 'pending');
+        const sentReply = aiReplies.find(r => r.status === 'sent');
+
+        const date = new Date(review.review_date).toLocaleDateString('en-IN', {day:'numeric',month:'short',year:'numeric'});
+
+        let replyHtml = '';
+        if (sentReply) {
+          replyHtml = `<div class="ai-reply-box"><div class="ai-reply-label">✅ Reply Sent</div><div class="ai-reply-text">${sentReply.generated_reply}</div></div>`;
+        } else if (pendingReply) {
+          replyHtml = `<div class="ai-reply-box">
+            <div class="ai-reply-label">✨ AI Reply Ready</div>
+            <div class="ai-reply-text">${pendingReply.generated_reply}</div>
+            <button class="btn-approve" onclick="approveReply('${pendingReply.id}', this)">Approve & Mark as Sent ✓</button>
+          </div>`;
+        }
+
+        const card = document.createElement('div');
+        card.className = 'review-card';
+        card.innerHTML = `
+          <div>
+            <div class="review-stars">${stars}</div>
+            <div class="review-date">${date}</div>
+          </div>
+          <div>
+            <div class="review-author">${review.reviewer_name || 'Anonymous Customer'}</div>
+            <div class="review-text">"${review.review_text || 'No review text'}"</div>
+            <span class="sentiment-badge ${sentiment}">${sentimentLabel}</span>
+            ${replyHtml}
+          </div>
+          <div class="review-actions">
+            ${review.is_replied ? '<span class="replied-tag">✓ Replied</span>' : '<span class="pending-tag">⏳ Pending</span>'}
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+  } catch(e) {
+    console.error('Error loading reviews:', e);
+  }
+}
+
+async function approveReply(replyId, btn) {
+  btn.disabled = true;
+  btn.textContent = 'Marking...';
+  try {
+    const res = await fetch(`${BACKEND}/api/replies/${replyId}/approve`, { method: 'POST' });
+    const data = await res.json();
+    if (data.success) {
+      btn.textContent = '✓ Approved & Sent';
+      btn.style.background = 'var(--green)';
+      // Reload
+      setTimeout(() => loadDashboard(), 1500);
+    }
+  } catch(e) {
+    btn.textContent = 'Error — try again';
+    btn.disabled = false;
+  }
+}
+
+async function sendReviewRequest() {
+  const bizId = localStorage.getItem('ri_business_id');
+  const custName = document.getElementById('custName').value.trim();
+  const custPhone = document.getElementById('custPhone').value.trim().replace(/\D/g,'');
+  const status = document.getElementById('reqStatus');
+
+  if (!custPhone || custPhone.length < 10) {
+    status.textContent = '⚠️ Please enter a valid 10-digit number';
+    status.style.color = 'var(--red)';
+    status.style.display = 'block';
+    return;
+  }
+
+  try {
+    const res = await fetch(`${BACKEND}/api/review-requests`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ business_id: bizId, customer_name: custName, customer_phone: custPhone })
+    });
+    const data = await res.json();
+    if (data.success) {
+      status.textContent = '✅ Review request sent via WhatsApp!';
+      status.style.color = 'var(--green)';
+      status.style.display = 'block';
+      document.getElementById('custName').value = '';
+      document.getElementById('custPhone').value = '';
+      setTimeout(() => { status.style.display = 'none'; }, 4000);
+    } else {
+      throw new Error(data.error);
+    }
+  } catch(e) {
+    status.textContent = '❌ Failed to send. Try again.';
+    status.style.color = 'var(--red)';
+    status.style.display = 'block';
+  }
+}
+
+function logout() {
+  localStorage.removeItem('ri_business_id');
+  localStorage.removeItem('ri_business_name');
+  localStorage.removeItem('ri_phone');
+  window.location.href = 'index.html';
+}
+
+// Load on page ready
+loadDashboard();
+</script>
+</body>
+</html>
