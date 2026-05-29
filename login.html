@@ -28,6 +28,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:20px 6
 .form-input{width:100%;background:var(--black);border:1px solid #2a2a2a;color:var(--white);padding:13px 16px;font-family:'Montserrat',sans-serif;font-size:12px;outline:none;transition:border 0.3s;}
 .form-input:focus{border-color:var(--gold-dark);}
 .form-input::placeholder{color:var(--grey2);}
+.otp-input{letter-spacing:8px;font-size:22px;text-align:center;font-weight:700;}
 .btn{width:100%;padding:15px;background:var(--gold);color:var(--black);font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;border:none;cursor:pointer;transition:all 0.3s;margin-top:8px;}
 .btn:hover{background:var(--gold-light);}
 .btn:disabled{background:var(--grey2);cursor:not-allowed;}
@@ -35,8 +36,13 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:20px 6
 .reg-link{color:var(--gold);text-decoration:none;}
 .reg-link:hover{text-decoration:underline;}
 .error-msg{background:rgba(220,50,50,0.1);border:1px solid rgba(220,50,50,0.3);color:#ff6b6b;font-size:11px;padding:12px 16px;margin-bottom:20px;display:none;}
+.success-msg{background:rgba(50,200,100,0.1);border:1px solid rgba(50,200,100,0.3);color:#50c878;font-size:11px;padding:12px 16px;margin-bottom:20px;display:none;}
 .step{display:none;}
 .step.active{display:block;}
+.resend-link{font-size:10px;color:var(--grey);text-align:center;margin-top:14px;cursor:pointer;letter-spacing:1px;}
+.resend-link span{color:var(--gold);cursor:pointer;}
+.resend-link span:hover{text-decoration:underline;}
+.timer{color:var(--grey2);}
 @media(max-width:600px){nav{padding:16px 20px;}.login-box{padding:36px 24px;}}
 </style>
 </head>
@@ -53,109 +59,211 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:20px 6
   <div class="login-box">
     <div class="eyebrow">Client Dashboard Access</div>
     <h1 class="title">Welcome <em>Back</em></h1>
-    <p class="sub">Enter your registered WhatsApp number to access your reputation dashboard.</p>
 
     <div class="error-msg" id="errorMsg"></div>
+    <div class="success-msg" id="successMsg"></div>
 
-    <!-- Step 1: Phone -->
+    <!-- Step 1: Phone Number -->
     <div class="step active" id="step1">
+      <p class="sub">Enter your registered WhatsApp number. We'll send you a one-time password to verify.</p>
       <div class="form-group">
         <label class="form-label">Registered WhatsApp Number</label>
-        <input type="tel" class="form-input" id="loginPhone" placeholder="Enter your 10-digit number">
+        <input type="tel" class="form-input" id="loginPhone" placeholder="Enter your 10-digit number" maxlength="10">
       </div>
-      <button class="btn" onclick="findBusiness()">Continue →</button>
+      <button class="btn" id="sendOtpBtn" onclick="sendOtp()">Send OTP via WhatsApp →</button>
       <p class="form-note">
         New to ReputeIndia? <a href="register.html" class="reg-link">Start free trial</a>
       </p>
     </div>
 
-    <!-- Step 2: Confirm -->
+    <!-- Step 2: OTP Verification -->
     <div class="step" id="step2">
-      <div style="text-align:center;padding:20px 0;">
-        <div style="font-size:48px;margin-bottom:16px;">✅</div>
-        <p id="businessConfirm" style="font-size:14px;color:var(--white);margin-bottom:8px;"></p>
-        <p style="font-size:11px;color:var(--grey);margin-bottom:28px;">Is this your business?</p>
-        <button class="btn" onclick="goToDashboard()">Yes, Open Dashboard →</button>
-        <br><br>
-        <a href="#" onclick="backToStep1()" style="font-size:10px;color:var(--grey);text-decoration:none;letter-spacing:2px;text-transform:uppercase;">Not my business</a>
+      <p class="sub">A 6-digit OTP has been sent to your WhatsApp number <strong id="maskedPhone"></strong>. Enter it below.</p>
+      <div class="form-group">
+        <label class="form-label">Enter OTP</label>
+        <input type="number" class="form-input otp-input" id="otpInput" placeholder="------" maxlength="6">
       </div>
+      <button class="btn" id="verifyOtpBtn" onclick="verifyOtp()">Verify & Login →</button>
+      <div class="resend-link">
+        Didn't receive it? <span id="resendSpan" onclick="resendOtp()">Resend OTP</span> <span class="timer" id="timerText"></span>
+      </div>
+      <p class="form-note" style="margin-top:16px;">
+        <a href="#" onclick="backToStep1()" class="reg-link">← Use a different number</a>
+      </p>
     </div>
   </div>
 </div>
 
 <script>
 const BACKEND = 'https://repute-india.onrender.com';
-let foundBusiness = null;
+let currentPhone = '';
+let resendTimer = null;
 
-async function findBusiness() {
-  const btn = document.querySelector('#step1 .btn');
-  const err = document.getElementById('errorMsg');
-  err.style.display = 'none';
+// Auto-login if already logged in
+if (localStorage.getItem('ri_business_id')) {
+  window.location.href = 'dashboard.html';
+}
 
+function showError(msg) {
+  const e = document.getElementById('errorMsg');
+  const s = document.getElementById('successMsg');
+  s.style.display = 'none';
+  e.textContent = msg;
+  e.style.display = 'block';
+}
+
+function showSuccess(msg) {
+  const e = document.getElementById('errorMsg');
+  const s = document.getElementById('successMsg');
+  e.style.display = 'none';
+  s.textContent = msg;
+  s.style.display = 'block';
+}
+
+async function sendOtp() {
+  const btn = document.getElementById('sendOtpBtn');
   const phone = document.getElementById('loginPhone').value.trim().replace(/\D/g,'');
+
   if (phone.length < 10) {
-    err.textContent = 'Please enter a valid 10-digit number.';
-    err.style.display = 'block';
+    showError('Please enter a valid 10-digit WhatsApp number.');
     return;
   }
 
   btn.disabled = true;
-  btn.textContent = 'Looking up...';
+  btn.textContent = 'Sending OTP...';
+  document.getElementById('errorMsg').style.display = 'none';
 
   try {
-    const res = await fetch(`${BACKEND}/api/businesses`);
+    const res = await fetch(`${BACKEND}/api/auth/send-otp`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone })
+    });
     const data = await res.json();
 
     if (data.success) {
-      const biz = data.businesses.find(b => 
-        b.phone === phone || 
-        b.phone === '91'+phone || 
-        (b.whatsapp_number && b.whatsapp_number.includes(phone))
-      );
-
-      if (biz) {
-        foundBusiness = biz;
-        localStorage.setItem('ri_business_id', biz.id);
-        localStorage.setItem('ri_business_name', biz.business_name);
-        localStorage.setItem('ri_phone', phone);
-
-        document.getElementById('businessConfirm').textContent = biz.business_name;
-        document.getElementById('step1').classList.remove('active');
-        document.getElementById('step2').classList.add('active');
-      } else {
-        err.textContent = 'No account found with this number. Please register first.';
-        err.style.display = 'block';
-        btn.disabled = false;
-        btn.textContent = 'Continue →';
-      }
+      currentPhone = phone;
+      document.getElementById('maskedPhone') .textContent = phone.substring(0,2) + 'XXXXXX' + phone.slice(-2);
+      document.getElementById('step1').classList.remove('active');
+      document.getElementById('step2').classList.add('active');
+      document.getElementById('errorMsg').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'none';
+      startResendTimer(30);
+    } else {
+      showError(data.error || 'Failed to send OTP. Please try again.');
+      btn.disabled = false;
+      btn.textContent = 'Send OTP via WhatsApp →';
     }
   } catch(e) {
-    err.textContent = 'Connection error. Please try again.';
-    err.style.display = 'block';
+    showError('Connection error. Please try again.');
     btn.disabled = false;
-    btn.textContent = 'Continue →';
+    btn.textContent = 'Send OTP via WhatsApp →';
   }
 }
 
-function goToDashboard() {
-  window.location.href = 'dashboard.html';
+async function verifyOtp() {
+  const btn = document.getElementById('verifyOtpBtn');
+  const otp = document.getElementById('otpInput').value.trim();
+
+  if (otp.length !== 6) {
+    showError('Please enter the 6-digit OTP.');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Verifying...';
+  document.getElementById('errorMsg').style.display = 'none';
+
+  try {
+    const res = await fetch(`${BACKEND}/api/auth/verify-otp`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone: currentPhone, otp })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      localStorage.setItem('ri_business_id', data.business.id);
+      localStorage.setItem('ri_business_name', data.business.business_name);
+      localStorage.setItem('ri_phone', currentPhone);
+      showSuccess('✅ Verified! Redirecting to your dashboard...');
+      setTimeout(() => window.location.href = 'dashboard.html', 1200);
+    } else {
+      showError(data.error || 'Invalid OTP. Please try again.');
+      btn.disabled = false;
+      btn.textContent = 'Verify & Login →';
+    }
+  } catch(e) {
+    showError('Connection error. Please try again.');
+    btn.disabled = false;
+    btn.textContent = 'Verify & Login →';
+  }
+}
+
+async function resendOtp() {
+  const span = document.getElementById('resendSpan');
+  if (span.style.pointerEvents === 'none') return;
+  document.getElementById('otpInput').value = '';
+  document.getElementById('errorMsg').style.display = 'none';
+  showSuccess('Resending OTP...');
+
+  try {
+    const res = await fetch(`${BACKEND}/api/auth/send-otp`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone: currentPhone })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showSuccess('New OTP sent to your WhatsApp!');
+      startResendTimer(30);
+    } else {
+      showError(data.error || 'Failed to resend. Try again.');
+    }
+  } catch(e) {
+    showError('Connection error. Please try again.');
+  }
+}
+
+function startResendTimer(seconds) {
+  const span = document.getElementById('resendSpan');
+  const timer = document.getElementById('timerText');
+  span.style.pointerEvents = 'none';
+  span.style.color = 'var(--grey2)';
+  let remaining = seconds;
+  timer.textContent = `(${remaining}s)`;
+  if (resendTimer) clearInterval(resendTimer);
+  resendTimer = setInterval(() => {
+    remaining--;
+    timer.textContent = `(${remaining}s)`;
+    if (remaining <= 0) {
+      clearInterval(resendTimer);
+      timer.textContent = '';
+      span.style.pointerEvents = 'auto';
+      span.style.color = 'var(--gold)';
+    }
+  }, 1000);
 }
 
 function backToStep1() {
+  if (resendTimer) clearInterval(resendTimer);
   document.getElementById('step2').classList.remove('active');
   document.getElementById('step1').classList.add('active');
-  document.querySelector('#step1 .btn').disabled = false;
-  document.querySelector('#step1 .btn').textContent = 'Continue →';
+  document.getElementById('sendOtpBtn').disabled = false;
+  document.getElementById('sendOtpBtn').textContent = 'Send OTP via WhatsApp →';
+  document.getElementById('errorMsg').style.display = 'none';
+  document.getElementById('successMsg').style.display = 'none';
+  document.getElementById('otpInput').value = '';
 }
 
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') findBusiness();
+  if (e.key === 'Enter') {
+    const s1 = document.getElementById('step1');
+    const s2 = document.getElementById('step2');
+    if (s1.classList.contains('active')) sendOtp();
+    else if (s2.classList.contains('active')) verifyOtp();
+  }
 });
-
-// Auto-login if already registered
-if (localStorage.getItem('ri_business_id')) {
-  window.location.href = 'dashboard.html';
-}
 </script>
 </body>
 </html>
