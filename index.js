@@ -127,7 +127,11 @@ app.post("/api/auth/send-otp", async (req, res) => {
       phone: cleanPhone, otp, expires_at
     }]);
 
-    // Send OTP via WhatsApp (free-form OK since they initiated login)
+    // Send OTP via hello_world template (opens conversation window)
+    // then send OTP as free-form message
+    await sendWhatsAppTemplate(cleanPhone, "hello_world", []);
+    // Small delay then send OTP
+    await new Promise(r => setTimeout(r, 1500));
     await sendWhatsApp(cleanPhone,
       `Your ReputeIndia login OTP is: *${otp}*\n\nValid for 10 minutes. Do not share this with anyone.`
     );
