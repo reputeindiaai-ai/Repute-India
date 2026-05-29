@@ -94,6 +94,94 @@ app.get("/api/businesses", async (req, res) => {
 });
 
 // ============================================================
+// OTP: SEND OTP TO PHONE
+// POST /api/auth/send-otp
+// ============================================================
+app.post("/api/auth/send-otp", async (req, res) => {
+  try {
+    const { phone } = req.body;
+    if (!phone) return res.status(400).json({ success: false, error: "Phone required" });
+
+    const cleanPhone = phone.replace(/\D/g, "");
+
+    // Check business exists
+    const { data: business } = await supabase
+      .from("businesses")
+      .select("id, owner_name, business_name")
+      .or(`phone.eq.${cleanPhone},whatsapp_number.eq.${cleanPhone}`)
+      .single();
+
+    if (!business) return res.status(404).json({ success: false, error: "No account found with this number. Please register first." });
+
+    // Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expires_at = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+    // Save OTP to DB (invalidate old ones first)
+    await supabase.from("otp_verifications")
+      .update({ used: true })
+      .eq("phone", cleanPhone)
+      .eq("used", false);
+
+    await supabase.from("otp_verifications").insert([{
+      phone: cleanPhone, otp, expires_at
+    }]);
+
+    // Send OTP via WhatsApp (free-form OK since they initiated login)
+    await sendWhatsApp(cleanPhone,
+      `Your ReputeIndia login OTP is: *${otp}*\n\nValid for 10 minutes. Do not share this with anyone.`
+    );
+
+    res.json({ success: true, message: "OTP sent to your WhatsApp number" });
+  } catch (err) {
+    console.error("Send OTP error:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ============================================================
+// OTP: VERIFY OTP AND LOGIN
+// POST /api/auth/verify-otp
+// ============================================================
+app.post("/api/auth/verify-otp", async (req, res) => {
+  try {
+    const { phone, otp } = req.body;
+    if (!phone || !otp) return res.status(400).json({ success: false, error: "Phone and OTP required" });
+
+    const cleanPhone = phone.replace(/\D/g, "");
+
+    // Find valid OTP
+    const { data: record } = await supabase
+      .from("otp_verifications")
+      .select("*")
+      .eq("phone", cleanPhone)
+      .eq("otp", otp)
+      .eq("used", false)
+      .gte("expires_at", new Date().toISOString())
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .single();
+
+    if (!record) return res.status(401).json({ success: false, error: "Invalid or expired OTP. Please try again." });
+
+    // Mark OTP as used
+    await supabase.from("otp_verifications").update({ used: true }).eq("id", record.id);
+
+    // Get business
+    const { data: business } = await supabase
+      .from("businesses")
+      .select("*")
+      .or(`phone.eq.${cleanPhone},whatsapp_number.eq.${cleanPhone}`)
+      .single();
+
+    res.json({ success: true, business });
+  } catch (err) {
+    console.error("Verify OTP error:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ============================================================
 // 3. GET SINGLE BUSINESS WITH REVIEWS
 // GET /api/businesses/:id
 // ============================================================
