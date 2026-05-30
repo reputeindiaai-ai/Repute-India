@@ -453,13 +453,11 @@ app.delete("/api/competitors/:id", async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
-// ============================================================
-// ADD THIS ROUTE TO index.js
-// Paste it right after the DELETE /api/competitors/:id route
-// ============================================================
 
+// ============================================================
 // AI COMPETITIVE ANALYSIS
 // POST /api/competitors/:id/analyse
+// ============================================================
 app.post("/api/competitors/:id/analyse", async (req, res) => {
   try {
     const { my_name, my_rating, my_review_count, comp_name, comp_category, comp_rating, comp_review_count } = req.body;
@@ -475,9 +473,7 @@ Their Category: ${comp_category || 'Local Business'}
 Their Google Rating: ${comp_rating > 0 ? comp_rating + '/5' : 'Not yet rated'}
 Their Total Reviews: ${comp_review_count}
 
-Analyse this competitive situation for an Indian local business context. Be specific and practical.
-
-Respond ONLY with this JSON (no markdown, no explanation):
+Respond ONLY with this JSON (no markdown):
 {
   "you_winning": ["point 1", "point 2", "point 3"],
   "they_winning": ["point 1", "point 2", "point 3"],
@@ -485,37 +481,23 @@ Respond ONLY with this JSON (no markdown, no explanation):
   "recommendations": ["action 1", "action 2", "action 3"]
 }
 
-Rules:
-- Each point must be 1 sentence, specific and actionable
-- Reference Indian business context (Google Maps, Justdial, local customers)
-- Be honest about weaknesses
-- Recommendations must be things they can do THIS WEEK`;
+Each point must be 1 sentence, specific and actionable for Indian local businesses.`;
 
     const response = await axios.post(
       "https://api.anthropic.com/v1/messages",
-      {
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 800,
-        messages: [{ role: "user", content: prompt }]
-      },
-      {
-        headers: {
-          "x-api-key": process.env.ANTHROPIC_API_KEY,
-          "anthropic-version": "2023-06-01",
-          "Content-Type": "application/json"
-        }
-      }
+      { model: "claude-sonnet-4-20250514", max_tokens: 800, messages: [{ role: "user", content: prompt }] },
+      { headers: { "x-api-key": process.env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } }
     );
 
     const raw = response.data.content[0].text.trim();
     const analysis = JSON.parse(raw);
-
     res.json({ success: true, analysis });
   } catch (err) {
     console.error("AI analysis error:", err.message);
     res.status(500).json({ success: false, error: err.message });
   }
 });
+
 
 // ============================================================
 // WHATSAPP WEBHOOK
@@ -557,7 +539,7 @@ async function sendOtpEmail(toEmail, businessName, otp) {
     const response = await axios.post(
       "https://api.resend.com/emails",
       {
-        from: "ReputeIndia <noreply@reputeindiaai.com>",
+        from: "ReputeIndia <onboarding@resend.dev>",
         to: [toEmail],
         subject: `${otp} is your ReputeIndia login OTP`,
         html: `
