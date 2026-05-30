@@ -1168,6 +1168,139 @@ CRITICAL JSON RULES:
 
 
 // ============================================================
+// MARKETING 2.0 — FESTIVAL CALENDAR
+// POST /api/festival-calendar
+// ============================================================
+app.post("/api/festival-calendar", async (req, res) => {
+  try {
+    const { business_name, business_category, business_city, products_services, date } = req.body;
+
+    const prompt = `You are a marketing calendar expert for Indian businesses. Today is ${date || new Date().toDateString()}.
+
+For this business: ${business_name}, a ${business_category} in ${business_city || "India"}${products_services ? " offering " + products_services : ""}.
+
+List the 6 most relevant UPCOMING occasions (festivals, seasons, national days, shopping events) in the next 90 days that this business should run a marketing campaign for. Prioritise ones most relevant to their industry and customers. Calculate days_away accurately from today.
+
+Respond ONLY with this JSON array (no markdown):
+[
+  {
+    "name": "Occasion name",
+    "emoji": "single relevant emoji",
+    "date": "Month Day, Year",
+    "days_away": number,
+    "campaign_idea": "One specific campaign idea for THIS business (under 20 words)"
+  }
+]
+
+Include real Indian festivals/dates (Diwali, Navratri, Dussehra, Holi, Raksha Bandhan, Independence Day Aug 15, Republic Day Jan 26, Gandhi Jayanti, regional festivals, New Year, Valentine's, etc.) plus relevant seasonal/shopping moments. Order by soonest first.
+
+CRITICAL: Output only valid JSON. No line breaks inside values. No double quotes inside values.`;
+
+    const response = await axios.post(
+      "https://api.anthropic.com/v1/messages",
+      { model: "claude-sonnet-4-6", max_tokens: 1500, messages: [{ role: "user", content: prompt }] },
+      { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } }
+    );
+
+    let raw = response.data.content[0].text.trim();
+    raw = raw.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/\s*```$/i, "").trim();
+    const aStart = raw.indexOf("["), aEnd = raw.lastIndexOf("]");
+    if (aStart !== -1 && aEnd !== -1) raw = raw.substring(aStart, aEnd + 1);
+    const occasions = JSON.parse(raw);
+    res.json({ success: true, occasions });
+  } catch (err) {
+    console.error("Festival calendar error:", err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ============================================================
+// MARKETING 2.0 — POSTER COPY GENERATOR
+// POST /api/poster-copy
+// ============================================================
+app.post("/api/poster-copy", async (req, res) => {
+  try {
+    const { theme, headline, offer, business_name, business_category, business_city, products_services } = req.body;
+    if (!theme) return res.status(400).json({ success: false, error: "Theme required" });
+
+    const prompt = `You are a poster copywriter for Indian businesses. Write punchy, professional poster text.
+
+Business: ${business_name}, a ${business_category} in ${business_city || "India"}${products_services ? " offering " + products_services : ""}
+Poster purpose: ${theme}
+${headline ? "User-provided headline (improve it slightly): " + headline : "Write a compelling headline."}
+${offer ? "Key offer: " + offer : ""}
+
+Respond ONLY with this JSON (no markdown):
+{
+  "headline": "Short, punchy headline — max 6 words, high impact",
+  "offer": "Short offer/highlight text — max 6 words (or empty string if none)",
+  "subtext": "One supporting line — max 12 words",
+  "footer": "Call to action or contact line — max 8 words (e.g. 'Call now · Limited seats' or address)"
+}
+
+Make it specific to this business and occasion. Punchy, not generic. Indian context.
+CRITICAL: Output only valid JSON. No line breaks inside values. No double quotes inside values.`;
+
+    const response = await axios.post(
+      "https://api.anthropic.com/v1/messages",
+      { model: "claude-sonnet-4-6", max_tokens: 500, messages: [{ role: "user", content: prompt }] },
+      { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } }
+    );
+
+    let raw = response.data.content[0].text.trim();
+    raw = raw.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/\s*```$/i, "").trim();
+    let poster;
+    try { poster = JSON.parse(raw); }
+    catch(e) { const m = raw.match(/\{[\s\S]*\}/); poster = m ? JSON.parse(m[0]) : null; }
+    if (!poster) throw new Error("Could not parse poster copy");
+    res.json({ success: true, poster });
+  } catch (err) {
+    console.error("Poster copy error:", err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ============================================================
+// MARKETING 2.0 — AI TOOL PROMPT GENERATOR
+// POST /api/ai-tool-prompt
+// ============================================================
+app.post("/api/ai-tool-prompt", async (req, res) => {
+  try {
+    const { type, description, business_name, business_category, business_city, products_services } = req.body;
+    if (!description) return res.status(400).json({ success: false, error: "Description required" });
+
+    const typeInstructions = {
+      image: "Write a detailed AI image generation prompt (for DALL-E/Gemini/Ideogram). Include: subject, style, composition, colors, mood, lighting, aspect ratio. Make it photo-realistic and professional. If text should appear in the image, specify it clearly in quotes.",
+      video: "Write a detailed AI video generation prompt (for Veo/Runway/Pika) PLUS a short shot list. Include: scene description, camera movement, mood, duration, style. Keep it achievable for AI video tools (short clips).",
+      logo: "Write a detailed AI prompt to generate logo concepts. Include: style (minimal/modern/traditional), colors, symbol ideas, the business name to include, mood.",
+      voiceover: "Write a ready-to-record voiceover SCRIPT (the actual words to be spoken), plus a note on tone and pace. Make it natural and engaging for the business."
+    };
+
+    const prompt = `You are an expert AI prompt engineer helping an Indian business owner.
+
+Business: ${business_name}, a ${business_category} in ${business_city || "India"}${products_services ? " offering " + products_services : ""}
+They want to create: ${description}
+
+${typeInstructions[type] || typeInstructions.image}
+
+Write ONLY the final prompt/script they should paste into the AI tool. Make it detailed, specific to their business, and ready to use. Indian context where relevant. Do not add explanations before or after — output only the prompt itself.`;
+
+    const response = await axios.post(
+      "https://api.anthropic.com/v1/messages",
+      { model: "claude-sonnet-4-6", max_tokens: 700, messages: [{ role: "user", content: prompt }] },
+      { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } }
+    );
+
+    const generatedPrompt = response.data.content[0].text.trim();
+    res.json({ success: true, prompt: generatedPrompt });
+  } catch (err) {
+    console.error("AI tool prompt error:", err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+
+// ============================================================
 // START SERVER
 // ============================================================
 app.listen(PORT, () => {
