@@ -1100,28 +1100,27 @@ BUSINESS: ${business_name}, a ${business_category} in ${business_city || "India"
 BUSINESS PROFILE:${profileText}
 REPUTATION: ${avg_rating || 0}/5 stars, ${total_reviews || 0} total reviews, ${unreplied || 0} awaiting reply
 
-Generate a briefing with 4-6 cards that are SPECIFIC, ACTIONABLE, and relevant to THIS business RIGHT NOW. Mix these card types:
-- "urgent": a compliance deadline or time-sensitive action (use real Indian deadlines — GST GSTR-3B is 20th monthly, GSTR-1 is 11th monthly, TDS is 7th monthly, advance tax quarterly, ITR by July 31, ROC annual filings Sept-Nov). Calculate days remaining from today's date.
-- "scheme": a relevant government scheme/subsidy they should know about (be specific to their industry & state)
-- "opportunity": a reputation or business opportunity (based on their rating, reviews, or challenge)
-- "marketing": an upcoming Indian festival/occasion/season worth a campaign (calculate days away from today — Diwali, Navratri, Republic Day Jan 26, Holi, Independence Day Aug 15, regional festivals)
-- "tip": a smart, specific growth or operational tip for their exact challenge
+Generate a briefing with EXACTLY 4 cards that are SPECIFIC, ACTIONABLE, and relevant to THIS business RIGHT NOW. Use one of each of these 4 types, in this order:
+- "urgent": the nearest compliance deadline (real Indian deadlines — GSTR-3B 20th monthly, GSTR-1 11th monthly, TDS 7th monthly, ITR July 31). Calculate days remaining from today.
+- "scheme": one relevant government scheme/subsidy for their industry & state.
+- "marketing": the nearest upcoming Indian festival/occasion worth a campaign (calculate days away from today).
+- "tip": one smart, specific tip for their exact biggest challenge.
 
 Respond ONLY with this JSON (no markdown, no text outside):
 {
-  "intro": "One warm, specific sentence summarising today's most important thing for them (under 25 words)",
+  "intro": "One warm specific sentence on today's top priority for them (under 22 words)",
   "cards": [
     {
-      "type": "urgent|scheme|opportunity|marketing|tip",
-      "title": "Short punchy title (under 8 words)",
-      "text": "1-2 specific sentences. Include real numbers, dates, days-remaining, scheme names where relevant.",
+      "type": "urgent|scheme|marketing|tip",
+      "title": "Short punchy title (under 7 words)",
+      "text": "1-2 short specific sentences with real numbers, dates, days-remaining, scheme names.",
       "action_label": "Short button text like 'Ask Arya' or 'Find Schemes' or 'Create Campaign' or 'View Reviews'",
       "action_target": "ai-assistant|schemes|marketing|reputation|documents"
     }
   ]
 }
 
-Make every card feel hand-written for ${business_name}. Use real Indian context, real scheme names, real dates. Be specific, never generic.
+Make every card feel hand-written for ${business_name}. Real Indian context, real names, real dates. Be concise.
 
 CRITICAL JSON RULES:
 - Output ONLY the JSON. No markdown fences.
@@ -1130,7 +1129,7 @@ CRITICAL JSON RULES:
 
     const response = await axios.post(
       "https://api.anthropic.com/v1/messages",
-      { model: "claude-sonnet-4-6", max_tokens: 1500, messages: [{ role: "user", content: prompt }] },
+      { model: "claude-sonnet-4-6", max_tokens: 1000, messages: [{ role: "user", content: prompt }] },
       { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } }
     );
 
@@ -1295,6 +1294,166 @@ Write ONLY the final prompt/script they should paste into the AI tool. Make it d
     res.json({ success: true, prompt: generatedPrompt });
   } catch (err) {
     console.error("AI tool prompt error:", err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+
+// ============================================================
+// MARKETING 2.0 PASS 2 — VIDEO SCRIPT
+// ============================================================
+app.post("/api/video-script", async (req, res) => {
+  try {
+    const { topic, video_type, language, business_name, business_category, business_city, products_services } = req.body;
+    if (!topic) return res.status(400).json({ success: false, error: "Topic required" });
+
+    const prompt = `You are a short-form video scriptwriter for Indian businesses. Write a complete, phone-shootable ${video_type || "reel"} script.
+
+Business: ${business_name}, a ${business_category} in ${business_city || "India"}${products_services ? " offering " + products_services : ""}
+Video topic: ${topic}
+Language: ${language || "English"}
+
+Write the script with these clearly labelled sections:
+1. HOOK (first 3 seconds — what grabs attention)
+2. SHOT LIST (scene by scene — what to film, each shot 1 line)
+3. ON-SCREEN TEXT / CAPTIONS (the text overlays)
+4. VOICEOVER / SPOKEN WORDS (exact words to say)
+5. MUSIC SUGGESTION (mood/type of background music)
+6. CAPTION & HASHTAGS (for the post)
+
+Make it specific to this business, achievable on a phone, ${language === "Gujarati" ? "in Gujarati script" : language === "Hindi" ? "in Hindi" : language === "Hinglish" ? "mixing Hindi and English naturally" : "in English"}. Keep it practical and punchy. Output the formatted script only, no preamble.`;
+
+    const response = await axios.post(
+      "https://api.anthropic.com/v1/messages",
+      { model: "claude-sonnet-4-6", max_tokens: 1200, messages: [{ role: "user", content: prompt }] },
+      { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } }
+    );
+    res.json({ success: true, script: response.data.content[0].text.trim() });
+  } catch (err) {
+    console.error("Video script error:", err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ============================================================
+// MARKETING 2.0 PASS 2 — 30-DAY CONTENT CALENDAR
+// ============================================================
+app.post("/api/content-calendar", async (req, res) => {
+  try {
+    const { goal, frequency, business_name, business_category, business_city, products_services } = req.body;
+
+    const count = frequency === "daily" ? 30 : frequency === "alternate" ? 15 : 12;
+
+    const prompt = `You are a social media planner for Indian businesses. Create a ${count}-post content calendar.
+
+Business: ${business_name}, a ${business_category} in ${business_city || "India"}${products_services ? " offering " + products_services : ""}
+Main goal this month: ${goal}
+Number of posts: ${count}
+
+Create ${count} diverse, specific post ideas. Mix platforms (Instagram, Facebook, WhatsApp, etc.), content types (tips, offers, behind-the-scenes, testimonials, festivals, educational, engagement), and keep them relevant to this business and goal.
+
+Respond ONLY with this JSON array (no markdown):
+[
+  { "day": 1, "platform": "Instagram", "theme": "Short theme/type", "hook": "A ready-to-use caption hook or post idea (1 sentence)" }
+]
+
+Exactly ${count} items, day numbers 1 to ${count}. Be specific to this business.
+CRITICAL: Output only valid JSON. No line breaks inside values. No double quotes inside values.`;
+
+    const response = await axios.post(
+      "https://api.anthropic.com/v1/messages",
+      { model: "claude-sonnet-4-6", max_tokens: 3000, messages: [{ role: "user", content: prompt }] },
+      { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } }
+    );
+    let raw = response.data.content[0].text.trim();
+    raw = raw.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/\s*```$/i, "").trim();
+    const aStart = raw.indexOf("["), aEnd = raw.lastIndexOf("]");
+    if (aStart !== -1 && aEnd !== -1) raw = raw.substring(aStart, aEnd + 1);
+    const calendar = JSON.parse(raw);
+    res.json({ success: true, calendar });
+  } catch (err) {
+    console.error("Content calendar error:", err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ============================================================
+// MARKETING 2.0 PASS 2 — AD COPY
+// ============================================================
+app.post("/api/ad-copy", async (req, res) => {
+  try {
+    const { ad_platform, product, goal, business_name, business_category, business_city, products_services } = req.body;
+    if (!product) return res.status(400).json({ success: false, error: "Product required" });
+
+    const formatGuide = ad_platform === "google"
+      ? "Google Search Ads format: 3 Headlines (max 30 chars each), 2 Descriptions (max 90 chars each), and suggested keywords. Provide 2 full ad variants."
+      : "Facebook/Instagram Ads format: Primary Text (125 chars), Headline (40 chars), Description (30 chars), and a CTA button suggestion. Provide 2 full ad variants.";
+
+    const prompt = `You are a performance marketing copywriter for Indian businesses. Write high-converting ad copy.
+
+Business: ${business_name}, a ${business_category} in ${business_city || "India"}${products_services ? " offering " + products_services : ""}
+Advertising: ${product}
+Goal: ${goal}
+Platform: ${ad_platform === "google" ? "Google Search Ads" : "Facebook / Instagram Ads"}
+
+${formatGuide}
+
+Make it compelling, India-relevant, with clear value props and urgency. Label each variant clearly (Variant 1, Variant 2). Output the formatted ad copy only, no preamble.`;
+
+    const response = await axios.post(
+      "https://api.anthropic.com/v1/messages",
+      { model: "claude-sonnet-4-6", max_tokens: 1000, messages: [{ role: "user", content: prompt }] },
+      { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } }
+    );
+    res.json({ success: true, copy: response.data.content[0].text.trim() });
+  } catch (err) {
+    console.error("Ad copy error:", err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ============================================================
+// MARKETING 2.0 PASS 2 — BRAND KIT
+// ============================================================
+app.post("/api/brand-kit", async (req, res) => {
+  try {
+    const { business_name, business_category, business_city, products_services, target_customers } = req.body;
+
+    const prompt = `You are a brand designer for Indian businesses. Create a starter brand identity.
+
+Business: ${business_name}, a ${business_category} in ${business_city || "India"}${products_services ? " offering " + products_services : ""}${target_customers ? ", targeting " + target_customers : ""}
+
+Design a cohesive brand kit. Respond ONLY with this JSON (no markdown):
+{
+  "colors": [
+    { "hex": "#RRGGBB", "name": "Primary" },
+    { "hex": "#RRGGBB", "name": "Secondary" },
+    { "hex": "#RRGGBB", "name": "Accent" },
+    { "hex": "#RRGGBB", "name": "Neutral" }
+  ],
+  "heading_font": "A real Google Font name suitable for headings",
+  "body_font": "A real Google Font name suitable for body text",
+  "taglines": ["Tagline option 1", "Tagline option 2", "Tagline option 3"],
+  "brand_voice": "2-3 sentences describing how this brand should sound in its communication"
+}
+
+Make colors harmonious and appropriate for this industry. Real hex codes. Taglines short and memorable, India-relevant.
+CRITICAL: Output only valid JSON. No line breaks inside values. No double quotes inside values.`;
+
+    const response = await axios.post(
+      "https://api.anthropic.com/v1/messages",
+      { model: "claude-sonnet-4-6", max_tokens: 700, messages: [{ role: "user", content: prompt }] },
+      { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } }
+    );
+    let raw = response.data.content[0].text.trim();
+    raw = raw.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/\s*```$/i, "").trim();
+    let kit;
+    try { kit = JSON.parse(raw); }
+    catch(e) { const m = raw.match(/\{[\s\S]*\}/); kit = m ? JSON.parse(m[0]) : null; }
+    if (!kit) throw new Error("Could not parse brand kit");
+    res.json({ success: true, kit });
+  } catch (err) {
+    console.error("Brand kit error:", err.message);
     res.status(500).json({ success: false, error: err.message });
   }
 });
