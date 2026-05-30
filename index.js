@@ -25,6 +25,25 @@ const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY;
 const PORT = process.env.PORT || 3000;
 
 // ============================================================
+// AUDIT LOGGING HELPER
+// Fire-and-forget: never blocks or breaks a request if it fails.
+// Stores only event_type, business id/name, short detail + timestamp.
+// ============================================================
+async function logEvent(eventType, businessId = null, businessName = null, detail = null) {
+  try {
+    await supabase.from("audit_logs").insert([{
+      business_id: businessId,
+      business_name: businessName,
+      event_type: eventType,
+      detail: detail ? String(detail).substring(0, 200) : null
+    }]);
+  } catch (e) {
+    // Silent — logging must never break the actual feature
+    console.error("logEvent failed:", e.message);
+  }
+}
+
+// ============================================================
 // HEALTH CHECK
 // ============================================================
 app.get("/", (req, res) => {
@@ -41,6 +60,7 @@ app.post("/api/businesses", async (req, res) => {
     const trial_ends_at = new Date(Date.now() + 15 * 24 * 60 * 60 * 1000);
     const { data, error } = await supabase.from("businesses").insert([{ owner_name, business_name, category, phone, email, city, whatsapp_number, google_place_id, google_maps_url, plan: "trial", trial_started_at, trial_ends_at, onboarded: true }]).select().single();
     if (error) throw error;
+    logEvent("signup", data.id, data.business_name, `${category || ""} · ${city || ""}`);
     res.json({ success: true, business: data });
   } catch (err) {
     console.error("Register business error:", err);
@@ -96,6 +116,7 @@ app.post("/api/auth/verify-otp", async (req, res) => {
     if (!record) return res.status(401).json({ success: false, error: "Invalid or expired OTP. Please try again." });
     await supabase.from("otp_verifications").update({ used: true }).eq("id", record.id);
     const { data: business } = await supabase.from("businesses").select("*").or(`phone.eq.${cleanPhone},whatsapp_number.eq.${cleanPhone}`).single();
+    if (business) logEvent("login", business.id, business.business_name, "OTP login");
     res.json({ success: true, business });
   } catch (err) {
     console.error("Verify OTP error:", err);
@@ -327,6 +348,7 @@ app.post("/api/businesses/:id/sync-reviews", async (req, res) => {
       await supabase.from("businesses").update({ current_rating: avgRating.toFixed(1) }).eq("id", id);
     }
     await updateAnalytics(id);
+    logEvent("review_sync", id, business.business_name, `Synced ${syncedCount} new of ${reviews.length}`);
     res.json({ success: true, synced: syncedCount, total: reviews.length, message: syncedCount > 0 ? `${syncedCount} new reviews synced from Google!` : "Already up to date." });
   } catch (err) {
     console.error("Sync reviews error:", err.message);
@@ -396,6 +418,7 @@ Rules:
       { model: "claude-sonnet-4-6", max_tokens: 1000, system: systemPrompt, messages },
       { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } });
     res.json({ success: true, reply: response.data.content[0].text.trim() });
+    logEvent("ai_request", null, business_name || null, "AI Assistant");
   } catch (err) {
     console.error("AI Assistant error:", err.message);
     res.status(500).json({ success: false, error: err.message });
@@ -430,6 +453,7 @@ app.post("/api/generate-document", async (req, res) => {
 
     const response = await axios.post("https://api.anthropic.com/v1/messages", { model: "claude-sonnet-4-6", max_tokens: 2000, messages: [{ role: "user", content: prompt }] }, { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } });
     res.json({ success: true, document: response.data.content[0].text.trim(), doc_type, doc_name });
+    logEvent("feature_used", null, business_name || null, "Document: " + (doc_name || doc_type || ""));
   } catch (err) {
     console.error("Document generator error:", err.message);
     res.status(500).json({ success: false, error: err.message });
@@ -485,6 +509,7 @@ app.post("/api/generate-marketing", async (req, res) => {
 
     const response = await axios.post("https://api.anthropic.com/v1/messages", { model: "claude-sonnet-4-6", max_tokens: 1200, messages: [{ role: "user", content: prompt }] }, { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } });
     res.json({ success: true, content: response.data.content[0].text.trim(), platform, theme });
+    logEvent("feature_used", null, business_name || null, "Marketing: " + (platform || ""));
   } catch (err) {
     console.error("Marketing generator error:", err.message);
     res.status(500).json({ success: false, error: err.message });
@@ -957,6 +982,8 @@ CRITICAL JSON RULES (follow exactly or the system breaks):
       await supabase.from("businesses")
         .update({ onboarding_completed: true, profile_completed: true })
         .eq("id", business_id);
+
+      logEvent("onboarding_completed", business_id, null, `Score ${score}`);
     }
 
     res.json({
@@ -1577,6 +1604,7 @@ CRITICAL: Output only valid JSON. No line breaks inside values. No double quotes
     if (aStart !== -1 && aEnd !== -1) raw = raw.substring(aStart, aEnd + 1);
     const loans = JSON.parse(raw);
     res.json({ success: true, loans });
+    logEvent("feature_used", req.body.business_id || null, business_name || null, "Loan Match: " + (purpose || ""));
   } catch (err) {
     console.error("Loan match error:", err.message);
     res.status(500).json({ success: false, error: err.message });
@@ -1602,6 +1630,80 @@ app.post("/api/loan-interest", async (req, res) => {
   } catch (err) {
     console.error("Loan interest error:", err.message);
     res.json({ success: true }); // never block the user on lead capture
+  }
+});
+
+
+// ============================================================
+// ADMIN — AUDIT LOGS + USAGE ANALYTICS
+// GET /api/admin/logs?limit=100
+// GET /api/admin/analytics
+// ============================================================
+app.get("/api/admin/logs", async (req, res) => {
+  try {
+    const limit = Math.min(parseInt(req.query.limit) || 100, 500);
+    const { data, error } = await supabase
+      .from("audit_logs")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(limit);
+    if (error) throw error;
+    res.json({ success: true, logs: data || [] });
+  } catch (err) {
+    console.error("Admin logs error:", err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.get("/api/admin/analytics", async (req, res) => {
+  try {
+    // Pull businesses for funnel
+    const { data: businesses } = await supabase.from("businesses").select("id, onboarding_completed, subscription_active, created_at");
+    const totalSignups = (businesses || []).length;
+    const onboarded = (businesses || []).filter(b => b.onboarding_completed === true).length;
+    const paid = (businesses || []).filter(b => b.subscription_active === true).length;
+
+    // Pull recent logs for usage counts (last 30 days)
+    const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    const { data: logs } = await supabase.from("audit_logs").select("event_type, detail, business_id, created_at").gte("created_at", since);
+
+    const L = logs || [];
+    const countBy = (type) => L.filter(l => l.event_type === type).length;
+
+    // Active businesses = distinct business_ids with any event in last 30 days
+    const activeSet = new Set(L.filter(l => l.business_id).map(l => l.business_id));
+
+    // Feature usage breakdown (from feature_used detail prefix + ai_request)
+    const featureCounts = {};
+    L.forEach(l => {
+      if (l.event_type === "ai_request") featureCounts["AI Assistant"] = (featureCounts["AI Assistant"] || 0) + 1;
+      if (l.event_type === "feature_used" && l.detail) {
+        const key = l.detail.split(":")[0].trim();
+        featureCounts[key] = (featureCounts[key] || 0) + 1;
+      }
+      if (l.event_type === "review_sync") featureCounts["Review Sync"] = (featureCounts["Review Sync"] || 0) + 1;
+    });
+
+    res.json({
+      success: true,
+      funnel: {
+        signed_up: totalSignups,
+        onboarded: onboarded,
+        active_30d: activeSet.size,
+        paid: paid
+      },
+      usage_30d: {
+        logins: countBy("login"),
+        ai_requests: countBy("ai_request"),
+        review_syncs: countBy("review_sync"),
+        onboardings: countBy("onboarding_completed"),
+        features: countBy("feature_used")
+      },
+      feature_breakdown: featureCounts
+    });
+  } catch (err) {
+    console.error("Admin analytics error:", err.message);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
