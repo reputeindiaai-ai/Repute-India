@@ -446,8 +446,8 @@ app.post("/api/government-schemes", async (req, res) => {
 
     const prompt = `You are a government scheme expert for Indian MSMEs. Find all relevant government schemes, subsidies, loans, and benefits for the following business:\n\nIndustry/Sector: ${industry}\nState: ${state || "India (all states)"}\nBusiness Name: ${business_name || "Indian MSME"}\nScheme Type Filter: ${scheme_type || "all"}\n\nList 6-8 most relevant schemes. Respond ONLY with a JSON array (no markdown, no explanation):\n[\n  {\n    "name": "Full scheme name",\n    "ministry": "Ministry/Department name",\n    "eligibility": "Eligible",\n    "description": "2-3 sentence description",\n    "benefits": ["Benefit 1", "Benefit 2", "Benefit 3"],\n    "eligibility_details": "Specific eligibility criteria",\n    "how_to_apply": "Step-by-step application process",\n    "website": "https://official-website.gov.in"\n  }\n]\n\neligibility field must be exactly one of: "Eligible", "Check", "Central Scheme"\n\nInclude a mix of central MSME schemes, state-specific schemes for ${state || "major states"}, sector-specific schemes for ${industry}, and credit/loan schemes.`;
 
-    const response = await axios.post("https://api.anthropic.com/v1/messages", { model: "claude-sonnet-4-6", max_tokens: 2000, messages: [{ role: "user", content: prompt }, { role: "assistant", content: "[" }] }, { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } });
-    let raw = ("[" + response.data.content[0].text).trim();
+    const response = await axios.post("https://api.anthropic.com/v1/messages", { model: "claude-sonnet-4-6", max_tokens: 2000, messages: [{ role: "user", content: prompt }] }, { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } });
+    let raw = response.data.content[0].text.trim();
     raw = raw.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/\s*```$/i, "").trim();
     // Extract JSON array if surrounded by text
     const arrStart = raw.indexOf("[");
@@ -843,20 +843,25 @@ Respond ONLY with this JSON (no markdown):
   "summary": "only if complete — 2 sentence personalised summary"
 }
 
-Be efficient — don't over-ask. One good question per turn. Use Indian business context.`;
+Be efficient — don't over-ask. One good question per turn. Use Indian business context.
+
+CRITICAL JSON RULES (follow exactly or the system breaks):
+- Output ONLY the JSON object. No text before or after. No markdown fences.
+- Do NOT use line breaks inside any string value. Keep all values on one line.
+- Do NOT use double quotes inside string values — use single quotes if needed.
+- Keep "reply" under 60 words so the JSON never gets cut off.
+- Every property must be comma-separated and the object must be properly closed.`;
 
     const messages = [
       ...conversation,
-      { role: "user", content: message },
-      // Prefill the assistant's turn with "{" so it is forced to continue as JSON
-      { role: "assistant", content: "{" }
+      { role: "user", content: message }
     ];
 
     const response = await axios.post(
       "https://api.anthropic.com/v1/messages",
       {
         model: "claude-sonnet-4-6",
-        max_tokens: 800,
+        max_tokens: 1500,
         system: systemPrompt,
         messages
       },
@@ -869,8 +874,7 @@ Be efficient — don't over-ask. One good question per turn. Use Indian business
       }
     );
 
-    // Because we prefilled "{", prepend it back to reconstruct the full JSON
-    let raw = ("{" + response.data.content[0].text).trim();
+    let raw = response.data.content[0].text.trim();
     // Strip markdown fences if present
     raw = raw.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/\s*```$/i, "").trim();
 
@@ -889,10 +893,18 @@ Be efficient — don't over-ask. One good question per turn. Use Indian business
       }
     }
 
-    // Graceful fallback: if we still couldn't parse JSON, treat the whole text
-    // as Arya's reply and keep the interview moving instead of crashing.
+    // Graceful fallback: if we still couldn't parse JSON, try to pull just the
+    // "reply" field out of the malformed text so the interview keeps moving.
     if (!result) {
-      const fallbackReply = raw.replace(/\{[\s\S]*\}/, "").trim() || raw;
+      let fallbackReply = "";
+      const replyMatch = raw.match(/"reply"\s*:\s*"((?:[^"\\]|\\.)*)"/);
+      if (replyMatch) {
+        fallbackReply = replyMatch[1].replace(/\\n/g, "\n").replace(/\\"/g, '"');
+      } else {
+        // No reply field found — use any plain text before the JSON, or a safe prompt
+        fallbackReply = raw.replace(/\{[\s\S]*\}/, "").trim()
+          || "Got it! Could you tell me a bit more so I can continue?";
+      }
       return res.json({
         success: true,
         reply: fallbackReply,
