@@ -21,7 +21,7 @@ const supabase = createClient(
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
 const WA_TOKEN = process.env.WHATSAPP_TOKEN;
 const WA_PHONE_ID = process.env.WHATSAPP_PHONE_ID;
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
 // ============================================================
 // HEALTH CHECK
