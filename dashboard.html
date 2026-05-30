@@ -432,6 +432,30 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
 .aitool-link-sub{font-size:10px;color:var(--ink3);}
 .aitool-steps{background:var(--blue-bg);border:1px solid #BBDEFB;border-radius:8px;padding:14px 16px;margin-top:16px;font-size:12px;color:var(--ink2);line-height:1.7;}
 
+/* CONTENT CALENDAR TABLE */
+.content-cal-table{width:100%;border-collapse:collapse;background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:var(--shadow);margin-top:8px;}
+.content-cal-table th{background:var(--ink);color:var(--white);font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:12px 14px;text-align:left;}
+.content-cal-table td{padding:12px 14px;font-size:12px;color:var(--ink2);border-bottom:1px solid var(--border);line-height:1.5;vertical-align:top;}
+.content-cal-table tr:last-child td{border-bottom:none;}
+.content-cal-table tr:hover td{background:var(--cream);}
+.content-day-badge{display:inline-block;font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--gold);}
+.content-platform{display:inline-block;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:20px;background:var(--gold-pale);color:var(--gold-dark);}
+
+/* BRAND KIT */
+.brand-kit{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;}
+.brand-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:24px;box-shadow:var(--shadow);}
+.brand-card-title{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.brand-palette{display:flex;gap:10px;flex-wrap:wrap;}
+.brand-swatch{text-align:center;}
+.brand-swatch-color{width:60px;height:60px;border-radius:10px;border:1px solid var(--border);margin-bottom:6px;box-shadow:var(--shadow-sm);}
+.brand-swatch-hex{font-size:10px;color:var(--ink3);font-family:monospace;}
+.brand-font{margin-bottom:14px;}
+.brand-font-label{font-size:10px;color:var(--ink3);margin-bottom:4px;}
+.brand-font-name{font-size:18px;color:var(--ink);font-weight:600;}
+.brand-tagline{font-family:'Playfair Display',serif;font-size:15px;color:var(--ink);font-style:italic;padding:10px 0;border-bottom:1px solid var(--border);line-height:1.4;}
+.brand-tagline:last-child{border-bottom:none;}
+.brand-voice{font-size:13px;color:var(--ink2);line-height:1.7;}
+
 @media(max-width:900px){
   .topnav,.dash-wrap{padding:12px 16px;}
   .nav-center{display:none;}
@@ -449,6 +473,7 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
   .marketing-type-grid{grid-template-columns:repeat(3,1fr);}
   .mkt-poster-layout{grid-template-columns:1fr;}
   .mkt-poster-preview-wrap{position:static;}
+  .brand-kit{grid-template-columns:1fr;}
   .poster-canvas.square{width:300px;height:300px;}
   .poster-canvas.story{width:220px;height:391px;}
   .poster-canvas.landscape{width:320px;height:180px;}
@@ -874,6 +899,10 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
         <button class="mkt-subtab active" onclick="switchMktTool('calendar',this)">📅 Festival Calendar</button>
         <button class="mkt-subtab" onclick="switchMktTool('poster',this)">🎨 Poster Studio</button>
         <button class="mkt-subtab" onclick="switchMktTool('social',this)">📱 Social Posts</button>
+        <button class="mkt-subtab" onclick="switchMktTool('video',this)">🎬 Video &amp; Reels</button>
+        <button class="mkt-subtab" onclick="switchMktTool('content',this)">🗓️ 30-Day Plan</button>
+        <button class="mkt-subtab" onclick="switchMktTool('ads',this)">📣 Ad Copy</button>
+        <button class="mkt-subtab" onclick="switchMktTool('brand',this)">🎨 Brand Kit</button>
         <button class="mkt-subtab" onclick="switchMktTool('aitools',this)">🔗 AI Tools Hub</button>
       </div>
 
@@ -1005,7 +1034,150 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
         </div>
       </div>
 
-      <!-- ========== TOOL 4: AI TOOLS HUB ========== -->
+      <!-- ========== TOOL: VIDEO & REELS ========== -->
+      <div class="mkt-tool" id="mkttool-video">
+        <div class="mkt-tool-intro">
+          <div class="mkt-tool-intro-title">Video &amp; Reel Studio</div>
+          <div class="mkt-tool-intro-text">Arya writes a complete, phone-shootable reel script — hook, shot list, captions, voiceover &amp; music. Or get an AI-video prompt for Veo/Runway.</div>
+        </div>
+        <div class="mkt-form-card">
+          <div class="mkt-form-grid">
+            <div>
+              <label class="form-label">What's the video about?</label>
+              <input type="text" class="form-input" id="videoTopic" placeholder="e.g. New batch admission, festive offer, customer review">
+            </div>
+            <div>
+              <label class="form-label">Video Type</label>
+              <select class="form-select" id="videoType">
+                <option value="reel">Instagram Reel (15-30s)</option>
+                <option value="story">Story (vertical, short)</option>
+                <option value="promo">Promo Video (30-60s)</option>
+                <option value="testimonial">Testimonial / Review</option>
+                <option value="educational">Educational / Tips</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label">Language</label>
+              <select class="form-select" id="videoLang">
+                <option value="English">English</option>
+                <option value="Hinglish">Hinglish</option>
+                <option value="Hindi">Hindi</option>
+                <option value="Gujarati">Gujarati</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <button class="btn-gold" onclick="generateVideoScript()" id="videoGenBtn">✨ Write Video Script</button>
+            <span id="videoStatus" style="font-size:12px;color:var(--ink3);"></span>
+          </div>
+        </div>
+        <div class="mkt-output-card" id="videoOutputCard" style="display:none;">
+          <div class="mkt-output-title">Your Video Script</div>
+          <div class="mkt-content-box" id="videoOutput"></div>
+          <div class="mkt-actions">
+            <button class="btn-primary" onclick="copyText('videoOutput',this)">📋 Copy Script</button>
+            <button class="btn-ghost" onclick="generateVideoScript()">↻ Regenerate</button>
+            <button class="btn-ghost" onclick="generateImagePromptFor('video', document.getElementById('videoTopic').value)">🎬 Get AI Video Prompt</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== TOOL: 30-DAY CONTENT CALENDAR ========== -->
+      <div class="mkt-tool" id="mkttool-content">
+        <div class="mkt-tool-intro">
+          <div class="mkt-tool-intro-title">30-Day Content Calendar</div>
+          <div class="mkt-tool-intro-text">A full month of post ideas planned for you — date, platform, theme &amp; a ready caption hook. Follow it or copy what you like.</div>
+        </div>
+        <div class="mkt-form-card">
+          <div class="mkt-form-grid" style="grid-template-columns:1fr 1fr;">
+            <div>
+              <label class="form-label">Main Goal This Month</label>
+              <select class="form-select" id="contentGoal">
+                <option value="more customers">Get more customers / leads</option>
+                <option value="brand awareness">Build brand awareness</option>
+                <option value="engagement">Increase engagement</option>
+                <option value="promote offer">Promote a specific offer</option>
+                <option value="build trust">Build trust &amp; authority</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label">Posting Frequency</label>
+              <select class="form-select" id="contentFreq">
+                <option value="daily">Daily (30 posts)</option>
+                <option value="alternate">Every alternate day (15 posts)</option>
+                <option value="3x week">3 times a week (12 posts)</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <button class="btn-gold" onclick="generateContentCalendar()" id="contentGenBtn">✨ Generate Calendar</button>
+            <span id="contentStatus" style="font-size:12px;color:var(--ink3);"></span>
+          </div>
+        </div>
+        <div id="contentCalResult"></div>
+      </div>
+
+      <!-- ========== TOOL: AD COPY ========== -->
+      <div class="mkt-tool" id="mkttool-ads">
+        <div class="mkt-tool-intro">
+          <div class="mkt-tool-intro-title">Ad Copy Generator</div>
+          <div class="mkt-tool-intro-text">High-converting ad copy for Google &amp; Meta — headlines, descriptions, primary text &amp; CTAs. Multiple variants to test.</div>
+        </div>
+        <div class="mkt-form-card">
+          <div class="mkt-form-grid">
+            <div>
+              <label class="form-label">Ad Platform</label>
+              <select class="form-select" id="adPlatform">
+                <option value="google">Google Search Ads</option>
+                <option value="meta">Facebook / Instagram Ads</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label">What are you advertising?</label>
+              <input type="text" class="form-input" id="adProduct" placeholder="e.g. UPSC coaching admission, Diwali sale">
+            </div>
+            <div>
+              <label class="form-label">Goal</label>
+              <select class="form-select" id="adGoal">
+                <option value="leads">Get leads / enquiries</option>
+                <option value="calls">Get phone calls</option>
+                <option value="visits">Drive store/website visits</option>
+                <option value="sales">Drive sales</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <button class="btn-gold" onclick="generateAdCopy()" id="adGenBtn">✨ Generate Ad Copy</button>
+            <span id="adStatus" style="font-size:12px;color:var(--ink3);"></span>
+          </div>
+        </div>
+        <div class="mkt-output-card" id="adOutputCard" style="display:none;">
+          <div class="mkt-output-title">Your Ad Copy</div>
+          <div class="mkt-content-box" id="adOutput"></div>
+          <div class="mkt-actions">
+            <button class="btn-primary" onclick="copyText('adOutput',this)">📋 Copy All</button>
+            <button class="btn-ghost" onclick="generateAdCopy()">↻ Regenerate</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== TOOL: BRAND KIT ========== -->
+      <div class="mkt-tool" id="mkttool-brand">
+        <div class="mkt-tool-intro">
+          <div class="mkt-tool-intro-title">AI Brand Kit</div>
+          <div class="mkt-tool-intro-text">A starter brand identity for your business — color palette, font pairing, tagline options &amp; brand voice, generated by AI.</div>
+        </div>
+        <div class="mkt-form-card">
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <button class="btn-gold" onclick="generateBrandKit()" id="brandGenBtn">✨ Generate My Brand Kit</button>
+            <span style="font-size:12px;color:var(--ink3);">Uses your business profile to suggest a cohesive identity</span>
+            <span id="brandStatus" style="font-size:12px;color:var(--ink3);"></span>
+          </div>
+        </div>
+        <div id="brandResult"></div>
+      </div>
+
+      <!-- ========== TOOL: AI TOOLS HUB ========== -->
       <div class="mkt-tool" id="mkttool-aitools">
         <div class="mkt-tool-intro">
           <div class="mkt-tool-intro-title">AI Creative Tools Hub</div>
@@ -1042,6 +1214,21 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
 
 <script>
 const BACKEND = 'https://repute-india.onrender.com';
+
+// Fetch with timeout — prevents spinners hanging forever on slow/cold backend
+async function fetchWithTimeout(url, options = {}, timeoutMs = 60000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, { ...options, signal: controller.signal });
+    clearTimeout(timer);
+    return res;
+  } catch (e) {
+    clearTimeout(timer);
+    throw e;
+  }
+}
+
 let currentBizId = null;
 let currentBizData = null;
 let currentProfile = null;
@@ -1214,7 +1401,7 @@ async function loadFeed(forceRefresh = false) {
   document.getElementById('feedIntro').style.display = 'none';
 
   try {
-    const res = await fetch(`${BACKEND}/api/daily-briefing`, {
+    const res = await fetchWithTimeout(`${BACKEND}/api/daily-briefing`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -1228,13 +1415,18 @@ async function loadFeed(forceRefresh = false) {
         unreplied: parseInt(document.getElementById('statUnreplied').textContent) || 0,
         date: new Date().toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' })
       })
-    });
+    }, 70000);
     const data = await res.json();
     document.getElementById('feedLoading').style.display = 'none';
 
     if (data.success && data.briefing) {
-      sessionStorage.setItem(cacheKey, JSON.stringify(data.briefing));
-      renderFeed(data.briefing);
+      try {
+        renderFeed(data.briefing);
+        sessionStorage.setItem(cacheKey, JSON.stringify(data.briefing));
+      } catch(renderErr) {
+        console.error('Feed render error:', renderErr);
+        showFeedError();
+      }
     } else {
       showFeedError();
     }
@@ -2000,7 +2192,7 @@ async function loadFestivalCalendar() {
   grid.innerHTML = '';
 
   try {
-    const res = await fetch(`${BACKEND}/api/festival-calendar`, {
+    const res = await fetchWithTimeout(`${BACKEND}/api/festival-calendar`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -2010,7 +2202,7 @@ async function loadFestivalCalendar() {
         products_services: currentProfile?.products_services || '',
         date: new Date().toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' })
       })
-    });
+    }, 70000);
     const data = await res.json();
     loading.style.display = 'none';
 
@@ -2026,11 +2218,14 @@ async function loadFestivalCalendar() {
         </div>`).join('');
       mktCalLoaded = true;
     } else {
-      grid.innerHTML = '<div style="color:var(--ink3);font-size:13px;padding:20px;">Could not load calendar. Please try again.</div>';
+      grid.innerHTML = '<div style="color:var(--ink3);font-size:13px;padding:20px;text-align:center;">Could not load calendar.<br><button class="btn-ghost" style="margin-top:12px;" onclick="loadFestivalCalendar()">↻ Try Again</button></div>';
     }
   } catch(e) {
     loading.style.display = 'none';
-    grid.innerHTML = '<div style="color:var(--ink3);font-size:13px;padding:20px;">Connection error. Please try again.</div>';
+    const msg = e.name === 'AbortError'
+      ? 'Taking longer than usual (the server may be waking up).'
+      : 'Connection error.';
+    grid.innerHTML = '<div style="color:var(--ink3);font-size:13px;padding:20px;text-align:center;">' + msg + '<br><button class="btn-ghost" style="margin-top:12px;" onclick="loadFestivalCalendar()">↻ Try Again</button></div>';
   }
 }
 
@@ -2123,7 +2318,7 @@ async function downloadPoster() {
 async function generateImagePrompt() {
   // Switch to AI Tools Hub, preset image type with poster theme
   const theme = document.getElementById('posterTheme').value.trim();
-  switchMktTool('aitools', document.querySelectorAll('.mkt-subtab')[3]);
+  switchMktTool('aitools', document.querySelectorAll('.mkt-subtab')[7]);
   document.getElementById('aiToolType').value = 'image';
   document.getElementById('aiToolDesc').value = theme || '';
   if (theme) generateAIToolPrompt();
@@ -2212,6 +2407,179 @@ function copyAIPrompt() {
     btn.textContent = '✓ Copied!';
     setTimeout(() => btn.textContent = '📋 Copy Prompt', 2000);
   });
+}
+
+// ---- Generic copy helper for textareas/divs ----
+function copyText(elId, btn) {
+  const text = document.getElementById(elId).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => btn.textContent = orig, 2000);
+  });
+}
+
+function generateImagePromptFor(type, desc) {
+  switchMktTool('aitools', document.querySelectorAll('.mkt-subtab')[7]);
+  document.getElementById('aiToolType').value = type;
+  document.getElementById('aiToolDesc').value = desc || '';
+  if (desc) generateAIToolPrompt();
+}
+
+// ---- TOOL: VIDEO & REEL SCRIPT ----
+async function generateVideoScript() {
+  const topic = document.getElementById('videoTopic').value.trim();
+  const vtype = document.getElementById('videoType').value;
+  const lang = document.getElementById('videoLang').value;
+  const status = document.getElementById('videoStatus');
+  const btn = document.getElementById('videoGenBtn');
+  if (!topic) { status.textContent = '⚠️ What is the video about?'; return; }
+  btn.disabled = true; btn.textContent = '⏳ Writing...';
+  status.textContent = 'Arya is scripting your video...';
+  try {
+    const res = await fetchWithTimeout(`${BACKEND}/api/video-script`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        topic, video_type: vtype, language: lang,
+        business_name: currentBizData?.business_name || '',
+        business_category: currentBizData?.category || '',
+        business_city: currentBizData?.city || '',
+        products_services: currentProfile?.products_services || ''
+      })
+    }, 70000);
+    const data = await res.json();
+    if (data.success) {
+      document.getElementById('videoOutput').textContent = data.script;
+      document.getElementById('videoOutputCard').style.display = 'block';
+      status.textContent = '✅ Script ready!';
+      document.getElementById('videoOutputCard').scrollIntoView({ behavior:'smooth' });
+    } else throw new Error();
+  } catch(e) { status.textContent = '❌ Failed. Try again.'; }
+  btn.disabled = false; btn.textContent = '✨ Write Video Script';
+}
+
+// ---- TOOL: 30-DAY CONTENT CALENDAR ----
+async function generateContentCalendar() {
+  const goal = document.getElementById('contentGoal').value;
+  const freq = document.getElementById('contentFreq').value;
+  const status = document.getElementById('contentStatus');
+  const btn = document.getElementById('contentGenBtn');
+  const result = document.getElementById('contentCalResult');
+  btn.disabled = true; btn.textContent = '⏳ Planning...';
+  status.textContent = 'Arya is planning your month (takes ~30s)...';
+  result.innerHTML = '';
+  try {
+    const res = await fetchWithTimeout(`${BACKEND}/api/content-calendar`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        goal, frequency: freq,
+        business_name: currentBizData?.business_name || '',
+        business_category: currentBizData?.category || '',
+        business_city: currentBizData?.city || '',
+        products_services: currentProfile?.products_services || ''
+      })
+    }, 90000);
+    const data = await res.json();
+    if (data.success && data.calendar) {
+      result.innerHTML = `
+        <table class="content-cal-table">
+          <thead><tr><th style="width:50px;">Day</th><th style="width:90px;">Platform</th><th>Theme</th><th>Caption Hook</th></tr></thead>
+          <tbody>
+            ${data.calendar.map(item => `
+              <tr>
+                <td><span class="content-day-badge">${item.day}</span></td>
+                <td><span class="content-platform">${item.platform}</span></td>
+                <td><strong>${item.theme}</strong></td>
+                <td>${item.hook}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>`;
+      status.textContent = '✅ Your 30-day plan is ready!';
+    } else throw new Error();
+  } catch(e) { status.textContent = '❌ Failed. Try again.'; }
+  btn.disabled = false; btn.textContent = '✨ Generate Calendar';
+}
+
+// ---- TOOL: AD COPY ----
+async function generateAdCopy() {
+  const platform = document.getElementById('adPlatform').value;
+  const product = document.getElementById('adProduct').value.trim();
+  const goal = document.getElementById('adGoal').value;
+  const status = document.getElementById('adStatus');
+  const btn = document.getElementById('adGenBtn');
+  if (!product) { status.textContent = '⚠️ What are you advertising?'; return; }
+  btn.disabled = true; btn.textContent = '⏳ Writing...';
+  status.textContent = 'Arya is writing your ad copy...';
+  try {
+    const res = await fetchWithTimeout(`${BACKEND}/api/ad-copy`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ad_platform: platform, product, goal,
+        business_name: currentBizData?.business_name || '',
+        business_category: currentBizData?.category || '',
+        business_city: currentBizData?.city || '',
+        products_services: currentProfile?.products_services || ''
+      })
+    }, 70000);
+    const data = await res.json();
+    if (data.success) {
+      document.getElementById('adOutput').textContent = data.copy;
+      document.getElementById('adOutputCard').style.display = 'block';
+      status.textContent = '✅ Ad copy ready!';
+      document.getElementById('adOutputCard').scrollIntoView({ behavior:'smooth' });
+    } else throw new Error();
+  } catch(e) { status.textContent = '❌ Failed. Try again.'; }
+  btn.disabled = false; btn.textContent = '✨ Generate Ad Copy';
+}
+
+// ---- TOOL: BRAND KIT ----
+async function generateBrandKit() {
+  const status = document.getElementById('brandStatus');
+  const btn = document.getElementById('brandGenBtn');
+  const result = document.getElementById('brandResult');
+  btn.disabled = true; btn.textContent = '⏳ Designing...';
+  status.textContent = 'Arya is creating your brand identity...';
+  result.innerHTML = '';
+  try {
+    const res = await fetchWithTimeout(`${BACKEND}/api/brand-kit`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        business_name: currentBizData?.business_name || '',
+        business_category: currentBizData?.category || '',
+        business_city: currentBizData?.city || '',
+        products_services: currentProfile?.products_services || '',
+        target_customers: currentProfile?.target_customers || ''
+      })
+    }, 70000);
+    const data = await res.json();
+    if (data.success && data.kit) {
+      const k = data.kit;
+      result.innerHTML = `
+        <div class="brand-kit">
+          <div class="brand-card">
+            <div class="brand-card-title">Color Palette</div>
+            <div class="brand-palette">
+              ${(k.colors||[]).map(c => `<div class="brand-swatch"><div class="brand-swatch-color" style="background:${c.hex};"></div><div class="brand-swatch-hex">${c.hex}</div><div class="brand-swatch-hex">${c.name||''}</div></div>`).join('')}
+            </div>
+          </div>
+          <div class="brand-card">
+            <div class="brand-card-title">Typography</div>
+            <div class="brand-font"><div class="brand-font-label">Headings</div><div class="brand-font-name">${k.heading_font||'—'}</div></div>
+            <div class="brand-font"><div class="brand-font-label">Body Text</div><div class="brand-font-name">${k.body_font||'—'}</div></div>
+          </div>
+          <div class="brand-card">
+            <div class="brand-card-title">Tagline Options</div>
+            ${(k.taglines||[]).map(t => `<div class="brand-tagline">"${t}"</div>`).join('')}
+          </div>
+          <div class="brand-card">
+            <div class="brand-card-title">Brand Voice</div>
+            <div class="brand-voice">${k.brand_voice||''}</div>
+          </div>
+        </div>`;
+      status.textContent = '✅ Brand kit ready!';
+    } else throw new Error();
+  } catch(e) { status.textContent = '❌ Failed. Try again.'; }
+  btn.disabled = false; btn.textContent = '✨ Generate My Brand Kit';
 }
 
 function logout() {
