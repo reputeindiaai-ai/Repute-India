@@ -446,8 +446,8 @@ app.post("/api/government-schemes", async (req, res) => {
 
     const prompt = `You are a government scheme expert for Indian MSMEs. Find all relevant government schemes, subsidies, loans, and benefits for the following business:\n\nIndustry/Sector: ${industry}\nState: ${state || "India (all states)"}\nBusiness Name: ${business_name || "Indian MSME"}\nScheme Type Filter: ${scheme_type || "all"}\n\nList 6-8 most relevant schemes. Respond ONLY with a JSON array (no markdown, no explanation):\n[\n  {\n    "name": "Full scheme name",\n    "ministry": "Ministry/Department name",\n    "eligibility": "Eligible",\n    "description": "2-3 sentence description",\n    "benefits": ["Benefit 1", "Benefit 2", "Benefit 3"],\n    "eligibility_details": "Specific eligibility criteria",\n    "how_to_apply": "Step-by-step application process",\n    "website": "https://official-website.gov.in"\n  }\n]\n\neligibility field must be exactly one of: "Eligible", "Check", "Central Scheme"\n\nInclude a mix of central MSME schemes, state-specific schemes for ${state || "major states"}, sector-specific schemes for ${industry}, and credit/loan schemes.`;
 
-    const response = await axios.post("https://api.anthropic.com/v1/messages", { model: "claude-sonnet-4-6", max_tokens: 2000, messages: [{ role: "user", content: prompt }] }, { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } });
-    let raw = response.data.content[0].text.trim();
+    const response = await axios.post("https://api.anthropic.com/v1/messages", { model: "claude-sonnet-4-6", max_tokens: 2000, messages: [{ role: "user", content: prompt }, { role: "assistant", content: "[" }] }, { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } });
+    let raw = ("[" + response.data.content[0].text).trim();
     raw = raw.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/\s*```$/i, "").trim();
     // Extract JSON array if surrounded by text
     const arrStart = raw.indexOf("[");
@@ -847,7 +847,9 @@ Be efficient — don't over-ask. One good question per turn. Use Indian business
 
     const messages = [
       ...conversation,
-      { role: "user", content: message }
+      { role: "user", content: message },
+      // Prefill the assistant's turn with "{" so it is forced to continue as JSON
+      { role: "assistant", content: "{" }
     ];
 
     const response = await axios.post(
@@ -867,10 +869,40 @@ Be efficient — don't over-ask. One good question per turn. Use Indian business
       }
     );
 
-    let raw = response.data.content[0].text.trim();
+    // Because we prefilled "{", prepend it back to reconstruct the full JSON
+    let raw = ("{" + response.data.content[0].text).trim();
     // Strip markdown fences if present
     raw = raw.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/\s*```$/i, "").trim();
-    const result = JSON.parse(raw);
+
+    // Robustly extract the JSON object even if Claude wrapped it in chatty text
+    let result;
+    try {
+      result = JSON.parse(raw);
+    } catch (e1) {
+      const match = raw.match(/\{[\s\S]*\}/);
+      if (match) {
+        try {
+          result = JSON.parse(match[0]);
+        } catch (e2) {
+          result = null;
+        }
+      }
+    }
+
+    // Graceful fallback: if we still couldn't parse JSON, treat the whole text
+    // as Arya's reply and keep the interview moving instead of crashing.
+    if (!result) {
+      const fallbackReply = raw.replace(/\{[\s\S]*\}/, "").trim() || raw;
+      return res.json({
+        success: true,
+        reply: fallbackReply,
+        extracted: {},
+        quick_replies: [],
+        next_stage: stage,
+        complete: false,
+        score: calculateReputeScore(profile, business_category)
+      });
+    }
 
     // Merge extracted data into profile
     const updatedProfile = { ...profile, ...(result.extracted || {}) };
