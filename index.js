@@ -1069,6 +1069,105 @@ function getScoreBreakdown(profile, category) {
 
 
 // ============================================================
+// DAILY INTELLIGENCE BRIEFING
+// POST /api/daily-briefing
+// ============================================================
+app.post("/api/daily-briefing", async (req, res) => {
+  try {
+    const {
+      business_id, business_name, business_category, business_city,
+      profile = {}, avg_rating, total_reviews, unreplied, date
+    } = req.body;
+
+    const p = profile || {};
+    const profileText = `
+- Products/Services: ${p.products_services || "Not specified"}
+- Target Customers: ${p.target_customers || "Not specified"}
+- Turnover: ${p.turnover_range || "Not specified"}
+- Employees: ${p.employee_count || "Not specified"}
+- GST Registered: ${p.is_gst_registered ? "Yes" : "No"}
+- MSME Registered: ${p.is_msme_registered ? "Yes" : "No"}
+- Exporter: ${p.is_exporter ? "Yes" : "No"}
+- Biggest Challenge: ${p.biggest_challenge || "Not specified"}
+- Current Google Rating: ${avg_rating || p.current_google_rating || "Not specified"}
+- Main Complaint: ${p.main_review_complaint || "Not specified"}`;
+
+    const prompt = `You are Arya, the AI business intelligence engine for Repute AI. Generate today's personalised daily briefing for an Indian MSME.
+
+TODAY'S DATE: ${date || new Date().toDateString()}
+
+BUSINESS: ${business_name}, a ${business_category} in ${business_city || "India"}
+BUSINESS PROFILE:${profileText}
+REPUTATION: ${avg_rating || 0}/5 stars, ${total_reviews || 0} total reviews, ${unreplied || 0} awaiting reply
+
+Generate a briefing with 4-6 cards that are SPECIFIC, ACTIONABLE, and relevant to THIS business RIGHT NOW. Mix these card types:
+- "urgent": a compliance deadline or time-sensitive action (use real Indian deadlines — GST GSTR-3B is 20th monthly, GSTR-1 is 11th monthly, TDS is 7th monthly, advance tax quarterly, ITR by July 31, ROC annual filings Sept-Nov). Calculate days remaining from today's date.
+- "scheme": a relevant government scheme/subsidy they should know about (be specific to their industry & state)
+- "opportunity": a reputation or business opportunity (based on their rating, reviews, or challenge)
+- "marketing": an upcoming Indian festival/occasion/season worth a campaign (calculate days away from today — Diwali, Navratri, Republic Day Jan 26, Holi, Independence Day Aug 15, regional festivals)
+- "tip": a smart, specific growth or operational tip for their exact challenge
+
+Respond ONLY with this JSON (no markdown, no text outside):
+{
+  "intro": "One warm, specific sentence summarising today's most important thing for them (under 25 words)",
+  "cards": [
+    {
+      "type": "urgent|scheme|opportunity|marketing|tip",
+      "title": "Short punchy title (under 8 words)",
+      "text": "1-2 specific sentences. Include real numbers, dates, days-remaining, scheme names where relevant.",
+      "action_label": "Short button text like 'Ask Arya' or 'Find Schemes' or 'Create Campaign' or 'View Reviews'",
+      "action_target": "ai-assistant|schemes|marketing|reputation|documents"
+    }
+  ]
+}
+
+Make every card feel hand-written for ${business_name}. Use real Indian context, real scheme names, real dates. Be specific, never generic.
+
+CRITICAL JSON RULES:
+- Output ONLY the JSON. No markdown fences.
+- No line breaks inside string values. No double quotes inside values (use single quotes).
+- Keep it valid and properly closed.`;
+
+    const response = await axios.post(
+      "https://api.anthropic.com/v1/messages",
+      { model: "claude-sonnet-4-6", max_tokens: 1500, messages: [{ role: "user", content: prompt }] },
+      { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } }
+    );
+
+    let raw = response.data.content[0].text.trim();
+    raw = raw.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/\s*```$/i, "").trim();
+
+    let briefing;
+    try {
+      briefing = JSON.parse(raw);
+    } catch (e1) {
+      const match = raw.match(/\{[\s\S]*\}/);
+      if (match) {
+        try { briefing = JSON.parse(match[0]); } catch (e2) { briefing = null; }
+      }
+    }
+
+    if (!briefing) {
+      // Fallback briefing so the page never breaks
+      briefing = {
+        intro: `Welcome back! Here's what to focus on at ${business_name} today.`,
+        cards: [
+          { type: "tip", title: "Complete Your Reviews", text: `You have ${unreplied || 0} reviews awaiting a reply. Responding quickly improves your reputation and ranking.`, action_label: "View Reviews", action_target: "reputation" },
+          { type: "scheme", title: "Explore Government Schemes", text: `As a ${business_category} business, you may qualify for MSME subsidies and schemes. Let's find them.`, action_label: "Find Schemes", action_target: "schemes" }
+        ]
+      };
+    }
+
+    res.json({ success: true, briefing });
+
+  } catch (err) {
+    console.error("Daily briefing error:", err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+
+// ============================================================
 // START SERVER
 // ============================================================
 app.listen(PORT, () => {
