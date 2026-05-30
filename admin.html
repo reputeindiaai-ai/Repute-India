@@ -225,6 +225,18 @@ body {
 /* ── PAGE BODY ── */
 .admin-wrap { max-width: 1360px; margin: 0 auto; padding: 40px 48px; }
 
+/* ── TABS ── */
+.admin-tabs { display:flex; gap:8px; margin-bottom:32px; border-bottom:1px solid var(--border); }
+.admin-tab {
+  background:transparent; border:none; border-bottom:2px solid transparent;
+  color:var(--muted); font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600;
+  letter-spacing:0.5px; padding:12px 18px; cursor:pointer; transition:all 0.2s; margin-bottom:-1px;
+}
+.admin-tab:hover { color:var(--ink); }
+.admin-tab.active { color:var(--gold); border-bottom-color:var(--gold); }
+.admin-view { display:none; }
+.admin-view.active { display:block; animation:fadeIn 0.3s; }
+
 /* ── PAGE HEADER ── */
 .page-header { margin-bottom: 36px; }
 .page-eyebrow {
@@ -295,6 +307,70 @@ body {
 .stat-card.amber .stat-value { color: var(--amber); }
 .stat-card.blue .stat-value { color: var(--blue); }
 .stat-sub { font-size: 11px; color: var(--muted2); font-weight: 400; }
+
+/* ── SECTION TITLE ── */
+.section-block { margin-bottom:40px; }
+.section-head {
+  font-family:'Playfair Display',serif; font-size:22px; font-weight:600; color:var(--ink);
+  margin-bottom:18px; display:flex; align-items:center; gap:10px;
+}
+.section-head em { font-style:italic; color:var(--gold); }
+.section-note { font-size:12px; color:var(--muted); font-weight:400; }
+
+/* ── FUNNEL ── */
+.funnel { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+.funnel-step {
+  background:var(--white); border:1px solid var(--border); border-radius:3px;
+  padding:24px 20px; box-shadow:var(--shadow); position:relative; text-align:center;
+}
+.funnel-step::after {
+  content:'→'; position:absolute; right:-12px; top:50%; transform:translateY(-50%);
+  color:var(--muted2); font-size:18px; z-index:2;
+}
+.funnel-step:last-child::after { display:none; }
+.funnel-num { font-family:'Playfair Display',serif; font-size:40px; font-weight:700; color:var(--ink); line-height:1; }
+.funnel-label { font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-top:8px; }
+.funnel-pct { font-size:11px; color:var(--gold); font-weight:600; margin-top:4px; }
+
+/* ── USAGE GRID ── */
+.usage-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; }
+.usage-card {
+  background:var(--white); border:1px solid var(--border); border-radius:3px;
+  padding:22px 18px; box-shadow:var(--shadow); text-align:center;
+}
+.usage-num { font-family:'Playfair Display',serif; font-size:32px; font-weight:700; color:var(--gold); line-height:1; }
+.usage-label { font-size:10px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-top:8px; }
+
+/* ── FEATURE BREAKDOWN ── */
+.feature-bars { background:var(--white); border:1px solid var(--border); border-radius:3px; padding:28px; box-shadow:var(--shadow); }
+.fbar-row { margin-bottom:16px; }
+.fbar-row:last-child { margin-bottom:0; }
+.fbar-head { display:flex; justify-content:space-between; font-size:13px; color:var(--ink2); margin-bottom:6px; }
+.fbar-head b { font-family:'Playfair Display',serif; color:var(--gold); }
+.fbar-track { background:var(--paper); height:10px; border-radius:6px; overflow:hidden; }
+.fbar-fill { height:100%; background:linear-gradient(90deg,var(--gold-dark,#9a7d24),var(--gold-light)); border-radius:6px; transition:width 0.8s; }
+
+/* ── ACTIVITY FEED ── */
+.activity-feed { background:var(--white); border:1px solid var(--border); border-radius:3px; box-shadow:var(--shadow); overflow:hidden; }
+.activity-row {
+  display:flex; align-items:center; gap:14px; padding:14px 24px; border-bottom:1px solid var(--border);
+}
+.activity-row:last-child { border-bottom:none; }
+.activity-icon {
+  width:34px; height:34px; border-radius:50%; flex-shrink:0; display:flex; align-items:center;
+  justify-content:center; font-size:15px; background:var(--gold-pale);
+}
+.activity-icon.signup { background:var(--blue-bg); }
+.activity-icon.login { background:var(--green-bg); }
+.activity-icon.onboarding_completed { background:var(--amber-bg); }
+.activity-icon.review_sync { background:var(--gold-pale); }
+.activity-icon.ai_request { background:#F5EEF8; }
+.activity-icon.feature_used { background:var(--paper); }
+.activity-body { flex:1; }
+.activity-main { font-size:13px; color:var(--ink); font-weight:500; }
+.activity-main b { color:var(--ink); }
+.activity-sub { font-size:11px; color:var(--muted); margin-top:2px; }
+.activity-time { font-size:11px; color:var(--muted2); white-space:nowrap; }
 
 /* ── TABLE SECTION ── */
 .table-section {
@@ -454,6 +530,7 @@ td.light { color: var(--muted); font-size: 12px; }
   text-transform: uppercase;
   color: var(--muted2);
 }
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
 
 /* ── DRAWER ── */
 .overlay {
@@ -464,7 +541,6 @@ td.light { color: var(--muted); font-size: 12px; }
   backdrop-filter: blur(3px);
   animation: fadeIn 0.2s;
 }
-@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
 .drawer {
   position: fixed; right: 0; top: 0; bottom: 0;
   width: 500px; max-width: 100vw;
@@ -549,16 +625,22 @@ td.light { color: var(--muted); font-size: 12px; }
 /* ── RESPONSIVE ── */
 @media(max-width:1024px){
   .stats-grid { grid-template-columns: repeat(3,1fr); }
+  .usage-grid { grid-template-columns: repeat(3,1fr); }
+  .funnel { grid-template-columns: repeat(2,1fr); }
+  .funnel-step:nth-child(2)::after { display:none; }
   .topnav,.admin-wrap { padding-left: 24px; padding-right: 24px; }
 }
 @media(max-width:768px){
   .stats-grid { grid-template-columns: repeat(2,1fr); }
+  .usage-grid { grid-template-columns: repeat(2,1fr); }
   .drawer { width: 100vw; }
   th:nth-child(4),td:nth-child(4),
   th:nth-child(5),td:nth-child(5) { display: none; }
 }
 @media(max-width:500px){
   .stats-grid { grid-template-columns: 1fr; }
+  .funnel { grid-template-columns: 1fr; }
+  .funnel-step::after { display:none; }
   .login-card { padding: 36px 28px; }
 }
 </style>
@@ -617,96 +699,160 @@ td.light { color: var(--muted); font-size: 12px; }
     <!-- PAGE HEADER -->
     <div class="page-header">
       <div class="page-eyebrow">Command Centre</div>
-      <div class="page-title">Client <em>Overview</em></div>
-      <div class="page-subtitle">All registered businesses and their current status.</div>
+      <div class="page-title">Business <em>Intelligence</em></div>
+      <div class="page-subtitle">Signups, engagement, conversion and live activity across your platform.</div>
     </div>
 
-    <!-- LOADING -->
-    <div class="loading-state" id="adminLoading">Loading client data...</div>
+    <!-- TABS -->
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="switchAdminView('overview',this)">📊 Overview</button>
+      <button class="admin-tab" onclick="switchAdminView('clients',this)">👥 Clients</button>
+      <button class="admin-tab" onclick="switchAdminView('activity',this)">⚡ Activity Log</button>
+    </div>
 
-    <div id="adminContent" style="display:none;">
+    <!-- ═══════ VIEW: OVERVIEW ═══════ -->
+    <div class="admin-view active" id="view-overview">
+      <div class="loading-state" id="analyticsLoading">Loading analytics...</div>
+      <div id="analyticsContent" style="display:none;">
 
-      <!-- STATS -->
-      <div class="stats-grid">
-        <div class="stat-card gold">
-          <div class="stat-label">Total Clients</div>
-          <div class="stat-value" id="sTotalClients">0</div>
-          <div class="stat-sub">Registered businesses</div>
+        <!-- CLIENT STATS -->
+        <div class="stats-grid">
+          <div class="stat-card gold">
+            <div class="stat-label">Total Clients</div>
+            <div class="stat-value" id="sTotalClients">0</div>
+            <div class="stat-sub">Registered businesses</div>
+          </div>
+          <div class="stat-card amber">
+            <div class="stat-label">On Trial</div>
+            <div class="stat-value" id="sTrialClients">0</div>
+            <div class="stat-sub">Free trial active</div>
+          </div>
+          <div class="stat-card green">
+            <div class="stat-label">Paid Active</div>
+            <div class="stat-value" id="sActiveClients">0</div>
+            <div class="stat-sub">Subscribed</div>
+          </div>
+          <div class="stat-card red">
+            <div class="stat-label">Trial Expired</div>
+            <div class="stat-value" id="sExpiredClients">0</div>
+            <div class="stat-sub">Need follow-up</div>
+          </div>
+          <div class="stat-card blue">
+            <div class="stat-label">New This Week</div>
+            <div class="stat-value" id="sNewClients">0</div>
+            <div class="stat-sub">Last 7 days</div>
+          </div>
         </div>
-        <div class="stat-card amber">
-          <div class="stat-label">On Trial</div>
-          <div class="stat-value" id="sTrialClients">0</div>
-          <div class="stat-sub">Free trial active</div>
+
+        <!-- CONVERSION FUNNEL -->
+        <div class="section-block">
+          <div class="section-head">Conversion <em>Funnel</em> <span class="section-note">— how signups progress</span></div>
+          <div class="funnel">
+            <div class="funnel-step">
+              <div class="funnel-num" id="fSignup">0</div>
+              <div class="funnel-label">Signed Up</div>
+              <div class="funnel-pct">100%</div>
+            </div>
+            <div class="funnel-step">
+              <div class="funnel-num" id="fOnboard">0</div>
+              <div class="funnel-label">Onboarded</div>
+              <div class="funnel-pct" id="fOnboardPct">—</div>
+            </div>
+            <div class="funnel-step">
+              <div class="funnel-num" id="fActive">0</div>
+              <div class="funnel-label">Active (30d)</div>
+              <div class="funnel-pct" id="fActivePct">—</div>
+            </div>
+            <div class="funnel-step">
+              <div class="funnel-num" id="fPaid">0</div>
+              <div class="funnel-label">Paid</div>
+              <div class="funnel-pct" id="fPaidPct">—</div>
+            </div>
+          </div>
         </div>
-        <div class="stat-card green">
-          <div class="stat-label">Paid Active</div>
-          <div class="stat-value" id="sActiveClients">0</div>
-          <div class="stat-sub">Subscribed</div>
+
+        <!-- USAGE (30 DAYS) -->
+        <div class="section-block">
+          <div class="section-head">Usage <em>Activity</em> <span class="section-note">— last 30 days</span></div>
+          <div class="usage-grid">
+            <div class="usage-card"><div class="usage-num" id="uLogins">0</div><div class="usage-label">Logins</div></div>
+            <div class="usage-card"><div class="usage-num" id="uAI">0</div><div class="usage-label">AI Requests</div></div>
+            <div class="usage-card"><div class="usage-num" id="uReviews">0</div><div class="usage-label">Review Syncs</div></div>
+            <div class="usage-card"><div class="usage-num" id="uOnboard">0</div><div class="usage-label">Onboardings</div></div>
+            <div class="usage-card"><div class="usage-num" id="uFeatures">0</div><div class="usage-label">Features Used</div></div>
+          </div>
         </div>
-        <div class="stat-card red">
-          <div class="stat-label">Trial Expired</div>
-          <div class="stat-value" id="sExpiredClients">0</div>
-          <div class="stat-sub">Need follow-up</div>
+
+        <!-- FEATURE BREAKDOWN -->
+        <div class="section-block">
+          <div class="section-head">Feature <em>Breakdown</em> <span class="section-note">— what people actually use</span></div>
+          <div class="feature-bars" id="featureBars">
+            <div style="text-align:center;color:var(--muted);font-size:13px;padding:20px;">No feature usage recorded yet.</div>
+          </div>
         </div>
-        <div class="stat-card blue">
-          <div class="stat-label">New This Week</div>
-          <div class="stat-value" id="sNewClients">0</div>
-          <div class="stat-sub">Last 7 days</div>
+
+      </div>
+    </div>
+
+    <!-- ═══════ VIEW: CLIENTS ═══════ -->
+    <div class="admin-view" id="view-clients">
+      <div class="loading-state" id="adminLoading">Loading client data...</div>
+      <div id="adminContent" style="display:none;">
+        <div class="table-section">
+          <div class="table-header">
+            <div class="table-title">All Clients <span id="clientCountLabel"></span></div>
+            <div class="filter-row">
+              <input type="text" class="filter-input" id="searchInput"
+                placeholder="Search name, business, city, phone…" oninput="filterClients()">
+              <select class="filter-select" id="planFilter" onchange="filterClients()">
+                <option value="">All Plans</option>
+                <option value="trial">Trial</option>
+                <option value="active">Active</option>
+                <option value="expired">Expired</option>
+              </select>
+              <select class="filter-select" id="catFilter" onchange="filterClients()">
+                <option value="">All Categories</option>
+                <option value="restaurant">Restaurant</option>
+                <option value="clinic">Clinic</option>
+                <option value="salon">Salon</option>
+                <option value="coaching">Coaching</option>
+                <option value="real estate">Real Estate</option>
+              </select>
+              <button class="btn-refresh" onclick="loadClients()">↻ Refresh</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th><th>Business</th><th>Owner</th><th>City</th>
+                  <th>Category</th><th>Phone</th><th>Status</th><th>Trial Ends</th><th>Joined</th>
+                </tr>
+              </thead>
+              <tbody id="clientsTableBody">
+                <tr><td colspan="9"><div class="loading-state">Loading…</div></td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
+    </div>
 
-      <!-- TABLE SECTION -->
+    <!-- ═══════ VIEW: ACTIVITY LOG ═══════ -->
+    <div class="admin-view" id="view-activity">
       <div class="table-section">
         <div class="table-header">
-          <div class="table-title">
-            All Clients
-            <span id="clientCountLabel"></span>
-          </div>
+          <div class="table-title">Live Activity <span id="activityCountLabel"></span></div>
           <div class="filter-row">
-            <input type="text" class="filter-input" id="searchInput"
-              placeholder="Search name, business, city, phone…"
-              oninput="filterClients()">
-            <select class="filter-select" id="planFilter" onchange="filterClients()">
-              <option value="">All Plans</option>
-              <option value="trial">Trial</option>
-              <option value="active">Active</option>
-              <option value="expired">Expired</option>
-            </select>
-            <select class="filter-select" id="catFilter" onchange="filterClients()">
-              <option value="">All Categories</option>
-              <option value="restaurant">Restaurant</option>
-              <option value="clinic">Clinic</option>
-              <option value="salon">Salon</option>
-              <option value="coaching">Coaching</option>
-              <option value="real estate">Real Estate</option>
-            </select>
-            <button class="btn-refresh" onclick="loadClients()">↻ Refresh</button>
+            <button class="btn-refresh" onclick="loadActivity()">↻ Refresh</button>
           </div>
         </div>
-
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Business</th>
-                <th>Owner</th>
-                <th>City</th>
-                <th>Category</th>
-                <th>Phone</th>
-                <th>Status</th>
-                <th>Trial Ends</th>
-                <th>Joined</th>
-              </tr>
-            </thead>
-            <tbody id="clientsTableBody">
-              <tr><td colspan="9"><div class="loading-state">Loading…</div></td></tr>
-            </tbody>
-          </table>
+        <div id="activityFeed">
+          <div class="loading-state">Loading activity…</div>
         </div>
       </div>
+    </div>
 
-    </div><!-- /adminContent -->
   </div><!-- /admin-wrap -->
 </div><!-- /adminPanel -->
 
@@ -730,6 +876,9 @@ const BACKEND = 'https://repute-india.onrender.com';
 const ADMIN_PASSWORD = 'RI@Admin2024'; // ← Change this to your password
 
 let allClients = [];
+let clientsLoaded = false;
+let analyticsLoaded = false;
+let activityLoaded = false;
 
 // ── AUTH ────────────────────────────────────
 function doLogin() {
@@ -739,7 +888,7 @@ function doLogin() {
     sessionStorage.setItem('ri_admin', '1');
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('adminPanel').style.display = 'block';
-    loadClients();
+    initAdmin();
   } else {
     err.style.display = 'block';
     document.getElementById('adminPass').value = '';
@@ -754,11 +903,74 @@ window.addEventListener('load', () => {
   if (sessionStorage.getItem('ri_admin') === '1') {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('adminPanel').style.display = 'block';
-    loadClients();
+    initAdmin();
   }
 });
 
-// ── LOAD DATA ───────────────────────────────
+function initAdmin() {
+  loadAnalytics();   // overview is the default tab
+  loadClients();     // also load clients (used by overview stat cards + clients tab)
+}
+
+// ── TAB SWITCHING ───────────────────────────
+function switchAdminView(view, btn) {
+  document.querySelectorAll('.admin-view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('view-' + view).classList.add('active');
+  btn.classList.add('active');
+  if (view === 'activity' && !activityLoaded) loadActivity();
+}
+
+// ── ANALYTICS (OVERVIEW) ────────────────────
+async function loadAnalytics() {
+  try {
+    const res = await fetch(`${BACKEND}/api/admin/analytics`);
+    const data = await res.json();
+    if (!data.success) throw new Error(data.error);
+
+    // Funnel
+    const f = data.funnel;
+    document.getElementById('fSignup').textContent  = f.signed_up;
+    document.getElementById('fOnboard').textContent = f.onboarded;
+    document.getElementById('fActive').textContent  = f.active_30d;
+    document.getElementById('fPaid').textContent    = f.paid;
+    const pct = (n) => f.signed_up > 0 ? Math.round(n / f.signed_up * 100) + '%' : '—';
+    document.getElementById('fOnboardPct').textContent = pct(f.onboarded);
+    document.getElementById('fActivePct').textContent  = pct(f.active_30d);
+    document.getElementById('fPaidPct').textContent    = pct(f.paid);
+
+    // Usage
+    const u = data.usage_30d;
+    document.getElementById('uLogins').textContent   = u.logins;
+    document.getElementById('uAI').textContent       = u.ai_requests;
+    document.getElementById('uReviews').textContent  = u.review_syncs;
+    document.getElementById('uOnboard').textContent  = u.onboardings;
+    document.getElementById('uFeatures').textContent = u.features;
+
+    // Feature breakdown
+    const fb = data.feature_breakdown || {};
+    const entries = Object.entries(fb).sort((a,b) => b[1] - a[1]);
+    const bars = document.getElementById('featureBars');
+    if (entries.length === 0) {
+      bars.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:13px;padding:20px;">No feature usage recorded yet. It will appear as clients use the platform.</div>';
+    } else {
+      const max = Math.max(...entries.map(e => e[1]));
+      bars.innerHTML = entries.map(([name, count]) => `
+        <div class="fbar-row">
+          <div class="fbar-head"><span>${name}</span><b>${count}</b></div>
+          <div class="fbar-track"><div class="fbar-fill" style="width:${Math.round(count/max*100)}%"></div></div>
+        </div>`).join('');
+    }
+
+    document.getElementById('analyticsLoading').style.display = 'none';
+    document.getElementById('analyticsContent').style.display = 'block';
+    analyticsLoaded = true;
+  } catch(e) {
+    document.getElementById('analyticsLoading').textContent = '❌ Could not load analytics. ' + (e.message || '');
+  }
+}
+
+// ── LOAD CLIENTS ────────────────────────────
 async function loadClients() {
   document.getElementById('adminLoading').style.display = 'block';
   document.getElementById('adminContent').style.display = 'none';
@@ -771,6 +983,7 @@ async function loadClients() {
     renderTable(allClients);
     document.getElementById('adminLoading').style.display = 'none';
     document.getElementById('adminContent').style.display = 'block';
+    clientsLoaded = true;
   } catch(e) {
     document.getElementById('adminLoading').textContent = '❌ Failed to load. Check connection.';
   }
@@ -828,7 +1041,6 @@ function renderTable(clients) {
     const trialEnd = c.trial_ends_at ? new Date(c.trial_ends_at) : null;
     const isActive  = c.subscription_active === true;
     const isExpired = trialEnd && trialEnd < now && !isActive;
-    const isTrial   = !isActive && trialEnd && trialEnd > now;
     const statusBadge = isActive
       ? `<span class="badge active"><span class="badge-dot"></span>Active</span>`
       : isExpired
@@ -850,6 +1062,60 @@ function renderTable(clients) {
       <td class="light">${regStr}</td>
     </tr>`;
   }).join('');
+}
+
+// ── ACTIVITY LOG ─────────────────────────────
+const EVENT_META = {
+  signup:               { icon:'🆕', label:'New signup' },
+  login:                { icon:'🔑', label:'Logged in' },
+  onboarding_completed: { icon:'✅', label:'Completed onboarding' },
+  review_sync:          { icon:'⭐', label:'Synced reviews' },
+  ai_request:           { icon:'✨', label:'Used AI Assistant' },
+  feature_used:         { icon:'⚙️', label:'Used a feature' }
+};
+
+async function loadActivity() {
+  const feed = document.getElementById('activityFeed');
+  feed.innerHTML = '<div class="loading-state">Loading activity…</div>';
+  try {
+    const res = await fetch(`${BACKEND}/api/admin/logs?limit=150`);
+    const data = await res.json();
+    if (!data.success) throw new Error(data.error);
+    const logs = data.logs || [];
+    document.getElementById('activityCountLabel').textContent = `(${logs.length})`;
+    if (!logs.length) {
+      feed.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-heading">No activity yet</div><p class="empty-text">Events will appear here as clients use the platform.</p></div>`;
+      activityLoaded = true;
+      return;
+    }
+    feed.innerHTML = logs.map(l => {
+      const meta = EVENT_META[l.event_type] || { icon:'•', label:l.event_type };
+      const who = l.business_name ? `<b>${l.business_name}</b>` : 'A business';
+      const detail = l.detail ? ` · ${l.detail}` : '';
+      return `<div class="activity-row">
+        <div class="activity-icon ${l.event_type}">${meta.icon}</div>
+        <div class="activity-body">
+          <div class="activity-main">${who} — ${meta.label}</div>
+          <div class="activity-sub">${l.detail || ''}</div>
+        </div>
+        <div class="activity-time">${timeAgo(l.created_at)}</div>
+      </div>`;
+    }).join('');
+    activityLoaded = true;
+  } catch(e) {
+    feed.innerHTML = '<div class="loading-state">❌ Could not load activity.</div>';
+  }
+}
+
+function timeAgo(ts) {
+  if (!ts) return '';
+  const d = new Date(ts), now = new Date();
+  const s = Math.floor((now - d) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return Math.floor(s/60) + 'm ago';
+  if (s < 86400) return Math.floor(s/3600) + 'h ago';
+  if (s < 604800) return Math.floor(s/86400) + 'd ago';
+  return d.toLocaleDateString('en-IN',{day:'numeric',month:'short'});
 }
 
 // ── DRAWER ───────────────────────────────────
