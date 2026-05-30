@@ -494,7 +494,7 @@ async function sendOtpEmail(toEmail, businessName, otp) {
     const response = await axios.post(
       "https://api.resend.com/emails",
       {
-        from: "ReputeIndia <onboarding@resend.dev>",
+        from: "ReputeIndia <noreply@reputeindiaai.com>",
         to: [toEmail],
         subject: `${otp} is your ReputeIndia login OTP`,
         html: `
