@@ -43,6 +43,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:20px 6
 .resend-link span{color:var(--gold);cursor:pointer;}
 .resend-link span:hover{text-decoration:underline;}
 .timer{color:var(--grey2);}
+.email-hint{background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);padding:10px 14px;font-size:10px;color:var(--grey);margin-bottom:20px;line-height:1.6;}
+.email-hint strong{color:var(--gold);}
 @media(max-width:600px){nav{padding:16px 20px;}.login-box{padding:36px 24px;}}
 </style>
 </head>
@@ -65,12 +67,12 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:20px 6
 
     <!-- Step 1: Phone Number -->
     <div class="step active" id="step1">
-      <p class="sub">Enter your registered WhatsApp number. We'll send you a one-time password to verify.</p>
+      <p class="sub">Enter your registered phone number. We'll send a one-time password to your registered email address.</p>
       <div class="form-group">
-        <label class="form-label">Registered WhatsApp Number</label>
+        <label class="form-label">Registered Phone Number</label>
         <input type="tel" class="form-input" id="loginPhone" placeholder="Enter your 10-digit number" maxlength="10">
       </div>
-      <button class="btn" id="sendOtpBtn" onclick="sendOtp()">Send OTP via WhatsApp →</button>
+      <button class="btn" id="sendOtpBtn" onclick="sendOtp()">Send OTP via Email →</button>
       <p class="form-note">
         New to ReputeIndia? <a href="register.html" class="reg-link">Start free trial</a>
       </p>
@@ -78,7 +80,11 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:20px 6
 
     <!-- Step 2: OTP Verification -->
     <div class="step" id="step2">
-      <p class="sub">A 6-digit OTP has been sent to your WhatsApp number <strong id="maskedPhone"></strong>. Enter it below.</p>
+      <p class="sub">A 6-digit OTP has been sent to your registered email address.</p>
+      <div class="email-hint" id="emailHint">
+        📧 OTP sent to: <strong id="maskedEmail"></strong><br>
+        Check your inbox and spam folder.
+      </div>
       <div class="form-group">
         <label class="form-label">Enter OTP</label>
         <input type="number" class="form-input otp-input" id="otpInput" placeholder="------" maxlength="6">
@@ -120,12 +126,19 @@ function showSuccess(msg) {
   s.style.display = 'block';
 }
 
+function maskEmail(email) {
+  if (!email) return '***@***.com';
+  const [user, domain] = email.split('@');
+  const masked = user.substring(0, 2) + '***' + user.slice(-1);
+  return masked + '@' + domain;
+}
+
 async function sendOtp() {
   const btn = document.getElementById('sendOtpBtn');
   const phone = document.getElementById('loginPhone').value.trim().replace(/\D/g,'');
 
   if (phone.length < 10) {
-    showError('Please enter a valid 10-digit WhatsApp number.');
+    showError('Please enter a valid 10-digit phone number.');
     return;
   }
 
@@ -143,7 +156,8 @@ async function sendOtp() {
 
     if (data.success) {
       currentPhone = phone;
-      document.getElementById('maskedPhone') .textContent = phone.substring(0,2) + 'XXXXXX' + phone.slice(-2);
+      // Show masked email
+      document.getElementById('maskedEmail').textContent = maskEmail(data.email_hint || '');
       document.getElementById('step1').classList.remove('active');
       document.getElementById('step2').classList.add('active');
       document.getElementById('errorMsg').style.display = 'none';
@@ -152,12 +166,12 @@ async function sendOtp() {
     } else {
       showError(data.error || 'Failed to send OTP. Please try again.');
       btn.disabled = false;
-      btn.textContent = 'Send OTP via WhatsApp →';
+      btn.textContent = 'Send OTP via Email →';
     }
   } catch(e) {
     showError('Connection error. Please try again.');
     btn.disabled = false;
-    btn.textContent = 'Send OTP via WhatsApp →';
+    btn.textContent = 'Send OTP via Email →';
   }
 }
 
@@ -215,7 +229,7 @@ async function resendOtp() {
     });
     const data = await res.json();
     if (data.success) {
-      showSuccess('New OTP sent to your WhatsApp!');
+      showSuccess('New OTP sent to your email!');
       startResendTimer(30);
     } else {
       showError(data.error || 'Failed to resend. Try again.');
@@ -250,7 +264,7 @@ function backToStep1() {
   document.getElementById('step2').classList.remove('active');
   document.getElementById('step1').classList.add('active');
   document.getElementById('sendOtpBtn').disabled = false;
-  document.getElementById('sendOtpBtn').textContent = 'Send OTP via WhatsApp →';
+  document.getElementById('sendOtpBtn').textContent = 'Send OTP via Email →';
   document.getElementById('errorMsg').style.display = 'none';
   document.getElementById('successMsg').style.display = 'none';
   document.getElementById('otpInput').value = '';
