@@ -466,7 +466,7 @@ app.post("/api/government-schemes", async (req, res) => {
 // ============================================================
 app.post("/api/generate-marketing", async (req, res) => {
   try {
-    const { platform, theme, tone, language, details, business_name, business_category, business_city } = req.body;
+    const { platform, theme, tone, language, details, business_name, business_category, business_city, products_services, target_customers } = req.body;
     if (!platform || !theme) return res.status(400).json({ success: false, error: "Platform and theme required" });
 
     const platformGuides = {
@@ -478,7 +478,10 @@ app.post("/api/generate-marketing", async (req, res) => {
       blog: "Blog article with: SEO-friendly title, Introduction 150 words, 3-4 main sections with subheadings, practical tips or insights, Conclusion with CTA, Total 600-800 words, conversational yet informative tone"
     };
 
-    const prompt = `Write a ${platform} marketing content piece for an Indian business.\n\nBusiness: ${business_name || "Indian Business"}\nCategory: ${business_category || "Business"}\nCity: ${business_city || "India"}\nCampaign Theme/Occasion: ${theme}\nTone: ${tone}\nLanguage: ${language}\nAdditional Details: ${details || "None"}\n\nFormat Requirements:\n${platformGuides[platform] || "Create engaging marketing content"}\n\nInstructions:\n- Adapt content specifically for Indian audience and culture\n- Use culturally relevant references if applicable (festivals, seasons, etc.)\n- For Hinglish: mix Hindi words naturally with English\n- For Gujarati: write in Gujarati script\n- Make it feel authentic, not generic\n- Output ONLY the final content, no explanations or labels before it`;
+    const productContext = products_services ? `\nProducts/Services they sell: ${products_services}` : "";
+    const customerContext = target_customers ? `\nTheir target customers: ${target_customers}` : "";
+
+    const prompt = `Write a ${platform} marketing content piece for an Indian business.\n\nBusiness: ${business_name || "Indian Business"}\nCategory: ${business_category || "Business"}\nCity: ${business_city || "India"}${productContext}${customerContext}\nCampaign Theme/Occasion: ${theme}\nTone: ${tone}\nLanguage: ${language}\nAdditional Details: ${details || "None"}\n\nFormat Requirements:\n${platformGuides[platform] || "Create engaging marketing content"}\n\nInstructions:\n- Adapt content specifically for THIS business — reference their actual products/services and speak to their target customers\n- Adapt content specifically for Indian audience and culture\n- Use culturally relevant references if applicable (festivals, seasons, etc.)\n- For Hinglish: mix Hindi words naturally with English\n- For Gujarati: write in Gujarati script\n- Make it feel authentic, not generic\n- Output ONLY the final content, no explanations or labels before it`;
 
     const response = await axios.post("https://api.anthropic.com/v1/messages", { model: "claude-sonnet-4-6", max_tokens: 1200, messages: [{ role: "user", content: prompt }] }, { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } });
     res.json({ success: true, content: response.data.content[0].text.trim(), platform, theme });
