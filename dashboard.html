@@ -307,6 +307,56 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
 /* LOADING */
 .loading{text-align:center;padding:60px;color:var(--ink3);font-size:13px;}
 
+/* ============================================================
+   DAILY BRIEFING FEED
+   ============================================================ */
+.feed-hero{background:linear-gradient(135deg,var(--ink),#2D2926);border-radius:10px;padding:32px 36px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;}
+.feed-hero::before{content:'';position:absolute;top:-50px;right:120px;width:180px;height:180px;border-radius:50%;background:rgba(184,149,42,0.08);}
+.feed-hero-greeting{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--white);line-height:1.1;margin-bottom:4px;}
+.feed-hero-date{font-size:12px;color:rgba(255,255,255,0.45);letter-spacing:0.5px;}
+.feed-hero-score{text-align:center;position:relative;z-index:1;}
+.feed-hero-score-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:4px;}
+.feed-hero-score-num{font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:var(--gold-light);line-height:1;}
+.feed-hero-score-trend{font-size:10px;color:var(--green);margin-top:2px;}
+
+.feed-intro{background:linear-gradient(135deg,#FFFDF5,#FFF9E6);border:1px solid #E8D88A;border-radius:8px;padding:16px 20px;margin-bottom:24px;display:flex;align-items:flex-start;gap:12px;font-size:13px;color:var(--ink2);line-height:1.7;}
+.feed-intro-icon{font-size:18px;flex-shrink:0;}
+
+.feed-loading{text-align:center;padding:60px 20px;}
+.feed-spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;margin:0 auto 18px;animation:feedspin 0.8s linear infinite;}
+@keyframes feedspin{to{transform:rotate(360deg);}}
+.feed-loading-text{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:6px;}
+.feed-loading-sub{font-size:12px;color:var(--ink3);max-width:420px;margin:0 auto;line-height:1.6;}
+
+.feed-cards{display:flex;flex-direction:column;gap:14px;}
+.feed-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:22px 24px;box-shadow:var(--shadow);transition:all 0.2s;display:flex;gap:18px;align-items:flex-start;position:relative;overflow:hidden;}
+.feed-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-1px);}
+.feed-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;}
+.feed-card.urgent::before{background:var(--red);}
+.feed-card.opportunity::before{background:var(--green);}
+.feed-card.scheme::before{background:var(--blue);}
+.feed-card.marketing::before{background:var(--gold);}
+.feed-card.tip::before{background:var(--ink3);}
+.feed-card-icon{width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.feed-card.urgent .feed-card-icon{background:var(--red-bg);}
+.feed-card.opportunity .feed-card-icon{background:var(--green-bg);}
+.feed-card.scheme .feed-card-icon{background:var(--blue-bg);}
+.feed-card.marketing .feed-card-icon{background:var(--gold-pale);}
+.feed-card.tip .feed-card-icon{background:var(--paper);}
+.feed-card-body{flex:1;}
+.feed-card-tag{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
+.feed-card.urgent .feed-card-tag{color:var(--red);}
+.feed-card.opportunity .feed-card-tag{color:var(--green);}
+.feed-card.scheme .feed-card-tag{color:var(--blue);}
+.feed-card.marketing .feed-card-tag{color:var(--gold-dark);}
+.feed-card.tip .feed-card-tag{color:var(--ink3);}
+.feed-card-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:6px;line-height:1.3;}
+.feed-card-text{font-size:13px;color:var(--ink3);line-height:1.7;margin-bottom:12px;}
+.feed-card-action{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:0.5px;padding:8px 16px;border-radius:6px;border:none;cursor:pointer;transition:all 0.2s;background:var(--ink);color:var(--white);}
+.feed-card-action:hover{background:var(--gold);}
+.feed-refresh-row{display:flex;align-items:center;gap:16px;margin-top:24px;padding-top:20px;border-top:1px solid var(--border);}
+.feed-updated{font-size:11px;color:var(--ink3);}
+
 @media(max-width:900px){
   .topnav,.dash-wrap{padding:12px 16px;}
   .nav-center{display:none;}
@@ -335,7 +385,8 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
   </a>
 
   <div class="nav-center">
-    <button class="nav-tab active" onclick="switchTab('reputation',this)"><span class="tab-icon">⭐</span>Reputation</button>
+    <button class="nav-tab active" onclick="switchTab('feed',this)"><span class="tab-icon">🌅</span>Daily Briefing</button>
+    <button class="nav-tab" onclick="switchTab('reputation',this)"><span class="tab-icon">⭐</span>Reputation</button>
     <button class="nav-tab" onclick="switchTab('ai-assistant',this)"><span class="tab-icon">✨</span>AI Assistant</button>
     <button class="nav-tab" onclick="switchTab('documents',this)"><span class="tab-icon">📄</span>Documents</button>
     <button class="nav-tab" onclick="switchTab('schemes',this)"><span class="tab-icon">🏛️</span>Gov Schemes</button>
@@ -354,9 +405,44 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
   <div id="dashContent" style="display:none;">
 
     <!-- ======================================================
+         TAB 0: DAILY BRIEFING (HOME)
+         ====================================================== -->
+    <div class="tab-panel active" id="tab-feed">
+      <div class="feed-hero">
+        <div>
+          <div class="feed-hero-greeting" id="feedGreeting">Good morning</div>
+          <div class="feed-hero-date" id="feedDate"></div>
+        </div>
+        <div class="feed-hero-score">
+          <div class="feed-hero-score-label">Repute Score</div>
+          <div class="feed-hero-score-num" id="feedScore">—</div>
+          <div class="feed-hero-score-trend" id="feedScoreTrend"></div>
+        </div>
+      </div>
+
+      <div class="feed-intro" id="feedIntro">
+        <span class="feed-intro-icon">🤖</span>
+        <span id="feedIntroText">Generating your personalised briefing for today...</span>
+      </div>
+
+      <div class="feed-loading" id="feedLoading">
+        <div class="feed-spinner"></div>
+        <div class="feed-loading-text">Arya is preparing your daily intelligence briefing...</div>
+        <div class="feed-loading-sub">Scanning compliance deadlines, government schemes, market opportunities &amp; upcoming campaigns for your business</div>
+      </div>
+
+      <div class="feed-cards" id="feedCards"></div>
+
+      <div class="feed-refresh-row" id="feedRefreshRow" style="display:none;">
+        <button class="btn-ghost" onclick="loadFeed(true)">↻ Refresh Briefing</button>
+        <span class="feed-updated" id="feedUpdated"></span>
+      </div>
+    </div>
+
+    <!-- ======================================================
          TAB 1: REPUTATION
          ====================================================== -->
-    <div class="tab-panel active" id="tab-reputation">
+    <div class="tab-panel" id="tab-reputation">
       <div class="page-header">
         <div class="page-title" id="welcomeTitle">Reputation Dashboard</div>
         <div class="page-subtitle">Your real-time reputation overview — powered by AI</div>
@@ -833,6 +919,7 @@ async function loadDashboard() {
       await loadCompetitors(bizId);
       document.getElementById('loadingState').style.display = 'none';
       document.getElementById('dashContent').style.display = 'block';
+      loadFeed(); // Load the daily briefing
     }
   } catch(e) {
     document.getElementById('loadingState').textContent = 'Error loading dashboard. Please refresh.';
@@ -920,6 +1007,133 @@ function guessStateFromCity(city) {
     if (c.includes(k)) return v;
   }
   return '';
+}
+
+// ============================================================
+// DAILY BRIEFING FEED
+// ============================================================
+let feedLoaded = false;
+
+async function loadFeed(forceRefresh = false) {
+  // Set greeting + date + score in hero
+  const hour = new Date().getHours();
+  const greet = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+  const firstName = (currentBizData?.owner_name || '').split(' ')[0] || '';
+  document.getElementById('feedGreeting').textContent = firstName ? `${greet}, ${firstName}` : greet;
+  document.getElementById('feedDate').textContent = new Date().toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  if (currentProfile?.repute_score != null) {
+    document.getElementById('feedScore').textContent = currentProfile.repute_score;
+  }
+
+  // Cache: only generate once per day unless forced
+  const today = new Date().toISOString().split('T')[0];
+  const cacheKey = `ri_feed_${currentBizId}_${today}`;
+  if (!forceRefresh) {
+    const cached = sessionStorage.getItem(cacheKey);
+    if (cached) {
+      try { renderFeed(JSON.parse(cached)); return; } catch(e) {}
+    }
+  }
+
+  document.getElementById('feedLoading').style.display = 'block';
+  document.getElementById('feedCards').innerHTML = '';
+  document.getElementById('feedRefreshRow').style.display = 'none';
+  document.getElementById('feedIntro').style.display = 'none';
+
+  try {
+    const res = await fetch(`${BACKEND}/api/daily-briefing`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        business_id: currentBizId,
+        business_name: currentBizData?.business_name || localStorage.getItem('ri_business_name'),
+        business_category: currentBizData?.category || '',
+        business_city: currentBizData?.city || '',
+        profile: currentProfile || {},
+        avg_rating: parseFloat(document.getElementById('statRating').textContent) || 0,
+        total_reviews: parseInt(document.getElementById('statTotal').textContent) || 0,
+        unreplied: parseInt(document.getElementById('statUnreplied').textContent) || 0,
+        date: new Date().toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' })
+      })
+    });
+    const data = await res.json();
+    document.getElementById('feedLoading').style.display = 'none';
+
+    if (data.success && data.briefing) {
+      sessionStorage.setItem(cacheKey, JSON.stringify(data.briefing));
+      renderFeed(data.briefing);
+    } else {
+      showFeedError();
+    }
+  } catch(e) {
+    document.getElementById('feedLoading').style.display = 'none';
+    showFeedError();
+  }
+}
+
+function renderFeed(briefing) {
+  // Intro line
+  if (briefing.intro) {
+    document.getElementById('feedIntroText').textContent = briefing.intro;
+    document.getElementById('feedIntro').style.display = 'flex';
+  }
+
+  const typeIcons = {
+    urgent: '⚠️', opportunity: '📈', scheme: '🏛️', marketing: '📢', tip: '💡', reputation: '⭐'
+  };
+  const typeTags = {
+    urgent: 'Action Needed', opportunity: 'Opportunity', scheme: 'Govt Scheme',
+    marketing: 'Marketing', tip: 'Smart Tip', reputation: 'Reputation'
+  };
+
+  const cards = (briefing.cards || []).map(card => {
+    const type = ['urgent','opportunity','scheme','marketing','tip','reputation'].includes(card.type) ? card.type : 'tip';
+    const cardType = type === 'reputation' ? 'opportunity' : type; // reuse styling
+    const actionBtn = card.action_label
+      ? `<button class="feed-card-action" onclick="handleFeedAction('${card.action_target || ''}', this)">${card.action_label} →</button>`
+      : '';
+    return `
+      <div class="feed-card ${cardType}">
+        <div class="feed-card-icon">${typeIcons[type] || '💡'}</div>
+        <div class="feed-card-body">
+          <div class="feed-card-tag">${typeTags[type] || 'Update'}</div>
+          <div class="feed-card-title">${card.title}</div>
+          <div class="feed-card-text">${card.text}</div>
+          ${actionBtn}
+        </div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('feedCards').innerHTML = cards;
+  document.getElementById('feedRefreshRow').style.display = 'flex';
+  document.getElementById('feedUpdated').textContent = 'Updated ' + new Date().toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit'});
+  feedLoaded = true;
+}
+
+function handleFeedAction(target, btn) {
+  const tabMap = {
+    'schemes': 3, 'ai-assistant': 1, 'documents': 2, 'marketing': 4, 'reputation': 0
+  };
+  if (target && document.getElementById('tab-' + target)) {
+    const navButtons = document.querySelectorAll('.nav-tab');
+    // feed=0, reputation=1, ai-assistant=2, documents=3, schemes=4, marketing=5
+    const navIndex = {'reputation':1,'ai-assistant':2,'documents':3,'schemes':4,'marketing':5}[target];
+    if (navIndex != null) switchTab(target, navButtons[navIndex]);
+  }
+}
+
+function showFeedError() {
+  document.getElementById('feedCards').innerHTML = `
+    <div class="feed-card tip">
+      <div class="feed-card-icon">💡</div>
+      <div class="feed-card-body">
+        <div class="feed-card-tag">Welcome</div>
+        <div class="feed-card-title">Your briefing will appear here</div>
+        <div class="feed-card-text">We're setting up your personalised daily intelligence. Refresh in a moment, or explore your modules using the tabs above.</div>
+        <button class="feed-card-action" onclick="loadFeed(true)">Try Again →</button>
+      </div>
+    </div>`;
+  document.getElementById('feedRefreshRow').style.display = 'flex';
 }
 
 // ============================================================
@@ -1157,7 +1371,7 @@ function handleAiKey(e) {
 
 function sendPrompt(text) {
   document.getElementById('aiInput').value = text;
-  switchTab('ai-assistant', document.querySelector('.nav-tab:nth-child(2)'));
+  switchTab('ai-assistant', document.querySelector('.nav-tab:nth-child(3)'));
   sendAiMessage();
 }
 
