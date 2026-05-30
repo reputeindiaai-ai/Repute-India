@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — ReputeIndia</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FAFAF7;
+  --paper:#F5F2EC;
+  --white:#FFFFFF;
+  --ink:#1A1612;
+  --ink2:#2D2926;
+  --ink3:#4A4540;
+  --gold:#B8952A;
+  --gold-light:#D4AF50;
+  --gold-dark:#8B6E1A;
+  --border:#E8E2D8;
+  --border2:#D4CCB8;
+  --green:#2E7D32;
+  --green-bg:#E8F5E9;
+  --red:#C62828;
+  --red-bg:#FFEBEE;
+  --yellow:#F57F17;
+  --yellow-bg:#FFFDE7;
+  --shadow:0 2px 12px rgba(26,22,18,0.08);
+  --shadow-lg:0 8px 32px rgba(26,22,18,0.12);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;min-height:100vh;}
+
+/* NAV */
+.topnav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px;background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:var(--shadow);}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo-text{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--ink);letter-spacing:1px;}
+.nav-logo-text span{color:var(--gold);}
+.biz-pill{background:var(--paper);border:1px solid var(--border);padding:5px 14px;font-size:11px;color:var(--ink3);letter-spacing:0.5px;border-radius:20px;}
+.btn-logout{background:transparent;border:1px solid var(--border2);color:var(--ink3);font-size:11px;font-weight:500;padding:7px 18px;cursor:pointer;border-radius:4px;transition:all 0.2s;}
+.btn-logout:hover{border-color:var(--gold);color:var(--gold);}
+
+/* LAYOUT */
+.dash-wrap{max-width:1200px;margin:0 auto;padding:36px 48px;}
+
+/* PAGE HEADER */
+.page-header{margin-bottom:32px;}
+.page-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.page-subtitle{font-size:13px;color:var(--ink3);}
+
+/* TRIAL BANNER */
+.trial-banner{background:linear-gradient(135deg,var(--ink),var(--ink2));border-radius:8px;padding:20px 28px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;}
+.trial-text{font-size:13px;color:rgba(255,255,255,0.8);}
+.trial-text strong{color:var(--gold-light);}
+.trial-days{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--gold-light);}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;}
+.stat-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:24px;box-shadow:var(--shadow);}
+.stat-label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;}
+.stat-value{font-family:'Playfair Display',serif;font-size:40px;font-weight:700;color:var(--ink);line-height:1;}
+.stat-value.gold{color:var(--gold);}
+.stat-value.green{color:var(--green);}
+.stat-value.red{color:var(--red);}
+.stat-sub{font-size:11px;color:var(--ink3);margin-top:6px;}
+
+/* SECTION */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.section-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink);}
+.section-title span{color:var(--gold);}
+.section-divider{height:1px;background:var(--border);margin-bottom:24px;}
+
+/* SYNC BANNER */
+.sync-banner{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:18px 24px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow);}
+.sync-label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+.sync-text{font-size:13px;color:var(--ink3);}
+
+/* BUTTONS */
+.btn-primary{background:var(--ink);color:var(--white);font-size:11px;font-weight:600;letter-spacing:1px;padding:10px 20px;border:none;border-radius:4px;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.btn-primary:hover{background:var(--gold);color:var(--white);}
+.btn-primary:disabled{background:#ccc;cursor:not-allowed;}
+.btn-gold{background:var(--gold);color:var(--white);font-size:11px;font-weight:600;letter-spacing:1px;padding:10px 20px;border:none;border-radius:4px;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.btn-gold:hover{background:var(--gold-dark);}
+.btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--ink3);font-size:10px;font-weight:500;padding:7px 14px;border-radius:4px;cursor:pointer;transition:all 0.2s;}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+.btn-danger{background:transparent;border:1px solid #FFCDD2;color:var(--red);font-size:10px;font-weight:500;padding:7px 14px;border-radius:4px;cursor:pointer;transition:all 0.2s;}
+.btn-danger:hover{background:var(--red-bg);}
+
+/* REVIEW REQUEST FORM */
+.form-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:24px;margin-bottom:28px;box-shadow:var(--shadow);}
+.form-row{display:grid;grid-template-columns:1fr 1fr auto;gap:16px;align-items:end;}
+.form-label{display:block;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:6px;}
+.form-input{width:100%;background:var(--cream);border:1px solid var(--border2);color:var(--ink);padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:13px;border-radius:4px;outline:none;transition:border 0.2s;}
+.form-input:focus{border-color:var(--gold);background:var(--white);}
+.form-input::placeholder{color:#AAA;}
+
+/* REVIEWS */
+.reviews-list{display:flex;flex-direction:column;gap:12px;margin-bottom:32px;}
+.review-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:20px 24px;box-shadow:var(--shadow);transition:box-shadow 0.2s;}
+.review-card:hover{box-shadow:var(--shadow-lg);}
+.review-card-top{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:start;}
+.review-rating{text-align:center;}
+.review-stars{font-size:18px;letter-spacing:1px;display:block;margin-bottom:4px;}
+.review-num{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--gold);}
+.review-date{font-size:10px;color:var(--ink3);margin-top:2px;}
+.review-author{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:6px;}
+.review-text{font-size:13px;color:var(--ink3);line-height:1.7;font-style:italic;}
+.sentiment-badge{display:inline-block;font-size:10px;font-weight:500;padding:3px 10px;border-radius:20px;margin-top:8px;}
+.sentiment-badge.positive{background:var(--green-bg);color:var(--green);}
+.sentiment-badge.neutral{background:var(--yellow-bg);color:var(--yellow);}
+.sentiment-badge.negative{background:var(--red-bg);color:var(--red);}
+.review-status{display:flex;flex-direction:column;gap:6px;align-items:flex-end;}
+.replied-tag{font-size:10px;font-weight:500;color:var(--green);background:var(--green-bg);padding:4px 10px;border-radius:20px;}
+.pending-tag{font-size:10px;font-weight:500;color:var(--yellow);background:var(--yellow-bg);padding:4px 10px;border-radius:20px;}
+
+/* AI REPLY */
+.ai-reply-box{background:linear-gradient(135deg,#FFFDF5,#FFF9E6);border:1px solid #E8D88A;border-radius:6px;padding:16px;margin-top:14px;}
+.ai-reply-label{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);margin-bottom:8px;}
+.ai-reply-text{font-size:13px;color:var(--ink2);line-height:1.7;}
+.btn-approve{background:var(--gold);color:var(--white);font-size:10px;font-weight:600;letter-spacing:1px;padding:8px 16px;border:none;border-radius:4px;cursor:pointer;margin-top:10px;transition:all 0.2s;}
+.btn-approve:hover{background:var(--gold-dark);}
+
+/* EMPTY STATE */
+.empty-state{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:48px;text-align:center;box-shadow:var(--shadow);}
+.empty-icon{font-size:40px;margin-bottom:12px;}
+.empty-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--ink);margin-bottom:8px;}
+.empty-text{font-size:13px;color:var(--ink3);line-height:1.7;}
+
+/* COMPETITOR */
+.comp-add-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:24px;margin-bottom:16px;box-shadow:var(--shadow);}
+.comp-add-row{display:grid;grid-template-columns:1fr 1fr auto;gap:16px;align-items:end;}
+.comp-note{font-size:11px;color:var(--ink3);margin-top:10px;line-height:1.6;}
+.comp-note strong{color:var(--gold-dark);}
+.comp-list{display:flex;flex-direction:column;gap:16px;margin-bottom:40px;}
+.comp-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:24px;box-shadow:var(--shadow);}
+.comp-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;}
+.comp-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--ink);}
+.comp-cat{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin-top:2px;}
+.comp-actions{display:flex;gap:8px;flex-wrap:wrap;}
+
+.comp-vs-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:center;background:var(--paper);border-radius:6px;padding:20px;margin-bottom:16px;}
+.comp-side{text-align:center;}
+.comp-side-label{font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);margin-bottom:6px;}
+.comp-side-name{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.comp-rating-num{font-family:'Playfair Display',serif;font-size:44px;font-weight:700;line-height:1;}
+.comp-rating-num.winning{color:var(--green);}
+.comp-rating-num.losing{color:var(--red);}
+.comp-rating-num.tied{color:var(--gold);}
+.comp-review-count{font-size:10px;color:var(--ink3);margin-top:4px;}
+.comp-vs-label{font-family:'Playfair Display',serif;font-size:16px;color:var(--ink3);}
+
+.comp-bar-row{margin-bottom:12px;}
+.comp-bar-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--ink3);margin-bottom:4px;}
+.comp-bar-track{background:var(--border);height:5px;border-radius:3px;display:flex;gap:2px;overflow:hidden;}
+.comp-bar-you{background:var(--gold);height:100%;transition:width 0.6s;}
+.comp-bar-them{background:var(--border2);height:100%;transition:width 0.6s;}
+
+.comp-diff-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;}
+.comp-diff-badge.ahead{background:var(--green-bg);color:var(--green);}
+.comp-diff-badge.behind{background:var(--red-bg);color:var(--red);}
+.comp-diff-badge.tied{background:var(--yellow-bg);color:var(--yellow);}
+.comp-footer{font-size:10px;color:var(--ink3);margin-top:12px;}
+.comp-footer a{color:var(--gold);text-decoration:none;}
+
+/* AI ANALYSIS */
+.analysis-box{background:linear-gradient(135deg,#FFFDF5,#FFF9E6);border:1px solid #E8D88A;border-radius:8px;padding:24px;margin-top:16px;}
+.analysis-header{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.analysis-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--ink);}
+.analysis-badge{font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;background:rgba(184,149,42,0.15);color:var(--gold-dark);padding:3px 8px;border-radius:20px;}
+.analysis-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.analysis-section{padding:14px;border-radius:6px;border:1px solid transparent;}
+.analysis-section.win{background:var(--green-bg);border-color:#C8E6C9;}
+.analysis-section.lose{background:var(--red-bg);border-color:#FFCDD2;}
+.analysis-section.gap{background:var(--yellow-bg);border-color:#FFF9C4;}
+.analysis-section.rec{background:#E3F2FD;border-color:#BBDEFB;}
+.analysis-section-title{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.analysis-section.win .analysis-section-title{color:var(--green);}
+.analysis-section.lose .analysis-section-title{color:var(--red);}
+.analysis-section.gap .analysis-section-title{color:var(--yellow);}
+.analysis-section.rec .analysis-section-title{color:#1565C0;}
+.analysis-point{font-size:12px;color:var(--ink2);line-height:1.6;margin-bottom:5px;padding-left:12px;position:relative;}
+.analysis-point::before{content:'•';position:absolute;left:0;}
+.analysis-section.win .analysis-point::before{color:var(--green);}
+.analysis-section.lose .analysis-point::before{color:var(--red);}
+.analysis-section.gap .analysis-point::before{color:var(--yellow);}
+.analysis-section.rec .analysis-point::before{color:#1565C0;}
+.analysis-loading{text-align:center;padding:28px;color:var(--gold-dark);font-size:12px;}
+
+/* LOADING */
+.loading{text-align:center;padding:60px;color:var(--ink3);font-size:13px;}
+
+@media(max-width:900px){
+  .topnav,.dash-wrap{padding:12px 20px;}
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .review-card-top{grid-template-columns:1fr;}
+  .form-row,.comp-add-row{grid-template-columns:1fr;}
+  .comp-vs-grid{grid-template-columns:1fr;gap:12px;}
+  .comp-vs-label{display:none;}
+  .analysis-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="nav-logo" href="index.html">
+    <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="15" stroke="#B8952A" stroke-width="1.5"/><polygon points="16,6 18.5,12.5 25.5,12.5 20,16.5 22,23 16,19.5 10,23 12,16.5 6.5,12.5 13.5,12.5" fill="#B8952A"/></svg>
+    <span class="nav-logo-text">Repute<span>India</span></span>
+  </a>
+  <div class="biz-pill" id="bizNameNav">Loading...</div>
+  <button class="btn-logout" onclick="logout()">Logout</button>
+</nav>
+
+<div class="dash-wrap">
+  <div class="loading" id="loadingState">Loading your dashboard...</div>
+
+  <div id="dashContent" style="display:none;">
+
+    <div class="page-header">
+      <div class="page-title">Reputation Dashboard</div>
+      <div class="page-subtitle">Your real-time reputation overview — powered by AI</div>
+    </div>
+
+    <div class="trial-banner">
+      <div class="trial-text"><strong>Free Trial Active</strong> — AI is monitoring your reputation 24/7</div>
+      <div class="trial-days" id="trialDays">15 days left</div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Average Rating</div>
+        <div class="stat-value gold" id="statRating">—</div>
+        <div class="stat-sub">Google Stars</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Reviews</div>
+        <div class="stat-value" id="statTotal">0</div>
+        <div class="stat-sub">All time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Awaiting Reply</div>
+        <div class="stat-value red" id="statUnreplied">0</div>
+        <div class="stat-sub">Need response</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Positive Reviews</div>
+        <div class="stat-value green" id="statPositive">0</div>
+        <div class="stat-sub">Sentiment analysis</div>
+      </div>
+    </div>
+
+    <!-- SYNC GOOGLE REVIEWS -->
+    <div class="sync-banner">
+      <div>
+        <div class="sync-label">Google Reviews</div>
+        <div class="sync-text" id="syncStatus">Sync your real Google reviews automatically</div>
+      </div>
+      <button class="btn-primary" id="syncBtn" onclick="syncGoogleReviews()">↻ Sync Google Reviews</button>
+    </div>
+
+    <!-- SEND REVIEW REQUEST -->
+    <div class="section-header">
+      <div class="section-title">Send Review Request <span>via WhatsApp</span></div>
+    </div>
+    <div class="form-card">
+      <div class="form-row">
+        <div>
+          <label class="form-label">Customer Name</label>
+          <input type="text" class="form-input" id="custName" placeholder="Customer name">
+        </div>
+        <div>
+          <label class="form-label">Customer WhatsApp Number</label>
+          <input type="tel" class="form-input" id="custPhone" placeholder="10-digit number">
+        </div>
+        <button class="btn-gold" onclick="sendReviewRequest()">Send Request 📲</button>
+      </div>
+      <div id="reqStatus" style="font-size:12px;margin-top:10px;display:none;"></div>
+    </div>
+
+    <!-- RECENT REVIEWS -->
+    <div class="section-header">
+      <div class="section-title">Recent Reviews</div>
+    </div>
+    <div class="reviews-list" id="reviewsGrid">
+      <div class="empty-state">
+        <div class="empty-icon">⭐</div>
+        <div class="empty-title">No Reviews Yet</div>
+        <p class="empty-text">Click "Sync Google Reviews" above to pull your existing reviews, or send review requests to customers.</p>
+      </div>
+    </div>
+
+    <!-- COMPETITOR TRACKING -->
+    <div class="section-header" style="margin-top:40px;">
+      <div class="section-title">Competitor Tracking <span>& AI Analysis</span></div>
+    </div>
+
+    <div class="comp-add-card">
+      <div class="comp-add-row">
+        <div>
+          <label class="form-label">Competitor Business Name</label>
+          <input type="text" class="form-input" id="compName" placeholder="e.g. City Dental Clinic">
+        </div>
+        <div>
+          <label class="form-label">Their Google Maps URL</label>
+          <input type="url" class="form-input" id="compUrl" placeholder="https://maps.google.com/...">
+        </div>
+        <button class="btn-gold" onclick="addCompetitor()">Add Competitor 🔍</button>
+      </div>
+      <div class="comp-note"><strong>How to get Google Maps URL:</strong> Search competitor on Google Maps → Click Share → Copy link.</div>
+      <div id="compAddStatus" style="font-size:12px;margin-top:10px;display:none;"></div>
+    </div>
+
+    <div class="comp-list" id="competitorsGrid">
+      <div class="empty-state">
+        <div class="empty-icon">🔍</div>
+        <div class="empty-title">No Competitors Added Yet</div>
+        <p class="empty-text">Add competitors above to track their ratings and get AI-powered competitive insights.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const BACKEND = 'https://repute-india.onrender.com';
+
+async function loadDashboard() {
+  const bizId = localStorage.getItem('ri_business_id');
+  const bizName = localStorage.getItem('ri_business_name');
+  if (!bizId) { window.location.href = 'login.html'; return; }
+  document.getElementById('bizNameNav').textContent = bizName || 'Dashboard';
+
+  try {
+    const res = await fetch(`${BACKEND}/api/dashboard/${bizId}`);
+    const data = await res.json();
+    if (data.success) {
+      const { business, stats } = data;
+      if (business.trial_ends_at) {
+        const daysLeft = Math.max(0, Math.ceil((new Date(business.trial_ends_at) - new Date()) / (1000*60*60*24)));
+        document.getElementById('trialDays').textContent = daysLeft + ' days left';
+      }
+      document.getElementById('statRating').textContent = stats.avg_rating > 0 ? stats.avg_rating.toFixed(1) + '★' : '—';
+      document.getElementById('statTotal').textContent = stats.total_reviews;
+      document.getElementById('statUnreplied').textContent = stats.unreplied_count;
+      document.getElementById('statPositive').textContent = stats.sentiment?.positive || 0;
+      await loadReviews(bizId);
+      await loadCompetitors(bizId);
+      document.getElementById('loadingState').style.display = 'none';
+      document.getElementById('dashContent').style.display = 'block';
+    }
+  } catch(e) {
+    document.getElementById('loadingState').textContent = 'Error loading dashboard. Please refresh.';
+  }
+}
+
+async function loadReviews(bizId) {
+  try {
+    const res = await fetch(`${BACKEND}/api/reviews/${bizId}?limit=20`);
+    const data = await res.json();
+    const grid = document.getElementById('reviewsGrid');
+    if (data.success && data.reviews.length > 0) {
+      grid.innerHTML = '';
+      data.reviews.forEach(review => {
+        const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+        const sentiment = review.sentiment || 'neutral';
+        const sentimentLabel = sentiment === 'positive' ? '😊 Positive' : sentiment === 'negative' ? '😟 Negative' : '😐 Neutral';
+        const aiReplies = review.ai_replies || [];
+        const pendingReply = aiReplies.find(r => r.status === 'pending');
+        const sentReply = aiReplies.find(r => r.status === 'sent');
+        const date = new Date(review.review_date).toLocaleDateString('en-IN', {day:'numeric',month:'short',year:'numeric'});
+        let replyHtml = '';
+        if (sentReply) replyHtml = `<div class="ai-reply-box"><div class="ai-reply-label">✅ Reply Sent</div><div class="ai-reply-text">${sentReply.generated_reply}</div></div>`;
+        else if (pendingReply) replyHtml = `<div class="ai-reply-box"><div class="ai-reply-label">✨ AI Reply Ready</div><div class="ai-reply-text">${pendingReply.generated_reply}</div><button class="btn-approve" onclick="approveReply('${pendingReply.id}', this)">Approve & Mark Sent ✓</button></div>`;
+        const card = document.createElement('div');
+        card.className = 'review-card';
+        card.innerHTML = `
+          <div class="review-card-top">
+            <div class="review-rating">
+              <span class="review-stars" style="color:var(--gold)">${stars}</span>
+              <div class="review-num">${review.rating}.0</div>
+              <div class="review-date">${date}</div>
+            </div>
+            <div>
+              <div class="review-author">${review.reviewer_name || 'Anonymous Customer'}</div>
+              <div class="review-text">"${review.review_text || 'No review text'}"</div>
+              <span class="sentiment-badge ${sentiment}">${sentimentLabel}</span>
+              ${replyHtml}
+            </div>
+            <div class="review-status">
+              ${review.is_replied ? '<span class="replied-tag">✓ Replied</span>' : '<span class="pending-tag">⏳ Pending</span>'}
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+  } catch(e) { console.error('Reviews error:', e); }
+}
+
+async function loadCompetitors(bizId) {
+  try {
+    const res = await fetch(`${BACKEND}/api/competitors/${bizId}`);
+    const data = await res.json();
+    if (data.success) renderCompetitors(data.competitors, bizId);
+  } catch(e) { console.error('Competitors error:', e); }
+}
+
+function renderCompetitors(competitors, bizId) {
+  const grid = document.getElementById('competitorsGrid');
+  if (!competitors || competitors.length === 0) {
+    grid.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-title">No Competitors Added Yet</div><p class="empty-text">Add competitors above to track their ratings and get AI-powered competitive insights.</p></div>`;
+    return;
+  }
+  const myRating = parseFloat(document.getElementById('statRating').textContent) || 0;
+  const myName = localStorage.getItem('ri_business_name') || 'Your Business';
+  const myTotal = parseInt(document.getElementById('statTotal').textContent) || 0;
+
+  grid.innerHTML = competitors.map(comp => {
+    const theirRating = comp.their_rating || 0;
+    const diff = (myRating - theirRating).toFixed(1);
+    const diffNum = parseFloat(diff);
+    let diffClass, diffText, myClass, theirClass;
+    if (diffNum > 0) { diffClass='ahead'; diffText=`▲ ${diff} ahead`; myClass='winning'; theirClass='losing'; }
+    else if (diffNum < 0) { diffClass='behind'; diffText=`▼ ${Math.abs(diff)} behind`; myClass='losing'; theirClass='winning'; }
+    else { diffClass='tied'; diffText='Even'; myClass='tied'; theirClass='tied'; }
+    const myPct = myRating > 0 ? Math.round((myRating/5)*100) : 0;
+    const theirPct = theirRating > 0 ? Math.round((theirRating/5)*100) : 0;
+    const lastUpdated = comp.last_updated ? new Date(comp.last_updated).toLocaleDateString('en-IN',{day:'numeric',month:'short'}) : 'Never';
+
+    return `
+      <div class="comp-card" id="comp-${comp.id}">
+        <div class="comp-header">
+          <div>
+            <div class="comp-name">${comp.competitor_name}</div>
+            <div class="comp-cat">${comp.category || 'Competitor'}</div>
+          </div>
+          <div class="comp-actions">
+            <button class="btn-gold" style="font-size:10px;padding:7px 14px;" onclick="runAIAnalysis('${comp.id}','${comp.competitor_name}','${comp.category||''}',${theirRating},${comp.their_review_count||0},this)">✨ AI Analysis</button>
+            <button class="btn-ghost" onclick="refreshCompetitor('${comp.id}',this)">↻ Refresh</button>
+            <button class="btn-danger" onclick="deleteCompetitor('${comp.id}','${bizId}')">✕ Remove</button>
+          </div>
+        </div>
+
+        <div class="comp-vs-grid">
+          <div class="comp-side">
+            <div class="comp-side-label">You</div>
+            <div class="comp-side-name">${myName}</div>
+            <div class="comp-rating-num ${myClass}">${myRating > 0 ? myRating.toFixed(1)+'★' : '—'}</div>
+            <div class="comp-review-count">${myTotal} reviews</div>
+          </div>
+          <div class="comp-vs-label">vs</div>
+          <div class="comp-side">
+            <div class="comp-side-label">Them</div>
+            <div class="comp-side-name">${comp.competitor_name}</div>
+            <div class="comp-rating-num ${theirClass}">${theirRating > 0 ? theirRating.toFixed(1)+'★' : '—'}</div>
+            <div class="comp-review-count">${comp.their_review_count||0} reviews</div>
+          </div>
+        </div>
+
+        <div class="comp-bar-row">
+          <div class="comp-bar-labels"><span>You</span><span>Them</span></div>
+          <div class="comp-bar-track">
+            <div class="comp-bar-you" style="width:${myPct}%"></div>
+            <div class="comp-bar-them" style="width:${theirPct}%"></div>
+          </div>
+        </div>
+        <span class="comp-diff-badge ${diffClass}">${diffText}</span>
+
+        <div class="comp-footer" style="margin-top:12px;">Last updated: ${lastUpdated} · <a href="${comp.google_maps_url}" target="_blank">View on Google Maps ↗</a></div>
+        <div id="analysis-${comp.id}"></div>
+      </div>
+    `;
+  }).join('');
+}
+
+async function runAIAnalysis(compId, compName, compCategory, theirRating, theirReviewCount, btn) {
+  const myName = localStorage.getItem('ri_business_name') || 'Your Business';
+  const myRating = parseFloat(document.getElementById('statRating').textContent) || 0;
+  const myTotal = parseInt(document.getElementById('statTotal').textContent) || 0;
+  btn.disabled = true; btn.textContent = '⏳ Analysing...';
+  const div = document.getElementById(`analysis-${compId}`);
+  div.innerHTML = `<div class="analysis-box"><div class="analysis-loading">✨ Claude AI is analysing your competitive position...</div></div>`;
+  try {
+    const res = await fetch(`${BACKEND}/api/competitors/${compId}/analyse`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({my_name:myName,my_rating:myRating,my_review_count:myTotal,comp_name:compName,comp_category:compCategory,comp_rating:theirRating,comp_review_count:theirReviewCount})
+    });
+    const data = await res.json();
+    if (data.success && data.analysis) {
+      const a = data.analysis;
+      div.innerHTML = `
+        <div class="analysis-box">
+          <div class="analysis-header">
+            <div class="analysis-title">AI Competitive Analysis</div>
+            <span class="analysis-badge">Powered by Claude AI</span>
+          </div>
+          <div class="analysis-grid">
+            <div class="analysis-section win">
+              <div class="analysis-section-title">✅ Where You're Winning</div>
+              ${(a.you_winning||[]).map(p=>`<div class="analysis-point">${p}</div>`).join('')}
+            </div>
+            <div class="analysis-section lose">
+              <div class="analysis-section-title">⚠️ Where They're Ahead</div>
+              ${(a.they_winning||[]).map(p=>`<div class="analysis-point">${p}</div>`).join('')}
+            </div>
+            <div class="analysis-section gap">
+              <div class="analysis-section-title">📉 Your Gaps to Fix</div>
+              ${(a.your_gaps||[]).map(p=>`<div class="analysis-point">${p}</div>`).join('')}
+            </div>
+            <div class="analysis-section rec">
+              <div class="analysis-section-title">🎯 Action Recommendations</div>
+              ${(a.recommendations||[]).map(p=>`<div class="analysis-point">${p}</div>`).join('')}
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--ink3);">Analysis by Claude AI · Based on ratings and business category</div>
+        </div>`;
+      btn.textContent = '✨ Refresh Analysis'; btn.disabled = false;
+    } else throw new Error(data.error||'Failed');
+  } catch(e) {
+    div.innerHTML = `<div style="color:var(--red);font-size:12px;padding:12px;background:var(--red-bg);border-radius:6px;margin-top:12px;">Failed to generate analysis. Try again.</div>`;
+    btn.textContent = '✨ AI Analysis'; btn.disabled = false;
+  }
+}
+
+async function addCompetitor() {
+  const bizId = localStorage.getItem('ri_business_id');
+  const name = document.getElementById('compName').value.trim();
+  const url = document.getElementById('compUrl').value.trim();
+  const status = document.getElementById('compAddStatus');
+  if (!name) { status.textContent='⚠️ Please enter competitor name'; status.style.color='var(--red)'; status.style.display='block'; return; }
+  if (!url||!url.includes('google')) { status.textContent='⚠️ Please enter a valid Google Maps URL'; status.style.color='var(--red)'; status.style.display='block'; return; }
+  status.textContent='⏳ Adding competitor...'; status.style.color='var(--gold)'; status.style.display='block';
+  try {
+    const res = await fetch(`${BACKEND}/api/competitors`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({business_id:bizId,competitor_name:name,google_maps_url:url})});
+    const data = await res.json();
+    if (data.success) {
+      status.textContent='✅ Competitor added!'; status.style.color='var(--green)';
+      document.getElementById('compName').value=''; document.getElementById('compUrl').value='';
+      setTimeout(()=>{status.style.display='none';},3000);
+      await loadCompetitors(bizId);
+    } else throw new Error(data.error);
+  } catch(e) { status.textContent='❌ Failed to add.'; status.style.color='var(--red)'; }
+}
+
+async function refreshCompetitor(compId, btn) {
+  btn.disabled=true; btn.textContent='Refreshing...';
+  try {
+    const res = await fetch(`${BACKEND}/api/competitors/${compId}/refresh`,{method:'POST'});
+    const data = await res.json();
+    btn.textContent='↻ Refresh'; btn.disabled=false;
+    if (data.success) { const bizId=localStorage.getItem('ri_business_id'); await loadCompetitors(bizId); }
+  } catch(e) { btn.textContent='↻ Refresh'; btn.disabled=false; }
+}
+
+async function deleteCompetitor(compId, bizId) {
+  if (!confirm('Remove this competitor?')) return;
+  try {
+    await fetch(`${BACKEND}/api/competitors/${compId}`,{method:'DELETE'});
+    await loadCompetitors(bizId);
+  } catch(e) {}
+}
+
+async function approveReply(replyId, btn) {
+  btn.disabled=true; btn.textContent='Saving...';
+  try {
+    const res = await fetch(`${BACKEND}/api/replies/${replyId}/approve`,{method:'POST'});
+    const data = await res.json();
+    if (data.success) { btn.textContent='✓ Approved'; btn.style.background='var(--green)'; setTimeout(()=>loadDashboard(),1500); }
+  } catch(e) { btn.textContent='Error'; btn.disabled=false; }
+}
+
+async function sendReviewRequest() {
+  const bizId = localStorage.getItem('ri_business_id');
+  const custName = document.getElementById('custName').value.trim();
+  const custPhone = document.getElementById('custPhone').value.trim().replace(/\D/g,'');
+  const status = document.getElementById('reqStatus');
+  if (!custPhone||custPhone.length<10) { status.textContent='⚠️ Please enter a valid 10-digit number'; status.style.color='var(--red)'; status.style.display='block'; return; }
+  try {
+    const res = await fetch(`${BACKEND}/api/review-requests`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({business_id:bizId,customer_name:custName,customer_phone:custPhone})});
+    const data = await res.json();
+    if (data.success) { status.textContent='✅ Review request sent!'; status.style.color='var(--green)'; status.style.display='block'; document.getElementById('custName').value=''; document.getElementById('custPhone').value=''; setTimeout(()=>{status.style.display='none';},4000); }
+    else throw new Error(data.error);
+  } catch(e) { status.textContent='❌ Failed to send.'; status.style.color='var(--red)'; status.style.display='block'; }
+}
+
+async function syncGoogleReviews() {
+  const bizId = localStorage.getItem('ri_business_id');
+  const btn = document.getElementById('syncBtn');
+  const status = document.getElementById('syncStatus');
+  btn.disabled=true; btn.textContent='⏳ Syncing...';
+  status.textContent='Fetching your Google reviews...';
+  try {
+    const res = await fetch(`${BACKEND}/api/businesses/${bizId}/sync-reviews`,{method:'POST'});
+    const data = await res.json();
+    if (data.success) {
+      status.textContent = data.message || 'Reviews synced!';
+      btn.textContent='✓ Synced'; btn.style.background='var(--green)';
+      setTimeout(()=>{ loadDashboard(); btn.textContent='↻ Sync Google Reviews'; btn.style.background=''; btn.disabled=false; },2000);
+    } else { status.textContent='❌ '+(data.error||'Sync failed'); btn.textContent='↻ Sync Google Reviews'; btn.disabled=false; }
+  } catch(e) { status.textContent='❌ Connection error'; btn.textContent='↻ Sync Google Reviews'; btn.disabled=false; }
+}
+
+function logout() {
+  localStorage.removeItem('ri_business_id'); localStorage.removeItem('ri_business_name'); localStorage.removeItem('ri_phone');
+  window.location.href = 'index.html';
+}
+
+loadDashboard();
+</script>
+</body>
+</html>
