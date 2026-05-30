@@ -456,6 +456,41 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
 .brand-tagline:last-child{border-bottom:none;}
 .brand-voice{font-size:13px;color:var(--ink2);line-height:1.7;}
 
+/* ============================================================
+   REPUTE SCORE TAB
+   ============================================================ */
+.score-layout{display:grid;grid-template-columns:320px 1fr;gap:20px;margin-bottom:36px;}
+.score-gauge-card{background:linear-gradient(135deg,var(--ink),#2D2926);border-radius:12px;padding:32px 24px;text-align:center;display:flex;flex-direction:column;align-items:center;}
+.score-gauge-ring{position:relative;width:200px;height:200px;margin-bottom:16px;}
+.score-gauge-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.score-gauge-num{font-family:'Playfair Display',serif;font-size:56px;font-weight:700;color:var(--gold-light);line-height:1;}
+.score-gauge-max{font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px;}
+#scoreArc{transition:stroke-dashoffset 1.2s cubic-bezier(0.4,0,0.2,1);}
+.score-rating-label{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--white);margin-bottom:6px;}
+.score-rating-desc{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.6;}
+.score-breakdown-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:32px;box-shadow:var(--shadow);}
+.score-breakdown-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:24px;}
+.score-bar-block{margin-bottom:22px;}
+.score-bar-head{display:flex;justify-content:space-between;font-size:13px;font-weight:500;color:var(--ink2);margin-bottom:8px;}
+.score-bar-head span:last-child{font-weight:700;color:var(--gold-dark);font-family:'Playfair Display',serif;}
+.score-bar-track{background:var(--paper);height:10px;border-radius:6px;overflow:hidden;}
+.score-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));border-radius:6px;transition:width 1s cubic-bezier(0.4,0,0.2,1);}
+.score-why{font-size:12px;color:var(--ink3);line-height:1.7;margin-top:8px;padding-top:18px;border-top:1px solid var(--border);}
+.score-improve-header{margin-bottom:20px;}
+.score-tasks{display:flex;flex-direction:column;gap:12px;}
+.score-task{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:18px 22px;box-shadow:var(--shadow);display:flex;align-items:flex-start;gap:16px;transition:all 0.2s;}
+.score-task:hover{box-shadow:var(--shadow-lg);}
+.score-task.done{opacity:0.6;}
+.score-task-check{width:26px;height:26px;border-radius:50%;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;margin-top:2px;}
+.score-task.done .score-task-check{background:var(--green);border-color:var(--green);color:#fff;}
+.score-task-body{flex:1;}
+.score-task-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px;}
+.score-task.done .score-task-title{text-decoration:line-through;}
+.score-task-text{font-size:12px;color:var(--ink3);line-height:1.6;}
+.score-task-pts{background:var(--gold-pale);color:var(--gold-dark);font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;flex-shrink:0;white-space:nowrap;align-self:center;}
+.score-task-btn{background:var(--ink);color:#fff;border:none;font-size:11px;font-weight:600;padding:8px 14px;border-radius:6px;cursor:pointer;transition:all 0.2s;flex-shrink:0;align-self:center;white-space:nowrap;}
+.score-task-btn:hover{background:var(--gold);}
+
 @media(max-width:900px){
   .topnav,.dash-wrap{padding:12px 16px;}
   .nav-center{display:none;}
@@ -474,6 +509,7 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
   .mkt-poster-layout{grid-template-columns:1fr;}
   .mkt-poster-preview-wrap{position:static;}
   .brand-kit{grid-template-columns:1fr;}
+  .score-layout{grid-template-columns:1fr;}
   .poster-canvas.square{width:300px;height:300px;}
   .poster-canvas.story{width:220px;height:391px;}
   .poster-canvas.landscape{width:320px;height:180px;}
@@ -496,6 +532,7 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
     <button class="nav-tab" onclick="switchTab('documents',this)"><span class="tab-icon">📄</span>Documents</button>
     <button class="nav-tab" onclick="switchTab('schemes',this)"><span class="tab-icon">🏛️</span>Gov Schemes</button>
     <button class="nav-tab" onclick="switchTab('marketing',this)"><span class="tab-icon">📢</span>Marketing</button>
+    <button class="nav-tab" onclick="switchTab('score',this)"><span class="tab-icon">🏆</span>Repute Score</button>
   </div>
 
   <div class="nav-right">
@@ -1209,6 +1246,69 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
 
     </div>
 
+    <!-- ======================================================
+         TAB: REPUTE SCORE
+         ====================================================== -->
+    <div class="tab-panel" id="tab-score">
+      <div class="page-header">
+        <div class="page-title">Your Repute Score</div>
+        <div class="page-subtitle">Your business credibility rating — and exactly how to improve it</div>
+      </div>
+
+      <div class="score-layout">
+        <!-- LEFT: GAUGE -->
+        <div class="score-gauge-card">
+          <div class="score-gauge-ring" id="scoreGaugeRing">
+            <svg viewBox="0 0 200 200" width="200" height="200">
+              <circle cx="100" cy="100" r="85" fill="none" stroke="var(--border)" stroke-width="14"/>
+              <circle cx="100" cy="100" r="85" fill="none" stroke="url(#scoreGrad)" stroke-width="14"
+                stroke-linecap="round" id="scoreArc"
+                stroke-dasharray="534" stroke-dashoffset="534"
+                transform="rotate(-90 100 100)"/>
+              <defs>
+                <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="var(--gold-dark)"/>
+                  <stop offset="100%" stop-color="var(--gold-light)"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="score-gauge-center">
+              <div class="score-gauge-num" id="scoreGaugeNum">—</div>
+              <div class="score-gauge-max">out of 1000</div>
+            </div>
+          </div>
+          <div class="score-rating-label" id="scoreRatingLabel">Calculating...</div>
+          <div class="score-rating-desc" id="scoreRatingDesc"></div>
+        </div>
+
+        <!-- RIGHT: BREAKDOWN -->
+        <div class="score-breakdown-card">
+          <div class="score-breakdown-title">Score Breakdown</div>
+          <div class="score-bar-block">
+            <div class="score-bar-head"><span>📋 Profile Completeness</span><span id="scoreCompVal">0 / 400</span></div>
+            <div class="score-bar-track"><div class="score-bar-fill" id="scoreCompBar" style="width:0%"></div></div>
+          </div>
+          <div class="score-bar-block">
+            <div class="score-bar-head"><span>✅ Compliance &amp; Registration</span><span id="scoreCompliVal">0 / 300</span></div>
+            <div class="score-bar-track"><div class="score-bar-fill" id="scoreCompliBar" style="width:0%"></div></div>
+          </div>
+          <div class="score-bar-block">
+            <div class="score-bar-head"><span>⭐ Reputation Signals</span><span id="scoreRepVal">0 / 300</span></div>
+            <div class="score-bar-track"><div class="score-bar-fill" id="scoreRepBar" style="width:0%"></div></div>
+          </div>
+          <div class="score-why">Your Repute Score reflects how complete, compliant, and well-reviewed your business is. A higher score builds trust with customers, partners, and lenders.</div>
+        </div>
+      </div>
+
+      <!-- IMPROVE TASKS -->
+      <div class="score-improve-header">
+        <div class="section-title">How to Improve <span>Your Score</span></div>
+      </div>
+      <div class="score-tasks" id="scoreTasks">
+        <div class="loading">Loading your personalised improvement plan...</div>
+      </div>
+    </div>
+
   </div><!-- /dashContent -->
 </div><!-- /dash-wrap -->
 
@@ -1507,6 +1607,7 @@ function switchTab(tabName, btn) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   document.getElementById('tab-' + tabName).classList.add('active');
   btn.classList.add('active');
+  if (tabName === 'score' && !scoreLoaded) loadScoreTab();
 }
 
 // ============================================================
@@ -2580,6 +2681,79 @@ async function generateBrandKit() {
     } else throw new Error();
   } catch(e) { status.textContent = '❌ Failed. Try again.'; }
   btn.disabled = false; btn.textContent = '✨ Generate My Brand Kit';
+}
+
+// ============================================================
+// REPUTE SCORE TAB
+// ============================================================
+let scoreLoaded = false;
+
+async function loadScoreTab() {
+  try {
+    const res = await fetchWithTimeout(`${BACKEND}/api/repute-score/${currentBizId}`, {}, 70000);
+    const data = await res.json();
+    if (data.success) {
+      renderScore(data.score, data.breakdown, data.tasks);
+      scoreLoaded = true;
+    } else {
+      document.getElementById('scoreTasks').innerHTML = '<div class="loading">Could not load score. <button class="btn-ghost" onclick="scoreLoaded=false;loadScoreTab()">Retry</button></div>';
+    }
+  } catch(e) {
+    document.getElementById('scoreTasks').innerHTML = '<div class="loading">Connection issue. <button class="btn-ghost" onclick="scoreLoaded=false;loadScoreTab()">Retry</button></div>';
+  }
+}
+
+function renderScore(score, breakdown, tasks) {
+  score = score || 0;
+  // Gauge
+  document.getElementById('scoreGaugeNum').textContent = score;
+  const circumference = 534; // 2*pi*85
+  const offset = circumference - (score / 1000) * circumference;
+  setTimeout(() => { document.getElementById('scoreArc').style.strokeDashoffset = offset; }, 100);
+
+  // Rating label
+  let label, desc;
+  if (score >= 800) { label = 'Excellent'; desc = 'Your business is highly credible and trustworthy.'; }
+  else if (score >= 600) { label = 'Strong'; desc = 'A solid, credible business profile. A few steps to excellent.'; }
+  else if (score >= 400) { label = 'Building'; desc = 'You\'re on your way. Complete the tasks below to grow.'; }
+  else { label = 'Getting Started'; desc = 'Lots of room to grow. Each task below boosts your score.'; }
+  document.getElementById('scoreRatingLabel').textContent = label;
+  document.getElementById('scoreRatingDesc').textContent = desc;
+
+  // Breakdown bars
+  const b = breakdown || { profile_completeness:0, compliance:0, reputation:0 };
+  document.getElementById('scoreCompVal').textContent = `${b.profile_completeness} / 400`;
+  document.getElementById('scoreCompliVal').textContent = `${b.compliance} / 300`;
+  document.getElementById('scoreRepVal').textContent = `${b.reputation} / 300`;
+  setTimeout(() => {
+    document.getElementById('scoreCompBar').style.width = (b.profile_completeness/400*100) + '%';
+    document.getElementById('scoreCompliBar').style.width = (b.compliance/300*100) + '%';
+    document.getElementById('scoreRepBar').style.width = (b.reputation/300*100) + '%';
+  }, 150);
+
+  // Improvement tasks
+  const tasksEl = document.getElementById('scoreTasks');
+  if (!tasks || tasks.length === 0) {
+    tasksEl.innerHTML = '<div class="score-task done"><div class="score-task-check">✓</div><div class="score-task-body"><div class="score-task-title">Your profile is complete!</div><div class="score-task-text">You\'ve maximised your score. Keep your reviews and compliance strong to maintain it.</div></div></div>';
+    return;
+  }
+  tasksEl.innerHTML = tasks.map(t => `
+    <div class="score-task ${t.done ? 'done' : ''}">
+      <div class="score-task-check">${t.done ? '✓' : ''}</div>
+      <div class="score-task-body">
+        <div class="score-task-title">${t.title}</div>
+        <div class="score-task-text">${t.text}</div>
+      </div>
+      ${t.done ? '' : `<div class="score-task-pts">+${t.points} pts</div>`}
+      ${(!t.done && t.action_target) ? `<button class="score-task-btn" onclick="scoreTaskAction('${t.action_target}')">${t.action_label || 'Do it'}</button>` : ''}
+    </div>`).join('');
+}
+
+function scoreTaskAction(target) {
+  const navMap = {'reputation':1,'ai-assistant':2,'documents':3,'schemes':4,'marketing':5,'onboarding':null};
+  if (target === 'onboarding') { window.location.href = 'onboarding.html'; return; }
+  const idx = navMap[target];
+  if (idx != null) switchTab(target, document.querySelectorAll('.nav-tab')[idx]);
 }
 
 function logout() {
