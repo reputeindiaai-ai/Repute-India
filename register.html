@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register — Repute AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FAFAF7; --paper:#F5F2EC; --white:#FFFFFF;
+  --ink:#1A1612; --ink2:#2D2926; --ink3:#4A4540;
+  --gold:#B8952A; --gold-light:#D4AF50; --gold-dark:#8B6E1A; --gold-pale:#FFF9E6;
+  --border:#E8E2D8; --border2:#D4CCB8; --muted:#7A766F;
+  --green:#2E7D32; --green-bg:#E8F5E9;
+  --red:#C62828; --red-bg:#FFEBEE;
+  --shadow:0 2px 12px rgba(26,22,18,0.08);
+  --shadow-lg:0 8px 32px rgba(26,22,18,0.14);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px;background:var(--white);border-bottom:1px solid var(--border);box-shadow:var(--shadow);}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo-text{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--ink);letter-spacing:1px;}
+.nav-logo-text span{color:var(--gold);}
+.nav-back{font-size:11px;color:var(--muted);text-decoration:none;transition:color 0.2s;}
+.nav-back:hover{color:var(--gold);}
+
+.page-wrap{flex:1;display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 64px);}
+
+/* LEFT SIDE */
+.left-side{background:linear-gradient(145deg,var(--ink),#2D2926);display:flex;flex-direction:column;justify-content:center;padding:60px 56px;position:relative;overflow:hidden;}
+.left-side::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:rgba(184,149,42,0.06);}
+.left-side::after{content:'';position:absolute;bottom:-60px;left:-60px;width:200px;height:200px;border-radius:50%;background:rgba(184,149,42,0.04);}
+.left-eyebrow{font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:600;}
+.left-title{font-family:'Playfair Display',serif;font-size:40px;font-weight:700;color:var(--white);line-height:1.15;margin-bottom:20px;}
+.left-title em{color:var(--gold-light);font-style:italic;}
+.left-desc{font-size:13px;color:rgba(255,255,255,0.55);line-height:1.8;margin-bottom:40px;font-weight:300;}
+.left-features{display:flex;flex-direction:column;gap:16px;}
+.left-feature{display:flex;align-items:flex-start;gap:14px;}
+.left-feature-icon{width:36px;height:36px;background:rgba(184,149,42,0.12);border:1px solid rgba(184,149,42,0.2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.left-feature-text{font-size:12px;color:rgba(255,255,255,0.7);line-height:1.6;padding-top:8px;}
+.left-feature-text strong{color:var(--white);font-weight:600;}
+.left-steps{display:flex;gap:0;margin-top:40px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.08);}
+.left-step{flex:1;text-align:center;position:relative;}
+.left-step:not(:last-child)::after{content:'→';position:absolute;right:-8px;top:10px;color:rgba(255,255,255,0.2);font-size:12px;}
+.left-step-num{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--gold-light);}
+.left-step-label{font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+
+/* RIGHT SIDE — FORM */
+.right-side{display:flex;align-items:center;justify-content:center;padding:40px;background:var(--cream);}
+.register-box{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:48px 44px;width:100%;max-width:480px;box-shadow:var(--shadow-lg);position:relative;}
+.register-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold-dark),var(--gold),var(--gold-light));border-radius:10px 10px 0 0;}
+.reg-eyebrow{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:600;}
+.reg-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.reg-sub{font-size:12px;color:var(--muted);margin-bottom:32px;line-height:1.6;}
+
+.form-group{margin-bottom:18px;}
+.form-label{display:block;font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);margin-bottom:7px;}
+.form-input,.form-select{width:100%;background:var(--cream);border:1.5px solid var(--border);color:var(--ink);padding:11px 14px;font-family:'DM Sans',sans-serif;font-size:13px;border-radius:5px;outline:none;transition:border 0.2s,background 0.2s;appearance:none;}
+.form-input:focus,.form-select:focus{border-color:var(--gold);background:var(--white);}
+.form-input::placeholder{color:#BBB;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+.form-input.error{border-color:var(--red);}
+.error-msg{background:var(--red-bg);border:1px solid #FFCDD2;color:var(--red);font-size:12px;padding:11px 14px;border-radius:5px;margin-bottom:16px;display:none;}
+
+.submit-btn{width:100%;padding:14px;background:var(--ink);color:var(--white);font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:600;border:none;border-radius:5px;cursor:pointer;transition:all 0.25s;margin-top:4px;}
+.submit-btn:hover{background:var(--gold);}
+.submit-btn:disabled{background:#CCC;cursor:not-allowed;}
+
+.form-note{font-size:11px;color:var(--muted);text-align:center;margin-top:16px;line-height:1.6;}
+.form-note a{color:var(--gold);text-decoration:none;}
+.form-note a:hover{text-decoration:underline;}
+.trial-badge{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--green-bg);border:1px solid #C8E6C9;border-radius:5px;padding:10px;margin-bottom:24px;font-size:11px;color:var(--green);font-weight:500;}
+
+@media(max-width:900px){
+  .page-wrap{grid-template-columns:1fr;}
+  .left-side{display:none;}
+  .right-side{padding:24px 16px;}
+  nav{padding:0 20px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">
+    <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="15" stroke="#B8952A" stroke-width="1.5"/><polygon points="16,6 18.5,12.5 25.5,12.5 20,16.5 22,23 16,19.5 10,23 12,16.5 6.5,12.5 13.5,12.5" fill="#B8952A"/></svg>
+    <span class="nav-logo-text">Repute<span>AI</span></span>
+  </a>
+  <a href="index.html" class="nav-back">← Back to Home</a>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- LEFT: VALUE PROP -->
+  <div class="left-side">
+    <div class="left-eyebrow">15-Day Free Trial</div>
+    <h1 class="left-title">India's First<br>AI Business<br><em>Operating System</em></h1>
+    <p class="left-desc">Register in 2 minutes. Then our AI will interview you about your business to create a fully personalised dashboard — built specifically for you.</p>
+    <div class="left-features">
+      <div class="left-feature">
+        <div class="left-feature-icon">✨</div>
+        <div class="left-feature-text"><strong>AI Business Assistant</strong> — Ask anything about GST, contracts, government schemes, marketing in plain language</div>
+      </div>
+      <div class="left-feature">
+        <div class="left-feature-icon">⭐</div>
+        <div class="left-feature-text"><strong>Reputation Engine</strong> — Google Reviews monitored 24/7 with AI-drafted responses sent to your WhatsApp</div>
+      </div>
+      <div class="left-feature">
+        <div class="left-feature-icon">📄</div>
+        <div class="left-feature-text"><strong>Document Hub</strong> — NDA, invoices, quotations, offer letters generated in seconds</div>
+      </div>
+      <div class="left-feature">
+        <div class="left-feature-icon">🏛️</div>
+        <div class="left-feature-text"><strong>Government Schemes</strong> — AI finds every MSME subsidy and scheme your business qualifies for</div>
+      </div>
+    </div>
+    <div class="left-steps">
+      <div class="left-step"><div class="left-step-num">1</div><div class="left-step-label">Register</div></div>
+      <div class="left-step"><div class="left-step-num">2</div><div class="left-step-label">AI Interview</div></div>
+      <div class="left-step"><div class="left-step-num">3</div><div class="left-step-label">Dashboard</div></div>
+    </div>
+  </div>
+
+  <!-- RIGHT: FORM -->
+  <div class="right-side">
+    <div class="register-box">
+      <div class="reg-eyebrow">Step 1 of 3 — Basic Details</div>
+      <h2 class="reg-title">Create Your Account</h2>
+      <p class="reg-sub">Takes 2 minutes. After this, our AI will ask you a few questions to personalise everything.</p>
+
+      <div class="trial-badge">
+        🎁 &nbsp; 15-day free trial · No credit card required · Full access
+      </div>
+
+      <div class="error-msg" id="errorMsg"></div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Your Name *</label>
+          <input type="text" class="form-input" id="ownerName" placeholder="Your full name">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Business Name *</label>
+          <input type="text" class="form-input" id="businessName" placeholder="Your business name">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Business Category *</label>
+        <select class="form-select" id="category">
+          <option value="">Select your industry</option>
+          <option value="manufacturer">Manufacturer / Exporter</option>
+          <option value="clinic">Doctor / Clinic / Hospital</option>
+          <option value="restaurant">Restaurant / Cafe / Hotel</option>
+          <option value="real_estate">Builder / Real Estate</option>
+          <option value="salon">Salon / Spa / Beauty</option>
+          <option value="coaching_institute">Coaching Institute / School</option>
+          <option value="legal">Lawyer / CA Firm</option>
+          <option value="retail">Retail / Trader</option>
+          <option value="consultant">Consultant / Agency</option>
+          <option value="other">Other Business</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">WhatsApp Number *</label>
+          <input type="tel" class="form-input" id="phone" placeholder="10-digit number">
+        </div>
+        <div class="form-group">
+          <label class="form-label">City *</label>
+          <input type="text" class="form-input" id="city" placeholder="e.g. Surat, Vadodara">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email Address *</label>
+        <input type="email" class="form-input" id="email" placeholder="your@email.com">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Google Maps Link (Optional)</label>
+        <input type="url" class="form-input" id="googleMapsUrl" placeholder="Paste your Google Maps URL here">
+      </div>
+
+      <button class="submit-btn" id="submitBtn" onclick="registerBusiness()">
+        Continue to AI Interview →
+      </button>
+
+      <p class="form-note">
+        Already registered? <a href="login.html">Log in to your dashboard</a>
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const BACKEND = 'https://repute-india.onrender.com';
+
+async function registerBusiness() {
+  const btn = document.getElementById('submitBtn');
+  const err = document.getElementById('errorMsg');
+  err.style.display = 'none';
+
+  const ownerName = document.getElementById('ownerName').value.trim();
+  const businessName = document.getElementById('businessName').value.trim();
+  const category = document.getElementById('category').value;
+  const phone = document.getElementById('phone').value.trim().replace(/\D/g,'');
+  const city = document.getElementById('city').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const googleMapsUrl = document.getElementById('googleMapsUrl').value.trim();
+
+  // Validation
+  if (!ownerName || !businessName || !category || !phone || !city || !email) {
+    err.textContent = 'Please fill in all required fields.';
+    err.style.display = 'block';
+    return;
+  }
+  if (phone.length < 10) {
+    err.textContent = 'Please enter a valid 10-digit WhatsApp number.';
+    err.style.display = 'block';
+    return;
+  }
+  if (!email.includes('@')) {
+    err.textContent = 'Please enter a valid email address.';
+    err.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Creating your account...';
+
+  try {
+    const res = await fetch(`${BACKEND}/api/businesses`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        owner_name: ownerName,
+        business_name: businessName,
+        category,
+        phone,
+        whatsapp_number: '91' + phone,
+        email,
+        city,
+        google_maps_url: googleMapsUrl || null
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      localStorage.setItem('ri_business_id', data.business.id);
+      localStorage.setItem('ri_business_name', data.business.business_name);
+      localStorage.setItem('ri_phone', phone);
+      localStorage.setItem('ri_category', category);
+      localStorage.setItem('ri_city', city);
+
+      btn.textContent = '✓ Account created! Starting AI Interview...';
+      btn.style.background = '#2E7D32';
+
+      // Redirect to onboarding interview
+      setTimeout(() => { window.location.href = 'onboarding.html'; }, 800);
+    } else {
+      throw new Error(data.error || 'Registration failed. Please try again.');
+    }
+  } catch (e) {
+    err.textContent = e.message || 'Something went wrong. Please try again.';
+    err.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Continue to AI Interview →';
+  }
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && document.activeElement.tagName !== 'SELECT') registerBusiness();
+});
+</script>
+</body>
+</html>
