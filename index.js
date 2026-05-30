@@ -1460,6 +1460,76 @@ CRITICAL: Output only valid JSON. No line breaks inside values. No double quotes
 
 
 // ============================================================
+// REPUTE SCORE — full breakdown + improvement tasks
+// GET /api/repute-score/:business_id
+// ============================================================
+app.get("/api/repute-score/:business_id", async (req, res) => {
+  try {
+    const { business_id } = req.params;
+
+    const { data: business } = await supabase.from("businesses").select("*").eq("id", business_id).single();
+    const { data: profileRow } = await supabase.from("business_profiles").select("*").eq("business_id", business_id).single();
+
+    const profile = profileRow || {};
+    const category = business?.category || "";
+
+    // If reviews exist, use live rating for reputation portion
+    const { data: reviews } = await supabase.from("reviews").select("rating, is_replied").eq("business_id", business_id);
+    if (reviews && reviews.length > 0) {
+      const avg = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
+      profile.current_google_rating = avg.toFixed(1);
+    }
+
+    const score = calculateReputeScore(profile, category);
+    const breakdown = getScoreBreakdown(profile, category);
+
+    // Build personalised improvement tasks
+    const tasks = [];
+
+    // Profile completeness tasks
+    if (!profile.products_services || !profile.target_customers || !profile.turnover_range || !profile.biggest_challenge) {
+      tasks.push({ title: "Complete your Business DNA", text: "Finish your business profile so Arya can personalise everything and boost your score.", points: 200, done: false, action_target: "onboarding", action_label: "Complete Profile" });
+    } else {
+      tasks.push({ title: "Business DNA complete", text: "Your full business profile is on record.", points: 0, done: true });
+    }
+
+    // Compliance tasks
+    if (!profile.is_gst_registered) {
+      tasks.push({ title: "Register for GST", text: "GST registration adds major credibility and unlocks input tax credit. Ask Arya how to register.", points: 120, done: false, action_target: "ai-assistant", action_label: "Ask Arya" });
+    } else {
+      tasks.push({ title: "GST registered", text: "Your business is GST compliant.", points: 0, done: true });
+    }
+
+    if (!profile.is_msme_registered) {
+      tasks.push({ title: "Get MSME / Udyam registration", text: "Free registration that unlocks government schemes, subsidies and priority lending. Ask Arya how.", points: 120, done: false, action_target: "ai-assistant", action_label: "Ask Arya" });
+    } else {
+      tasks.push({ title: "MSME registered", text: "You're registered on Udyam — eligible for MSME benefits.", points: 0, done: true });
+    }
+
+    // Reputation tasks
+    const rating = parseFloat(profile.current_google_rating) || 0;
+    const unreplied = (reviews || []).filter(r => !r.is_replied).length;
+    if (rating === 0) {
+      tasks.push({ title: "Start collecting Google reviews", text: "Send review requests to happy customers via WhatsApp to build your reputation score.", points: 300, done: false, action_target: "reputation", action_label: "Get Reviews" });
+    } else if (rating < 4.5) {
+      tasks.push({ title: "Raise your Google rating", text: `You're at ${rating}/5. Responding to reviews and requesting more from happy customers lifts your rating toward 4.5+.`, points: 60, done: false, action_target: "reputation", action_label: "View Reviews" });
+    } else {
+      tasks.push({ title: "Excellent reputation", text: `Your ${rating}/5 rating is outstanding. Keep it up!`, points: 0, done: true });
+    }
+
+    if (unreplied > 0) {
+      tasks.push({ title: `Respond to ${unreplied} pending review${unreplied>1?'s':''}`, text: "Replying to every review (good or bad) signals you care — and improves your standing.", points: 40, done: false, action_target: "reputation", action_label: "Reply Now" });
+    }
+
+    res.json({ success: true, score, breakdown, tasks });
+  } catch (err) {
+    console.error("Repute score error:", err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+
+// ============================================================
 // START SERVER
 // ============================================================
 app.listen(PORT, () => {
