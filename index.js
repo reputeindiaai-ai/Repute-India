@@ -1709,6 +1709,110 @@ app.get("/api/admin/analytics", async (req, res) => {
 
 
 // ============================================================
+// COMPLAINT HANDLER
+// POST /api/complaint-handler
+// ============================================================
+app.post("/api/complaint-handler", async (req, res) => {
+  try {
+    const { complaint, source, severity, business_name, business_category } = req.body;
+    if (!complaint) return res.status(400).json({ success: false, error: "Complaint required" });
+
+    const prompt = `You are a customer experience expert for Indian businesses. Analyse this complaint and give a response strategy.
+
+Business: ${business_name}, a ${business_category || "business"}
+Complaint received via: ${source}
+Severity: ${severity}
+Complaint text: "${complaint}"
+
+Respond ONLY with this JSON (no markdown):
+{
+  "analysis": "2-3 sentences analysing the root issue and customer's emotional state",
+  "dont_say": "2-3 specific things NOT to say or do in this situation (with brief reason each)",
+  "what_to_offer": "Specific resolution or gesture to offer this customer (practical, India-appropriate)",
+  "suggested_reply": "A complete, ready-to-send response message in a professional yet warm Indian business tone — appropriate for ${source}. Under 100 words."
+}
+
+Be specific to this business and complaint. The suggested reply must be ready to copy-paste, not a template.
+CRITICAL: Output only valid JSON. No line breaks inside values. No double quotes inside values.`;
+
+    const response = await axios.post(
+      "https://api.anthropic.com/v1/messages",
+      { model: "claude-sonnet-4-6", max_tokens: 800, messages: [{ role: "user", content: prompt }] },
+      { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } }
+    );
+    let raw = response.data.content[0].text.trim();
+    raw = raw.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/\s*```$/i, "").trim();
+    let result;
+    try { result = JSON.parse(raw); }
+    catch(e) { const m = raw.match(/\{[\s\S]*\}/); result = m ? JSON.parse(m[0]) : null; }
+    if (!result) throw new Error("Parse failed");
+    res.json({ success: true, response: result });
+  } catch (err) {
+    console.error("Complaint handler error:", err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ============================================================
+// GOOGLE BUSINESS PROFILE OPTIMISER
+// POST /api/gbp-optimise
+// ============================================================
+app.post("/api/gbp-optimise", async (req, res) => {
+  try {
+    const { audit, business_name, business_category, business_city, avg_rating } = req.body;
+
+    const prompt = `You are a Google Business Profile expert for Indian local businesses. Audit this profile and give a prioritised fix list.
+
+Business: ${business_name}, a ${business_category || "business"} in ${business_city || "India"}
+Current Google rating: ${avg_rating || "unknown"}/5
+
+Profile audit:
+- Profile exists and verified: ${audit.exists}
+- Photos uploaded: ${audit.photos}
+- Business description: ${audit.description}
+- Posts/updates: ${audit.posts}
+- Replies to reviews: ${audit.replies}
+- Services/menu listed: ${audit.services}
+
+Calculate a profile completeness score (0-100) and give 4-6 specific, actionable fixes.
+
+Respond ONLY with this JSON (no markdown):
+{
+  "score": number,
+  "rating_label": "Poor|Fair|Good|Excellent",
+  "summary": "One sentence on the overall profile health",
+  "fixes": [
+    {
+      "title": "What to fix",
+      "action": "Exactly how to fix it (specific steps, under 30 words)",
+      "priority": "urgent|improve|done"
+    }
+  ]
+}
+
+Mark already-good items as 'done'. Mark missing critical items (no profile, no photos, no description) as 'urgent'. Order by priority.
+CRITICAL: Output only valid JSON. No line breaks inside values. No double quotes inside values.`;
+
+    const response = await axios.post(
+      "https://api.anthropic.com/v1/messages",
+      { model: "claude-sonnet-4-6", max_tokens: 700, messages: [{ role: "user", content: prompt }] },
+      { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } }
+    );
+    let raw = response.data.content[0].text.trim();
+    raw = raw.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/\s*```$/i, "").trim();
+    let result;
+    try { result = JSON.parse(raw); }
+    catch(e) { const m = raw.match(/\{[\s\S]*\}/); result = m ? JSON.parse(m[0]) : null; }
+    if (!result) throw new Error("Parse failed");
+    res.json({ success: true, audit: result });
+  } catch (err) {
+    console.error("GBP optimise error:", err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+
+// ============================================================
 // START SERVER
 // ============================================================
 app.listen(PORT, () => {
