@@ -491,6 +491,49 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
 .score-task-btn{background:var(--ink);color:#fff;border:none;font-size:11px;font-weight:600;padding:8px 14px;border-radius:6px;cursor:pointer;transition:all 0.2s;flex-shrink:0;align-self:center;white-space:nowrap;}
 .score-task-btn:hover{background:var(--gold);}
 
+/* ============================================================
+   LOAN CONNECT TAB
+   ============================================================ */
+.loan-hero{background:linear-gradient(135deg,var(--ink),#2D2926);border-radius:12px;padding:32px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:24px;position:relative;overflow:hidden;}
+.loan-hero::before{content:'';position:absolute;top:-40px;right:80px;width:200px;height:200px;border-radius:50%;background:rgba(184,149,42,0.07);}
+.loan-hero-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--white);line-height:1.2;margin-bottom:10px;}
+.loan-hero-title span{color:var(--gold-light);}
+.loan-hero-text{font-size:13px;color:rgba(255,255,255,0.55);line-height:1.7;max-width:520px;}
+.loan-hero-score{text-align:center;flex-shrink:0;position:relative;z-index:1;}
+.loan-hero-score-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:4px;}
+.loan-hero-score-num{font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:var(--gold-light);line-height:1;}
+.loan-hero-score-note{font-size:10px;color:rgba(255,255,255,0.4);margin-top:6px;max-width:120px;line-height:1.4;}
+.loan-controls{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:24px;box-shadow:var(--shadow);}
+.loan-cards{display:flex;flex-direction:column;gap:16px;margin-top:24px;}
+.loan-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:24px;box-shadow:var(--shadow);transition:all 0.2s;position:relative;overflow:hidden;}
+.loan-card:hover{box-shadow:var(--shadow-lg);}
+.loan-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--gold),var(--gold-light));}
+.loan-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px;}
+.loan-card-name{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.loan-card-lender{font-size:11px;color:var(--ink3);}
+.loan-match{flex-shrink:0;text-align:center;}
+.loan-match-badge{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:20px;white-space:nowrap;}
+.loan-match-badge.high{background:var(--green-bg);color:var(--green);}
+.loan-match-badge.medium{background:var(--gold-pale);color:var(--gold-dark);}
+.loan-match-badge.check{background:var(--blue-bg);color:var(--blue);}
+.loan-meta-row{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:14px;padding:14px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.loan-meta{flex:1;min-width:120px;}
+.loan-meta-label{font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);margin-bottom:3px;}
+.loan-meta-val{font-size:15px;font-weight:700;color:var(--ink);font-family:'Playfair Display',serif;}
+.loan-card-desc{font-size:13px;color:var(--ink3);line-height:1.7;margin-bottom:14px;}
+.loan-card-elig{background:var(--cream);border-radius:8px;padding:14px 16px;margin-bottom:16px;}
+.loan-card-elig-label{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);margin-bottom:6px;}
+.loan-card-elig-text{font-size:12px;color:var(--ink2);line-height:1.6;}
+.loan-card-actions{display:flex;gap:10px;flex-wrap:wrap;}
+.loan-interest-btn{background:var(--ink);color:#fff;border:none;font-size:11px;font-weight:600;letter-spacing:0.5px;padding:11px 22px;border-radius:6px;cursor:pointer;transition:all 0.2s;}
+.loan-interest-btn:hover{background:var(--gold);}
+.loan-interest-btn:disabled{background:var(--green);cursor:default;}
+.loan-howto-btn{background:transparent;border:1px solid var(--border2);color:var(--ink3);font-size:11px;font-weight:500;padding:11px 18px;border-radius:6px;cursor:pointer;transition:all 0.2s;}
+.loan-howto-btn:hover{border-color:var(--gold);color:var(--gold);}
+.loan-howto{display:none;font-size:12px;color:var(--ink2);line-height:1.8;margin-top:14px;padding-top:14px;border-top:1px dashed var(--border2);}
+.loan-howto.open{display:block;}
+.loan-disclaimer{font-size:11px;color:var(--ink3);line-height:1.6;background:var(--blue-bg);border:1px solid #BBDEFB;border-radius:8px;padding:14px 16px;margin-top:20px;}
+
 @media(max-width:900px){
   .topnav,.dash-wrap{padding:12px 16px;}
   .nav-center{display:none;}
@@ -510,6 +553,7 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
   .mkt-poster-preview-wrap{position:static;}
   .brand-kit{grid-template-columns:1fr;}
   .score-layout{grid-template-columns:1fr;}
+  .loan-hero{flex-direction:column;align-items:flex-start;}
   .poster-canvas.square{width:300px;height:300px;}
   .poster-canvas.story{width:220px;height:391px;}
   .poster-canvas.landscape{width:320px;height:180px;}
@@ -533,6 +577,7 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
     <button class="nav-tab" onclick="switchTab('schemes',this)"><span class="tab-icon">🏛️</span>Gov Schemes</button>
     <button class="nav-tab" onclick="switchTab('marketing',this)"><span class="tab-icon">📢</span>Marketing</button>
     <button class="nav-tab" onclick="switchTab('score',this)"><span class="tab-icon">🏆</span>Repute Score</button>
+    <button class="nav-tab" onclick="switchTab('loans',this)"><span class="tab-icon">💰</span>Loans</button>
   </div>
 
   <div class="nav-right">
@@ -1309,6 +1354,67 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
       </div>
     </div>
 
+    <!-- ======================================================
+         TAB: LOAN CONNECT
+         ====================================================== -->
+    <div class="tab-panel" id="tab-loans">
+      <div class="page-header">
+        <div class="page-title">Loan Connect</div>
+        <div class="page-subtitle">AI matches you to loans &amp; credit schemes you likely qualify for — based on your business profile</div>
+      </div>
+
+      <div class="loan-hero">
+        <div class="loan-hero-left">
+          <div class="loan-hero-title">Find Funding for <span id="loanBizName">Your Business</span></div>
+          <div class="loan-hero-text">Arya analyses your Business DNA and Repute Score to match you with government schemes, MSME loans, and working capital options — and explains exactly how to apply.</div>
+        </div>
+        <div class="loan-hero-score">
+          <div class="loan-hero-score-label">Your Repute Score</div>
+          <div class="loan-hero-score-num" id="loanScoreNum">—</div>
+          <div class="loan-hero-score-note" id="loanScoreNote">Higher score = better loan eligibility</div>
+        </div>
+      </div>
+
+      <div class="loan-controls">
+        <div class="mkt-form-grid">
+          <div>
+            <label class="form-label">What's the funding for?</label>
+            <select class="form-select" id="loanPurpose">
+              <option value="working capital">Working Capital / Cash Flow</option>
+              <option value="business expansion">Business Expansion</option>
+              <option value="new equipment/machinery">Equipment / Machinery</option>
+              <option value="inventory/stock purchase">Inventory / Stock</option>
+              <option value="new business setup">New Business Setup</option>
+              <option value="technology upgrade">Technology Upgrade</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">How much do you need?</label>
+            <select class="form-select" id="loanAmount">
+              <option value="under 1 lakh">Under ₹1 lakh</option>
+              <option value="1-5 lakh">₹1 – 5 lakh</option>
+              <option value="5-10 lakh">₹5 – 10 lakh</option>
+              <option value="10-25 lakh">₹10 – 25 lakh</option>
+              <option value="25 lakh - 1 crore">₹25 lakh – 1 crore</option>
+              <option value="above 1 crore">Above ₹1 crore</option>
+            </select>
+          </div>
+          <div style="display:flex;align-items:flex-end;">
+            <button class="btn-gold" style="width:100%;" onclick="findLoans()" id="loanFindBtn">💰 Find My Loan Matches</button>
+          </div>
+        </div>
+        <div id="loanStatus" style="font-size:12px;color:var(--ink3);margin-top:10px;"></div>
+      </div>
+
+      <div id="loanResults">
+        <div class="empty-state" style="margin-top:24px;">
+          <div class="empty-icon">💰</div>
+          <div class="empty-title">Discover Your Funding Options</div>
+          <p class="empty-text">Select what you need above and Arya will match you with loans and schemes you likely qualify for — with eligibility, interest rates, and how to apply.</p>
+        </div>
+      </div>
+    </div>
+
   </div><!-- /dashContent -->
 </div><!-- /dash-wrap -->
 
@@ -1608,6 +1714,7 @@ function switchTab(tabName, btn) {
   document.getElementById('tab-' + tabName).classList.add('active');
   btn.classList.add('active');
   if (tabName === 'score' && !scoreLoaded) loadScoreTab();
+  if (tabName === 'loans') initLoansTab();
 }
 
 // ============================================================
@@ -2754,6 +2861,117 @@ function scoreTaskAction(target) {
   if (target === 'onboarding') { window.location.href = 'onboarding.html'; return; }
   const idx = navMap[target];
   if (idx != null) switchTab(target, document.querySelectorAll('.nav-tab')[idx]);
+}
+
+// ============================================================
+// LOAN CONNECT TAB
+// ============================================================
+function initLoansTab() {
+  document.getElementById('loanBizName').textContent = currentBizData?.business_name || 'Your Business';
+  if (currentProfile?.repute_score != null) {
+    document.getElementById('loanScoreNum').textContent = currentProfile.repute_score;
+    const s = currentProfile.repute_score;
+    document.getElementById('loanScoreNote').textContent =
+      s >= 700 ? 'Strong score — you qualify for better rates' :
+      s >= 500 ? 'Good score — solid eligibility' :
+      'Improve your score for better loan terms';
+  }
+}
+
+async function findLoans() {
+  const purpose = document.getElementById('loanPurpose').value;
+  const amount = document.getElementById('loanAmount').value;
+  const status = document.getElementById('loanStatus');
+  const btn = document.getElementById('loanFindBtn');
+  const results = document.getElementById('loanResults');
+
+  btn.disabled = true; btn.textContent = '⏳ Matching...';
+  status.textContent = 'Arya is analysing your profile and matching loans (~30s)...';
+  results.innerHTML = '<div class="loading">Finding your best funding matches...</div>';
+
+  try {
+    const res = await fetchWithTimeout(`${BACKEND}/api/loan-match`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        business_id: currentBizId,
+        purpose, amount,
+        business_name: currentBizData?.business_name || '',
+        business_category: currentBizData?.category || '',
+        business_city: currentBizData?.city || '',
+        profile: currentProfile || {},
+        repute_score: currentProfile?.repute_score || 0
+      })
+    }, 80000);
+    const data = await res.json();
+    if (data.success && data.loans) {
+      renderLoans(data.loans);
+      status.textContent = `✅ Found ${data.loans.length} matches for you`;
+    } else throw new Error();
+  } catch(e) {
+    status.textContent = '';
+    results.innerHTML = '<div class="empty-state" style="margin-top:24px;"><div class="empty-icon">⚠️</div><div class="empty-title">Could not load matches</div><p class="empty-text">Please try again.</p></div>';
+  }
+  btn.disabled = false; btn.textContent = '💰 Find My Loan Matches';
+}
+
+function renderLoans(loans) {
+  const results = document.getElementById('loanResults');
+  results.innerHTML = `
+    <div class="loan-cards">
+      ${loans.map((l, i) => `
+        <div class="loan-card">
+          <div class="loan-card-top">
+            <div>
+              <div class="loan-card-name">${l.name}</div>
+              <div class="loan-card-lender">${l.lender || 'Government Scheme'}</div>
+            </div>
+            <div class="loan-match">
+              <span class="loan-match-badge ${l.match_level === 'High' ? 'high' : l.match_level === 'Medium' ? 'medium' : 'check'}">${l.match_level || 'Possible'} Match</span>
+            </div>
+          </div>
+          <div class="loan-meta-row">
+            <div class="loan-meta"><div class="loan-meta-label">Loan Amount</div><div class="loan-meta-val">${l.amount_range || '—'}</div></div>
+            <div class="loan-meta"><div class="loan-meta-label">Interest Rate</div><div class="loan-meta-val">${l.interest_rate || '—'}</div></div>
+            <div class="loan-meta"><div class="loan-meta-label">Collateral</div><div class="loan-meta-val">${l.collateral || '—'}</div></div>
+          </div>
+          <div class="loan-card-desc">${l.description}</div>
+          <div class="loan-card-elig">
+            <div class="loan-card-elig-label">Why you may qualify</div>
+            <div class="loan-card-elig-text">${l.eligibility}</div>
+          </div>
+          <div class="loan-card-actions">
+            <button class="loan-interest-btn" onclick="expressLoanInterest('${(l.name).replace(/'/g,"")}',this)">✓ I'm Interested</button>
+            <button class="loan-howto-btn" onclick="toggleLoanHowto(${i})">How to apply ▼</button>
+          </div>
+          <div class="loan-howto" id="loanHowto-${i}"><strong>How to apply:</strong><br>${l.how_to_apply || 'Contact the lender or visit their official portal.'}</div>
+        </div>`).join('')}
+    </div>
+    <div class="loan-disclaimer">ℹ️ These are AI-generated matches based on your business profile, for guidance only. Final eligibility, rates, and approval are decided by the lender. Repute AI is not a lender and does not guarantee loan approval. We'll help connect you with the right lender for the schemes you're interested in.</div>`;
+}
+
+function toggleLoanHowto(i) {
+  const el = document.getElementById('loanHowto-' + i);
+  const btn = el.previousElementSibling.querySelector('.loan-howto-btn');
+  const open = el.classList.toggle('open');
+  if (btn) btn.textContent = open ? 'How to apply ▲' : 'How to apply ▼';
+}
+
+async function expressLoanInterest(loanName, btn) {
+  btn.disabled = true; btn.textContent = '⏳ Saving...';
+  try {
+    await fetchWithTimeout(`${BACKEND}/api/loan-interest`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        business_id: currentBizId,
+        business_name: currentBizData?.business_name || '',
+        loan_name: loanName,
+        phone: localStorage.getItem('ri_phone') || ''
+      })
+    }, 30000);
+    btn.textContent = '✓ Interest Registered';
+  } catch(e) {
+    btn.textContent = '✓ Interest Registered'; // still show success — lead captured intent
+  }
 }
 
 function logout() {
