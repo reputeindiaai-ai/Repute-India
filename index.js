@@ -1530,6 +1530,83 @@ app.get("/api/repute-score/:business_id", async (req, res) => {
 
 
 // ============================================================
+// LOAN CONNECT — MATCH
+// POST /api/loan-match
+// ============================================================
+app.post("/api/loan-match", async (req, res) => {
+  try {
+    const { purpose, amount, business_name, business_category, business_city, profile = {}, repute_score } = req.body;
+
+    const p = profile || {};
+    const prompt = `You are a business loan advisor for Indian MSMEs. Match this business to the most relevant loan & credit options.
+
+Business: ${business_name}, a ${business_category} in ${business_city || "India"}
+Funding purpose: ${purpose}
+Amount needed: ${amount}
+Repute Score: ${repute_score || 0}/1000
+Profile: Turnover ${p.turnover_range || "unknown"}, Employees ${p.employee_count || "unknown"}, GST ${p.is_gst_registered ? "Yes" : "No"}, MSME ${p.is_msme_registered ? "Yes" : "No"}, Exporter ${p.is_exporter ? "Yes" : "No"}
+
+List 4-6 real, relevant loan/credit options. Mix government schemes (MUDRA, CGTMSE, Stand-Up India, PMEGP, etc.) and bank/NBFC products (working capital, term loan, CC limit, etc.) that fit the purpose and amount. Set match_level based on fit with their profile (High if GST+MSME registered and amount fits scheme limits, Medium if partial fit, Possible otherwise).
+
+Respond ONLY with this JSON array (no markdown):
+[
+  {
+    "name": "Loan/scheme name",
+    "lender": "Bank/NBFC/Government body",
+    "match_level": "High|Medium|Possible",
+    "amount_range": "e.g. Up to Rs 10 lakh",
+    "interest_rate": "e.g. 8-12% p.a.",
+    "collateral": "e.g. None / Required",
+    "description": "2 sentences on what this loan offers and why it fits",
+    "eligibility": "1-2 sentences on why THIS business may qualify",
+    "how_to_apply": "Short step-by-step (2-3 steps)"
+  }
+]
+
+Use real Indian schemes and realistic numbers. Be specific to this business.
+CRITICAL: Output only valid JSON. No line breaks inside values. No double quotes inside values.`;
+
+    const response = await axios.post(
+      "https://api.anthropic.com/v1/messages",
+      { model: "claude-sonnet-4-6", max_tokens: 2500, messages: [{ role: "user", content: prompt }] },
+      { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } }
+    );
+    let raw = response.data.content[0].text.trim();
+    raw = raw.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/\s*```$/i, "").trim();
+    const aStart = raw.indexOf("["), aEnd = raw.lastIndexOf("]");
+    if (aStart !== -1 && aEnd !== -1) raw = raw.substring(aStart, aEnd + 1);
+    const loans = JSON.parse(raw);
+    res.json({ success: true, loans });
+  } catch (err) {
+    console.error("Loan match error:", err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ============================================================
+// LOAN CONNECT — EXPRESS INTEREST (lead capture)
+// POST /api/loan-interest
+// ============================================================
+app.post("/api/loan-interest", async (req, res) => {
+  try {
+    const { business_id, business_name, loan_name, phone } = req.body;
+    // Try to save the lead; if table doesn't exist, don't fail the user
+    try {
+      await supabase.from("loan_leads").insert([{
+        business_id, business_name, loan_name, phone, status: "interested"
+      }]);
+    } catch (dbErr) {
+      console.error("loan_leads insert (table may not exist yet):", dbErr.message);
+    }
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Loan interest error:", err.message);
+    res.json({ success: true }); // never block the user on lead capture
+  }
+});
+
+
+// ============================================================
 // START SERVER
 // ============================================================
 app.listen(PORT, () => {
