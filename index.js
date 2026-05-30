@@ -485,7 +485,7 @@ Each point must be 1 sentence, specific and actionable for Indian local business
 
     const response = await axios.post(
       "https://api.anthropic.com/v1/messages",
-      { model: "claude-sonnet-4-20250514", max_tokens: 800, messages: [{ role: "user", content: prompt }] },
+      { model: "claude-sonnet-4-6", max_tokens: 800, messages: [{ role: "user", content: prompt }] },
       { headers: { "x-api-key": process.env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } }
     );
 
@@ -643,7 +643,7 @@ async function analyseSentiment(text, rating) {
     const response = await axios.post(
       "https://api.anthropic.com/v1/messages",
       {
-        model: "claude-sonnet-4-20250514", max_tokens: 200,
+        model: "claude-sonnet-4-6", max_tokens: 200,
         messages: [{ role: "user", content: `Analyse this business review and respond ONLY with JSON (no markdown):\n{"label": "positive|neutral|negative", "score": 0.0-1.0, "keywords": ["keyword1", "keyword2", "keyword3"]}\n\nReview: "${text}"\nRating: ${rating}/5` }]
       },
       { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } }
@@ -663,7 +663,7 @@ async function generateReply(business, review, tone = "professional") {
     const response = await axios.post(
       "https://api.anthropic.com/v1/messages",
       {
-        model: "claude-sonnet-4-20250514", max_tokens: 300,
+        model: "claude-sonnet-4-6", max_tokens: 300,
         messages: [{ role: "user", content: `Write a ${toneGuide[tone] || "professional"} reply to this Google review for ${business.business_name} (${business.category} in ${business.city || "India"}).\n\nReview (${review.rating}/5 stars) by ${review.reviewer_name || "a customer"}:\n"${review.review_text}"\n\nRequirements:\n- Keep it under 100 words\n- Sound human, not robotic\n- Address specific points mentioned\n- End with an invitation to return\n- Do NOT use phrases like "We apologize for the inconvenience"\n- Write only the reply text, nothing else` }]
       },
       { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } }
@@ -730,7 +730,7 @@ async function scrapeGoogleRating(mapsUrl, businessName) {
     if (countMatch) review_count = parseInt(countMatch[1].replace(/,/g, ''));
     if (!rating) {
       const claudeRes = await axios.post("https://api.anthropic.com/v1/messages",
-        { model: "claude-sonnet-4-20250514", max_tokens: 150, messages: [{ role: "user", content: `Generate realistic Google Maps data for an Indian business called "${businessName}". Respond ONLY with JSON: {"rating": 4.1, "review_count": 87, "category": "Restaurant"}` }] },
+        { model: "claude-sonnet-4-6", max_tokens: 150, messages: [{ role: "user", content: `Generate realistic Google Maps data for an Indian business called "${businessName}". Respond ONLY with JSON: {"rating": 4.1, "review_count": 87, "category": "Restaurant"}` }] },
         { headers: { "x-api-key": process.env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } }
       );
       const parsed = JSON.parse(claudeRes.data.content[0].text.trim());
@@ -740,7 +740,7 @@ async function scrapeGoogleRating(mapsUrl, businessName) {
   } catch (err) {
     try {
       const claudeRes = await axios.post("https://api.anthropic.com/v1/messages",
-        { model: "claude-sonnet-4-20250514", max_tokens: 150, messages: [{ role: "user", content: `Generate realistic Google Maps data for an Indian business called "${businessName}". Respond ONLY with JSON: {"rating": 4.1, "review_count": 87, "category": "Restaurant"}` }] },
+        { model: "claude-sonnet-4-6", max_tokens: 150, messages: [{ role: "user", content: `Generate realistic Google Maps data for an Indian business called "${businessName}". Respond ONLY with JSON: {"rating": 4.1, "review_count": 87, "category": "Restaurant"}` }] },
         { headers: { "x-api-key": process.env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } }
       );
       const parsed = JSON.parse(claudeRes.data.content[0].text.trim());
