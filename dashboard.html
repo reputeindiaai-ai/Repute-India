@@ -358,13 +358,20 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
          ====================================================== -->
     <div class="tab-panel active" id="tab-reputation">
       <div class="page-header">
-        <div class="page-title">Reputation Dashboard</div>
+        <div class="page-title" id="welcomeTitle">Reputation Dashboard</div>
         <div class="page-subtitle">Your real-time reputation overview — powered by AI</div>
       </div>
 
       <div class="trial-banner">
         <div class="trial-text"><strong>Free Trial Active</strong> — AI is monitoring your reputation 24/7</div>
-        <div class="trial-days" id="trialDays">15 days left</div>
+        <div style="display:flex;align-items:center;gap:28px;">
+          <div style="text-align:right;">
+            <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:2px;">Repute Score</div>
+            <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--gold-light);line-height:1;" id="reputeScoreBadge">—</div>
+          </div>
+          <div style="width:1px;height:36px;background:rgba(255,255,255,0.15);"></div>
+          <div class="trial-days" id="trialDays">15 days left</div>
+        </div>
       </div>
 
       <div class="stats-row">
@@ -778,6 +785,7 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
 const BACKEND = 'https://repute-india.onrender.com';
 let currentBizId = null;
 let currentBizData = null;
+let currentProfile = null;
 let selectedDocType = null;
 let selectedPlatform = 'instagram';
 let aiConversation = [];
@@ -806,6 +814,21 @@ async function loadDashboard() {
       document.getElementById('statTotal').textContent = stats.total_reviews;
       document.getElementById('statUnreplied').textContent = stats.unreplied_count;
       document.getElementById('statPositive').textContent = stats.sentiment?.positive || 0;
+
+      // Fetch Business DNA profile for personalization
+      try {
+        const profRes = await fetch(`${BACKEND}/api/business-profile/${bizId}`);
+        const profData = await profRes.json();
+        if (profData.success && profData.has_profile) {
+          currentProfile = profData.profile;
+          applyPersonalization(business, currentProfile);
+        } else if (business.onboarding_completed !== true) {
+          // No profile yet — send them to onboarding
+          window.location.href = 'onboarding.html';
+          return;
+        }
+      } catch(e) { console.error('Profile fetch error:', e); }
+
       await loadReviews(bizId);
       await loadCompetitors(bizId);
       document.getElementById('loadingState').style.display = 'none';
@@ -817,7 +840,88 @@ async function loadDashboard() {
 }
 
 // ============================================================
-// TAB SWITCHING
+// PHASE 2: APPLY BUSINESS DNA PERSONALIZATION ACROSS MODULES
+// ============================================================
+function applyPersonalization(business, profile) {
+  const ownerName = business.owner_name || '';
+  const bizName = business.business_name || localStorage.getItem('ri_business_name') || 'your business';
+
+  // 1. Personalised welcome greeting
+  const hour = new Date().getHours();
+  const greet = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+  const firstName = ownerName.split(' ')[0] || '';
+  const welcomeEl = document.getElementById('welcomeTitle');
+  if (welcomeEl) welcomeEl.textContent = firstName ? `${greet}, ${firstName}` : `${greet}`;
+
+  // 2. Repute Score badge
+  const scoreEl = document.getElementById('reputeScoreBadge');
+  if (scoreEl && profile && profile.repute_score != null) {
+    scoreEl.textContent = profile.repute_score;
+  }
+
+  if (!profile) return;
+
+  // 3. Pre-fill Government Schemes (industry + state) so it works on first click
+  const indEl = document.getElementById('schemesIndustry');
+  if (indEl && !indEl.value) {
+    // Use products/services or category as industry hint
+    indEl.value = profile.products_services
+      ? profile.products_services.split(/[,.]/)[0].trim().substring(0, 40)
+      : formatCategoryName(business.category);
+  }
+  const stateEl = document.getElementById('schemesState');
+  if (stateEl && !stateEl.value) {
+    const guessedState = guessStateFromCity(business.city);
+    if (guessedState) stateEl.value = guessedState;
+  }
+
+  // 4. Pre-fill Document Hub company field default (used when generating)
+  window.__dnaCompanyName = bizName;
+  window.__dnaGST = profile.gst_number || '';
+  window.__dnaCity = business.city || '';
+
+  // 5. AI Assistant greeting — make first message reference their business
+  const aiMsgs = document.getElementById('aiMessages');
+  if (aiMsgs && profile.products_services) {
+    const firstBubble = aiMsgs.querySelector('.ai-msg.assistant .ai-msg-bubble');
+    if (firstBubble) {
+      firstBubble.innerHTML = `
+        <p>Namaste${firstName ? ' ' + firstName : ''}! 🙏 I'm your AI Business Assistant — and I already know <strong>${bizName}</strong>.</p>
+        <p>I understand you offer <strong>${profile.products_services}</strong>${profile.target_customers ? ' for ' + profile.target_customers : ''}. ${profile.biggest_challenge ? 'I also know your biggest challenge right now is <strong>' + profile.biggest_challenge + '</strong> — I can help with that.' : ''}</p>
+        <p>Ask me anything: GST, contracts, government schemes, marketing, loans. What's on your mind?</p>`;
+    }
+  }
+}
+
+function formatCategoryName(cat) {
+  const map = {
+    clinic:'Healthcare Clinic', restaurant:'Restaurant', real_estate:'Real Estate',
+    salon:'Salon & Spa', coaching_institute:'Education & Coaching', hotel:'Hospitality',
+    legal:'Legal Services', retail:'Retail Trading', manufacturer:'Manufacturing',
+    consultant:'Consulting', other:'Business'
+  };
+  return map[cat] || 'Business';
+}
+
+function guessStateFromCity(city) {
+  if (!city) return '';
+  const c = city.toLowerCase();
+  const cityState = {
+    'surat':'Gujarat','vadodara':'Gujarat','ahmedabad':'Gujarat','rajkot':'Gujarat','gandhinagar':'Gujarat','anand':'Gujarat','baroda':'Gujarat',
+    'mumbai':'Maharashtra','pune':'Maharashtra','nagpur':'Maharashtra','nashik':'Maharashtra',
+    'delhi':'Delhi','new delhi':'Delhi',
+    'bangalore':'Karnataka','bengaluru':'Karnataka','mysore':'Karnataka',
+    'chennai':'Tamil Nadu','coimbatore':'Tamil Nadu',
+    'hyderabad':'Telangana','jaipur':'Rajasthan','kolkata':'West Bengal',
+    'lucknow':'Uttar Pradesh','kanpur':'Uttar Pradesh','chandigarh':'Punjab','ludhiana':'Punjab',
+    'indore':'Madhya Pradesh','bhopal':'Madhya Pradesh','gurgaon':'Haryana','gurugram':'Haryana'
+  };
+  for (const [k, v] of Object.entries(cityState)) {
+    if (c.includes(k)) return v;
+  }
+  return '';
+}
+
 // ============================================================
 function switchTab(tabName, btn) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
@@ -1102,6 +1206,7 @@ async function sendAiMessage() {
         business_name: bizName,
         business_category: bizCategory,
         business_city: bizCity,
+        business_profile: currentProfile,
         conversation: aiConversation
       })
     });
@@ -1273,6 +1378,25 @@ function selectDoc(type, card) {
         : `<input type="text" class="form-input" id="docField_${f.id}" placeholder="${f.placeholder}">`
       }
     </div>`).join('');
+
+  // Auto-fill company-related fields from Business DNA
+  const companyName = window.__dnaCompanyName || localStorage.getItem('ri_business_name') || '';
+  const gstNum = window.__dnaGST || '';
+  const cityVal = window.__dnaCity || '';
+  fields.forEach(f => {
+    const el = document.getElementById('docField_' + f.id);
+    if (!el) return;
+    const idLower = f.id.toLowerCase();
+    const labelLower = f.label.toLowerCase();
+    if ((idLower.includes('company') || idLower.includes('firm') || idLower === 'party1') && companyName) {
+      el.value = companyName;
+    } else if (idLower === 'gst' && gstNum) {
+      el.value = gstNum;
+    } else if (idLower === 'city' && cityVal) {
+      el.value = cityVal;
+    }
+  });
+
   gen.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -1431,7 +1555,9 @@ async function generateMarketing() {
         details,
         business_name: localStorage.getItem('ri_business_name') || '',
         business_category: currentBizData?.category || 'business',
-        business_city: currentBizData?.city || 'India'
+        business_city: currentBizData?.city || 'India',
+        products_services: currentProfile?.products_services || '',
+        target_customers: currentProfile?.target_customers || ''
       })
     });
     const data = await res.json();
