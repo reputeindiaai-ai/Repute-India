@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Repute AI Business OS</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 :root{
   --cream:#FAFAF7;
@@ -357,6 +358,80 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
 .feed-refresh-row{display:flex;align-items:center;gap:16px;margin-top:24px;padding-top:20px;border-top:1px solid var(--border);}
 .feed-updated{font-size:11px;color:var(--ink3);}
 
+/* ============================================================
+   MARKETING STUDIO 2.0
+   ============================================================ */
+.mkt-subnav{display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap;border-bottom:1px solid var(--border);padding-bottom:16px;}
+.mkt-subtab{background:var(--white);border:1px solid var(--border);color:var(--ink3);font-size:12px;font-weight:600;padding:9px 18px;border-radius:8px;cursor:pointer;transition:all 0.2s;}
+.mkt-subtab:hover{border-color:var(--gold);color:var(--gold-dark);}
+.mkt-subtab.active{background:var(--ink);color:var(--white);border-color:var(--ink);}
+.mkt-tool{display:none;}
+.mkt-tool.active{display:block;animation:fadeIn 0.3s ease;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.mkt-tool-intro{margin-bottom:20px;}
+.mkt-tool-intro-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.mkt-tool-intro-text{font-size:13px;color:var(--ink3);line-height:1.6;max-width:600px;}
+
+/* FESTIVAL CALENDAR */
+.mkt-cal-loading{text-align:center;padding:50px 20px;}
+.mkt-cal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.mkt-cal-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:22px;box-shadow:var(--shadow);transition:all 0.2s;position:relative;overflow:hidden;}
+.mkt-cal-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);}
+.mkt-cal-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--gold),var(--gold-light));}
+.mkt-cal-emoji{font-size:32px;margin-bottom:10px;}
+.mkt-cal-days{display:inline-block;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:var(--gold-pale);color:var(--gold-dark);padding:4px 10px;border-radius:20px;margin-bottom:10px;}
+.mkt-cal-days.soon{background:var(--red-bg);color:var(--red);}
+.mkt-cal-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.mkt-cal-date{font-size:11px;color:var(--ink3);margin-bottom:10px;}
+.mkt-cal-idea{font-size:12px;color:var(--ink3);line-height:1.6;margin-bottom:16px;}
+.mkt-cal-btn{width:100%;background:var(--ink);color:var(--white);border:none;font-size:11px;font-weight:600;letter-spacing:0.5px;padding:10px;border-radius:6px;cursor:pointer;transition:all 0.2s;}
+.mkt-cal-btn:hover{background:var(--gold);}
+
+/* POSTER STUDIO */
+.mkt-poster-layout{display:grid;grid-template-columns:340px 1fr;gap:28px;align-items:start;}
+.mkt-poster-controls{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:24px;box-shadow:var(--shadow);}
+.poster-color-row{display:flex;gap:8px;flex-wrap:wrap;}
+.poster-color{width:42px;height:42px;border-radius:8px;border:2px solid transparent;cursor:pointer;transition:all 0.2s;}
+.poster-color:hover{transform:scale(1.08);}
+.poster-color.active{border-color:var(--ink);box-shadow:0 0 0 2px var(--white),0 0 0 4px var(--gold);}
+.poster-ai-tip{margin-top:18px;padding-top:18px;border-top:1px solid var(--border);font-size:12px;color:var(--ink3);line-height:1.6;}
+.mkt-poster-preview-wrap{position:sticky;top:90px;}
+.poster-preview-label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;text-align:center;}
+.poster-canvas-holder{display:flex;justify-content:center;}
+.poster-canvas{position:relative;overflow:hidden;border-radius:8px;box-shadow:var(--shadow-lg);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8%;color:#fff;}
+.poster-canvas.square{width:420px;height:420px;}
+.poster-canvas.story{width:280px;height:498px;}
+.poster-canvas.landscape{width:480px;height:270px;}
+.poster-canvas.gold{background:linear-gradient(135deg,#1A1612,#3a3128 50%,#B8952A);}
+.poster-canvas.royal{background:linear-gradient(135deg,#0d1547,#1A237E 50%,#5C6BC0);}
+.poster-canvas.festive{background:linear-gradient(135deg,#7f0000,#B71C1C 45%,#FF8F00);}
+.poster-canvas.emerald{background:linear-gradient(135deg,#0a2e0c,#1B5E20 50%,#66BB6A);}
+.poster-canvas.rose{background:linear-gradient(135deg,#4a0027,#880E4F 50%,#EC407A);}
+.poster-canvas.ocean{background:linear-gradient(135deg,#002f33,#006064 50%,#26C6DA);}
+.poster-empty{font-size:13px;opacity:0.5;font-style:italic;}
+.poster-biz{font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;opacity:0.85;margin-bottom:auto;padding-top:4%;}
+.poster-headline{font-family:'Playfair Display',serif;font-weight:700;line-height:1.1;margin:auto 0;text-shadow:0 2px 12px rgba(0,0,0,0.3);}
+.poster-canvas.square .poster-headline{font-size:38px;}
+.poster-canvas.story .poster-headline{font-size:32px;}
+.poster-canvas.landscape .poster-headline{font-size:30px;}
+.poster-offer{display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:30px;padding:8px 22px;font-size:15px;font-weight:600;margin:12px 0;}
+.poster-sub{font-size:12px;opacity:0.8;line-height:1.5;}
+.poster-footer{margin-top:auto;font-size:11px;opacity:0.7;padding-bottom:4%;letter-spacing:0.5px;}
+.poster-actions{display:flex;gap:10px;justify-content:center;margin-top:18px;}
+
+/* AI TOOLS HUB */
+.aitool-result-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:24px;box-shadow:var(--shadow);margin-top:20px;}
+.aitool-prompt-label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.aitool-prompt-box{background:var(--cream);border:1px solid var(--border2);border-radius:8px;padding:16px;font-size:13px;color:var(--ink2);line-height:1.7;margin-bottom:16px;}
+.aitool-links-label{font-size:11px;font-weight:600;color:var(--ink3);margin-bottom:10px;}
+.aitool-links{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
+.aitool-link{display:flex;align-items:center;gap:10px;background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:12px 14px;text-decoration:none;transition:all 0.2s;}
+.aitool-link:hover{border-color:var(--gold);background:var(--gold-pale);}
+.aitool-link-icon{font-size:18px;}
+.aitool-link-name{font-size:12px;font-weight:600;color:var(--ink);}
+.aitool-link-sub{font-size:10px;color:var(--ink3);}
+.aitool-steps{background:var(--blue-bg);border:1px solid #BBDEFB;border-radius:8px;padding:14px 16px;margin-top:16px;font-size:12px;color:var(--ink2);line-height:1.7;}
+
 @media(max-width:900px){
   .topnav,.dash-wrap{padding:12px 16px;}
   .nav-center{display:none;}
@@ -372,6 +447,11 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
   .doc-fields{grid-template-columns:1fr;}
   .schemes-search-row{grid-template-columns:1fr;}
   .marketing-type-grid{grid-template-columns:repeat(3,1fr);}
+  .mkt-poster-layout{grid-template-columns:1fr;}
+  .mkt-poster-preview-wrap{position:static;}
+  .poster-canvas.square{width:300px;height:300px;}
+  .poster-canvas.story{width:220px;height:391px;}
+  .poster-canvas.landscape{width:320px;height:180px;}
   .mkt-form-grid{grid-template-columns:1fr;}
 }
 </style>
@@ -785,83 +865,176 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
          ====================================================== -->
     <div class="tab-panel" id="tab-marketing">
       <div class="page-header">
-        <div class="page-title">Marketing Engine</div>
-        <div class="page-subtitle">AI-generated content for every platform — adapted to your business</div>
+        <div class="page-title">Marketing Studio</div>
+        <div class="page-subtitle">Your full AI marketing agency — posters, posts, campaigns &amp; creative tools</div>
       </div>
 
-      <div class="marketing-type-grid">
-        <div class="mkt-type-btn active" id="mktBtn-instagram" onclick="selectPlatform('instagram',this)">
-          <span class="mkt-type-icon">📸</span>
-          <span class="mkt-type-label">Instagram</span>
-        </div>
-        <div class="mkt-type-btn" id="mktBtn-facebook" onclick="selectPlatform('facebook',this)">
-          <span class="mkt-type-icon">👥</span>
-          <span class="mkt-type-label">Facebook</span>
-        </div>
-        <div class="mkt-type-btn" id="mktBtn-linkedin" onclick="selectPlatform('linkedin',this)">
-          <span class="mkt-type-icon">💼</span>
-          <span class="mkt-type-label">LinkedIn</span>
-        </div>
-        <div class="mkt-type-btn" id="mktBtn-whatsapp" onclick="selectPlatform('whatsapp',this)">
-          <span class="mkt-type-icon">📱</span>
-          <span class="mkt-type-label">WhatsApp</span>
-        </div>
-        <div class="mkt-type-btn" id="mktBtn-email" onclick="selectPlatform('email',this)">
-          <span class="mkt-type-icon">📧</span>
-          <span class="mkt-type-label">Email</span>
-        </div>
-        <div class="mkt-type-btn" id="mktBtn-blog" onclick="selectPlatform('blog',this)">
-          <span class="mkt-type-icon">✍️</span>
-          <span class="mkt-type-label">Blog</span>
-        </div>
+      <!-- SUB-TAB NAV -->
+      <div class="mkt-subnav">
+        <button class="mkt-subtab active" onclick="switchMktTool('calendar',this)">📅 Festival Calendar</button>
+        <button class="mkt-subtab" onclick="switchMktTool('poster',this)">🎨 Poster Studio</button>
+        <button class="mkt-subtab" onclick="switchMktTool('social',this)">📱 Social Posts</button>
+        <button class="mkt-subtab" onclick="switchMktTool('aitools',this)">🔗 AI Tools Hub</button>
       </div>
 
-      <div class="mkt-form-card">
-        <div class="mkt-form-grid">
-          <div>
-            <label class="form-label">Campaign Theme / Occasion</label>
-            <input type="text" class="form-input" id="mktTheme" placeholder="e.g. Diwali offer, New launch, Sale">
-          </div>
-          <div>
-            <label class="form-label">Tone</label>
-            <select class="form-select" id="mktTone">
-              <option value="professional">Professional</option>
-              <option value="friendly">Friendly & Warm</option>
-              <option value="exciting">Exciting & Energetic</option>
-              <option value="luxurious">Luxurious & Premium</option>
-              <option value="urgent">Urgent / Limited Time</option>
+      <!-- ========== TOOL 1: FESTIVAL CALENDAR ========== -->
+      <div class="mkt-tool active" id="mkttool-calendar">
+        <div class="mkt-tool-intro">
+          <div class="mkt-tool-intro-title">Upcoming Occasions for Your Business</div>
+          <div class="mkt-tool-intro-text">AI-picked festivals, seasons &amp; occasions worth a campaign — tailored to your industry. Click any to instantly create content.</div>
+        </div>
+        <div class="mkt-cal-loading" id="mktCalLoading">
+          <div class="feed-spinner"></div>
+          <div style="font-size:13px;color:var(--ink3);margin-top:12px;">Finding the best upcoming occasions for your business...</div>
+        </div>
+        <div class="mkt-cal-grid" id="mktCalGrid"></div>
+      </div>
+
+      <!-- ========== TOOL 2: POSTER STUDIO ========== -->
+      <div class="mkt-tool" id="mkttool-poster">
+        <div class="mkt-poster-layout">
+          <div class="mkt-poster-controls">
+            <div class="mkt-tool-intro-title" style="margin-bottom:16px;">Design a Poster</div>
+
+            <label class="form-label">What's the poster for?</label>
+            <input type="text" class="form-input" id="posterTheme" placeholder="e.g. Diwali 50% off, New batch admission, Grand opening" style="margin-bottom:14px;">
+
+            <label class="form-label">Headline (or let AI write it)</label>
+            <input type="text" class="form-input" id="posterHeadline" placeholder="Leave blank for AI to write" style="margin-bottom:14px;">
+
+            <label class="form-label">Key Offer / Detail</label>
+            <input type="text" class="form-input" id="posterOffer" placeholder="e.g. Flat 50% off till Sunday" style="margin-bottom:14px;">
+
+            <label class="form-label">Color Theme</label>
+            <div class="poster-color-row" id="posterColorRow">
+              <button class="poster-color active" data-theme="gold" style="background:linear-gradient(135deg,#1A1612,#B8952A);" onclick="selectPosterColor('gold',this)"></button>
+              <button class="poster-color" data-theme="royal" style="background:linear-gradient(135deg,#1A237E,#5C6BC0);" onclick="selectPosterColor('royal',this)"></button>
+              <button class="poster-color" data-theme="festive" style="background:linear-gradient(135deg,#B71C1C,#FF8F00);" onclick="selectPosterColor('festive',this)"></button>
+              <button class="poster-color" data-theme="emerald" style="background:linear-gradient(135deg,#1B5E20,#66BB6A);" onclick="selectPosterColor('emerald',this)"></button>
+              <button class="poster-color" data-theme="rose" style="background:linear-gradient(135deg,#880E4F,#EC407A);" onclick="selectPosterColor('rose',this)"></button>
+              <button class="poster-color" data-theme="ocean" style="background:linear-gradient(135deg,#006064,#26C6DA);" onclick="selectPosterColor('ocean',this)"></button>
+            </div>
+
+            <label class="form-label" style="margin-top:14px;">Format</label>
+            <select class="form-select" id="posterFormat" style="margin-bottom:18px;" onchange="updatePosterFormat()">
+              <option value="square">Instagram Square (1:1)</option>
+              <option value="story">Story / Reel (9:16)</option>
+              <option value="landscape">Facebook / Banner (16:9)</option>
             </select>
+
+            <button class="btn-gold" style="width:100%;" onclick="generatePoster()" id="posterGenBtn">✨ Generate Poster</button>
+            <div id="posterStatus" style="font-size:12px;color:var(--ink3);margin-top:10px;text-align:center;"></div>
+
+            <div class="poster-ai-tip">
+              <strong>Want a photo-realistic AI image instead?</strong>
+              <button class="btn-ghost" style="width:100%;margin-top:8px;" onclick="generateImagePrompt()">🖼️ Get AI Image Prompt + Tool Links</button>
+            </div>
           </div>
-          <div>
-            <label class="form-label">Language</label>
-            <select class="form-select" id="mktLang">
-              <option value="English">English</option>
-              <option value="Hinglish">Hinglish (Hindi + English)</option>
-              <option value="Hindi">Hindi</option>
-              <option value="Gujarati">Gujarati</option>
-            </select>
+
+          <div class="mkt-poster-preview-wrap">
+            <div class="poster-preview-label">Live Preview</div>
+            <div class="poster-canvas-holder">
+              <div class="poster-canvas square gold" id="posterCanvas">
+                <div class="poster-empty">Your poster preview will appear here</div>
+              </div>
+            </div>
+            <div class="poster-actions" id="posterActions" style="display:none;">
+              <button class="btn-primary" onclick="downloadPoster()">⬇️ Download as Image</button>
+              <button class="btn-ghost" onclick="generatePoster()">↻ Regenerate</button>
+            </div>
           </div>
-        </div>
-        <div style="margin-bottom:16px;">
-          <label class="form-label">Additional Details (optional)</label>
-          <input type="text" class="form-input" id="mktDetails" placeholder="e.g. 30% discount, free delivery, valid till Sunday">
-        </div>
-        <div style="display:flex;gap:10px;align-items:center;">
-          <button class="btn-gold" onclick="generateMarketing()" id="mktGenBtn">✨ Generate Content</button>
-          <span id="mktGenStatus" style="font-size:12px;color:var(--ink3);"></span>
         </div>
       </div>
 
-      <div class="mkt-output-card" id="mktOutputCard" style="display:none;">
-        <div class="mkt-output-title">Generated Content</div>
-        <div class="mkt-platform-badge" id="mktPlatformBadge"></div>
-        <div class="mkt-content-box" id="mktOutput"></div>
-        <div class="mkt-actions">
-          <button class="btn-primary" onclick="copyMarketing()">📋 Copy Content</button>
-          <button class="btn-ghost" onclick="regenerateMarketing()">↻ Regenerate</button>
-          <button class="btn-ghost" onclick="document.getElementById('mktOutputCard').style.display='none'">✕ Clear</button>
+      <!-- ========== TOOL 3: SOCIAL POSTS ========== -->
+      <div class="mkt-tool" id="mkttool-social">
+        <div class="marketing-type-grid">
+          <div class="mkt-type-btn active" id="mktBtn-instagram" onclick="selectPlatform('instagram',this)"><span class="mkt-type-icon">📸</span><span class="mkt-type-label">Instagram</span></div>
+          <div class="mkt-type-btn" id="mktBtn-facebook" onclick="selectPlatform('facebook',this)"><span class="mkt-type-icon">👥</span><span class="mkt-type-label">Facebook</span></div>
+          <div class="mkt-type-btn" id="mktBtn-linkedin" onclick="selectPlatform('linkedin',this)"><span class="mkt-type-icon">💼</span><span class="mkt-type-label">LinkedIn</span></div>
+          <div class="mkt-type-btn" id="mktBtn-whatsapp" onclick="selectPlatform('whatsapp',this)"><span class="mkt-type-icon">📱</span><span class="mkt-type-label">WhatsApp</span></div>
+          <div class="mkt-type-btn" id="mktBtn-email" onclick="selectPlatform('email',this)"><span class="mkt-type-icon">📧</span><span class="mkt-type-label">Email</span></div>
+          <div class="mkt-type-btn" id="mktBtn-blog" onclick="selectPlatform('blog',this)"><span class="mkt-type-icon">✍️</span><span class="mkt-type-label">Blog</span></div>
+        </div>
+
+        <div class="mkt-form-card">
+          <div class="mkt-form-grid">
+            <div>
+              <label class="form-label">Campaign Theme / Occasion</label>
+              <input type="text" class="form-input" id="mktTheme" placeholder="e.g. Diwali offer, New launch, Sale">
+            </div>
+            <div>
+              <label class="form-label">Tone</label>
+              <select class="form-select" id="mktTone">
+                <option value="professional">Professional</option>
+                <option value="friendly">Friendly &amp; Warm</option>
+                <option value="exciting">Exciting &amp; Energetic</option>
+                <option value="luxurious">Luxurious &amp; Premium</option>
+                <option value="urgent">Urgent / Limited Time</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label">Language</label>
+              <select class="form-select" id="mktLang">
+                <option value="English">English</option>
+                <option value="Hinglish">Hinglish (Hindi + English)</option>
+                <option value="Hindi">Hindi</option>
+                <option value="Gujarati">Gujarati</option>
+              </select>
+            </div>
+          </div>
+          <div style="margin-bottom:16px;">
+            <label class="form-label">Additional Details (optional)</label>
+            <input type="text" class="form-input" id="mktDetails" placeholder="e.g. 30% discount, free delivery, valid till Sunday">
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <button class="btn-gold" onclick="generateMarketing()" id="mktGenBtn">✨ Generate Content</button>
+            <span id="mktGenStatus" style="font-size:12px;color:var(--ink3);"></span>
+          </div>
+        </div>
+
+        <div class="mkt-output-card" id="mktOutputCard" style="display:none;">
+          <div class="mkt-output-title">Generated Content</div>
+          <div class="mkt-platform-badge" id="mktPlatformBadge"></div>
+          <div class="mkt-content-box" id="mktOutput"></div>
+          <div class="mkt-actions">
+            <button class="btn-primary" onclick="copyMarketing()">📋 Copy Content</button>
+            <button class="btn-ghost" onclick="regenerateMarketing()">↻ Regenerate</button>
+            <button class="btn-ghost" onclick="document.getElementById('mktOutputCard').style.display='none'">✕ Clear</button>
+          </div>
         </div>
       </div>
+
+      <!-- ========== TOOL 4: AI TOOLS HUB ========== -->
+      <div class="mkt-tool" id="mkttool-aitools">
+        <div class="mkt-tool-intro">
+          <div class="mkt-tool-intro-title">AI Creative Tools Hub</div>
+          <div class="mkt-tool-intro-text">Want AI-generated images, videos or voiceovers? Describe what you need — Arya writes the perfect prompt, then sends you to the best free AI tool to create it.</div>
+        </div>
+
+        <div class="mkt-form-card">
+          <div class="mkt-form-grid" style="grid-template-columns:1fr 1fr;">
+            <div>
+              <label class="form-label">What do you want to create?</label>
+              <select class="form-select" id="aiToolType">
+                <option value="image">AI Image / Poster</option>
+                <option value="video">AI Video / Reel</option>
+                <option value="logo">Logo Concept</option>
+                <option value="voiceover">Voiceover Script</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label">Describe it</label>
+              <input type="text" class="form-input" id="aiToolDesc" placeholder="e.g. Diwali offer poster for my coaching class">
+            </div>
+          </div>
+          <button class="btn-gold" onclick="generateAIToolPrompt()" id="aiToolBtn">✨ Generate Prompt + Tool Links</button>
+          <span id="aiToolStatus" style="font-size:12px;color:var(--ink3);margin-left:12px;"></span>
+        </div>
+
+        <div id="aiToolResult"></div>
+      </div>
+
     </div>
 
   </div><!-- /dashContent -->
@@ -1801,6 +1974,244 @@ function copyMarketing() {
 
 function regenerateMarketing() {
   generateMarketing();
+}
+
+// ============================================================
+// MARKETING STUDIO 2.0
+// ============================================================
+let mktCalLoaded = false;
+let selectedPosterColor = 'gold';
+let selectedPosterFormat = 'square';
+let currentPosterData = null;
+
+function switchMktTool(tool, btn) {
+  document.querySelectorAll('.mkt-tool').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.mkt-subtab').forEach(t => t.classList.remove('active'));
+  document.getElementById('mkttool-' + tool).classList.add('active');
+  btn.classList.add('active');
+  if (tool === 'calendar' && !mktCalLoaded) loadFestivalCalendar();
+}
+
+// ---- TOOL 1: FESTIVAL CALENDAR ----
+async function loadFestivalCalendar() {
+  const grid = document.getElementById('mktCalGrid');
+  const loading = document.getElementById('mktCalLoading');
+  loading.style.display = 'block';
+  grid.innerHTML = '';
+
+  try {
+    const res = await fetch(`${BACKEND}/api/festival-calendar`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        business_name: currentBizData?.business_name || '',
+        business_category: currentBizData?.category || '',
+        business_city: currentBizData?.city || '',
+        products_services: currentProfile?.products_services || '',
+        date: new Date().toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' })
+      })
+    });
+    const data = await res.json();
+    loading.style.display = 'none';
+
+    if (data.success && data.occasions) {
+      grid.innerHTML = data.occasions.map(o => `
+        <div class="mkt-cal-card">
+          <div class="mkt-cal-emoji">${o.emoji || '🎉'}</div>
+          <div class="mkt-cal-days ${o.days_away <= 14 ? 'soon' : ''}">${o.days_away <= 0 ? 'Today!' : o.days_away + ' days away'}</div>
+          <div class="mkt-cal-name">${o.name}</div>
+          <div class="mkt-cal-date">${o.date}</div>
+          <div class="mkt-cal-idea">${o.campaign_idea}</div>
+          <button class="mkt-cal-btn" onclick="createFromOccasion('${(o.name).replace(/'/g,"")}','${(o.campaign_idea).replace(/'/g,"")}')">Create Campaign →</button>
+        </div>`).join('');
+      mktCalLoaded = true;
+    } else {
+      grid.innerHTML = '<div style="color:var(--ink3);font-size:13px;padding:20px;">Could not load calendar. Please try again.</div>';
+    }
+  } catch(e) {
+    loading.style.display = 'none';
+    grid.innerHTML = '<div style="color:var(--ink3);font-size:13px;padding:20px;">Connection error. Please try again.</div>';
+  }
+}
+
+function createFromOccasion(name, idea) {
+  // Jump to social posts tool with theme pre-filled
+  switchMktTool('social', document.querySelectorAll('.mkt-subtab')[2]);
+  document.getElementById('mktTheme').value = name + ' — ' + idea;
+  document.getElementById('mktTheme').scrollIntoView({ behavior:'smooth', block:'center' });
+}
+
+// ---- TOOL 2: POSTER STUDIO ----
+function selectPosterColor(theme, btn) {
+  selectedPosterColor = theme;
+  document.querySelectorAll('.poster-color').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  // Live update canvas color if poster exists
+  const canvas = document.getElementById('posterCanvas');
+  canvas.className = 'poster-canvas ' + selectedPosterFormat + ' ' + theme;
+}
+
+function updatePosterFormat() {
+  selectedPosterFormat = document.getElementById('posterFormat').value;
+  const canvas = document.getElementById('posterCanvas');
+  canvas.className = 'poster-canvas ' + selectedPosterFormat + ' ' + selectedPosterColor;
+}
+
+async function generatePoster() {
+  const theme = document.getElementById('posterTheme').value.trim();
+  const headline = document.getElementById('posterHeadline').value.trim();
+  const offer = document.getElementById('posterOffer').value.trim();
+  const status = document.getElementById('posterStatus');
+  const btn = document.getElementById('posterGenBtn');
+
+  if (!theme) { status.textContent = '⚠️ Please describe what the poster is for'; return; }
+
+  btn.disabled = true; btn.textContent = '⏳ Designing...';
+  status.textContent = 'Arya is writing your poster copy...';
+
+  try {
+    const res = await fetch(`${BACKEND}/api/poster-copy`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        theme, headline, offer,
+        business_name: currentBizData?.business_name || '',
+        business_category: currentBizData?.category || '',
+        business_city: currentBizData?.city || '',
+        products_services: currentProfile?.products_services || ''
+      })
+    });
+    const data = await res.json();
+    if (data.success && data.poster) {
+      currentPosterData = data.poster;
+      renderPoster(data.poster);
+      status.textContent = '✅ Poster ready! Download or regenerate.';
+      document.getElementById('posterActions').style.display = 'flex';
+    } else throw new Error();
+  } catch(e) {
+    status.textContent = '❌ Failed. Please try again.';
+  }
+  btn.disabled = false; btn.textContent = '✨ Generate Poster';
+}
+
+function renderPoster(poster) {
+  const canvas = document.getElementById('posterCanvas');
+  canvas.className = 'poster-canvas ' + selectedPosterFormat + ' ' + selectedPosterColor;
+  const biz = currentBizData?.business_name || '';
+  canvas.innerHTML = `
+    <div class="poster-biz">${biz}</div>
+    <div class="poster-headline">${poster.headline || ''}</div>
+    ${poster.offer ? `<div class="poster-offer">${poster.offer}</div>` : ''}
+    ${poster.subtext ? `<div class="poster-sub">${poster.subtext}</div>` : ''}
+    <div class="poster-footer">${poster.footer || (currentBizData?.city || '')}</div>`;
+}
+
+async function downloadPoster() {
+  const canvas = document.getElementById('posterCanvas');
+  if (typeof html2canvas === 'undefined') { alert('Download tool still loading, try again in a second.'); return; }
+  try {
+    const rendered = await html2canvas(canvas, { scale: 3, useCORS: true, backgroundColor: null });
+    const link = document.createElement('a');
+    link.download = 'repute-poster-' + Date.now() + '.png';
+    link.href = rendered.toDataURL('image/png');
+    link.click();
+  } catch(e) {
+    alert('Could not download. Try screenshotting the preview instead.');
+  }
+}
+
+async function generateImagePrompt() {
+  // Switch to AI Tools Hub, preset image type with poster theme
+  const theme = document.getElementById('posterTheme').value.trim();
+  switchMktTool('aitools', document.querySelectorAll('.mkt-subtab')[3]);
+  document.getElementById('aiToolType').value = 'image';
+  document.getElementById('aiToolDesc').value = theme || '';
+  if (theme) generateAIToolPrompt();
+}
+
+// ---- TOOL 4: AI TOOLS HUB ----
+const AI_TOOL_LINKS = {
+  image: [
+    { name:'ChatGPT', sub:'DAL·E images', icon:'🤖', url:'https://chat.openai.com' },
+    { name:'Google Gemini', sub:'Free images', icon:'✨', url:'https://gemini.google.com' },
+    { name:'Ideogram', sub:'Best for text', icon:'🎨', url:'https://ideogram.ai' },
+    { name:'Bing Create', sub:'Free DAL·E', icon:'🖼️', url:'https://www.bing.com/images/create' }
+  ],
+  video: [
+    { name:'Google Veo', sub:'AI video', icon:'🎬', url:'https://labs.google/fx/tools/flow' },
+    { name:'Runway', sub:'AI video', icon:'🎥', url:'https://runwayml.com' },
+    { name:'Pika', sub:'AI video', icon:'📹', url:'https://pika.art' },
+    { name:'InVideo AI', sub:'Text to video', icon:'🎞️', url:'https://invideo.io' }
+  ],
+  logo: [
+    { name:'Ideogram', sub:'Logo design', icon:'🎨', url:'https://ideogram.ai' },
+    { name:'ChatGPT', sub:'Logo concepts', icon:'🤖', url:'https://chat.openai.com' },
+    { name:'Canva', sub:'Logo maker', icon:'🖌️', url:'https://www.canva.com/create/logos/' },
+    { name:'Looka', sub:'AI logos', icon:'✨', url:'https://looka.com' }
+  ],
+  voiceover: [
+    { name:'ElevenLabs', sub:'AI voices', icon:'🎙️', url:'https://elevenlabs.io' },
+    { name:'Murf AI', sub:'Voiceover', icon:'🔊', url:'https://murf.ai' },
+    { name:'Play.ht', sub:'AI voice', icon:'🗣️', url:'https://play.ht' }
+  ]
+};
+
+async function generateAIToolPrompt() {
+  const type = document.getElementById('aiToolType').value;
+  const desc = document.getElementById('aiToolDesc').value.trim();
+  const status = document.getElementById('aiToolStatus');
+  const btn = document.getElementById('aiToolBtn');
+  const result = document.getElementById('aiToolResult');
+
+  if (!desc) { status.textContent = '⚠️ Please describe what you want'; return; }
+
+  btn.disabled = true; btn.textContent = '⏳ Writing prompt...';
+  status.textContent = '';
+  result.innerHTML = '';
+
+  try {
+    const res = await fetch(`${BACKEND}/api/ai-tool-prompt`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type, description: desc,
+        business_name: currentBizData?.business_name || '',
+        business_category: currentBizData?.category || '',
+        business_city: currentBizData?.city || '',
+        products_services: currentProfile?.products_services || ''
+      })
+    });
+    const data = await res.json();
+    if (data.success && data.prompt) {
+      const links = AI_TOOL_LINKS[type] || AI_TOOL_LINKS.image;
+      const typeLabel = {image:'AI Image',video:'AI Video',logo:'Logo',voiceover:'Voiceover'}[type];
+      result.innerHTML = `
+        <div class="aitool-result-card">
+          <div class="aitool-prompt-label">Your ${typeLabel} Prompt — copy this</div>
+          <div class="aitool-prompt-box" id="aiPromptText">${data.prompt}</div>
+          <button class="btn-primary" onclick="copyAIPrompt()" style="margin-bottom:20px;">📋 Copy Prompt</button>
+          <div class="aitool-links-label">Now open a free AI tool and paste it:</div>
+          <div class="aitool-links">
+            ${links.map(l => `<a class="aitool-link" href="${l.url}" target="_blank"><span class="aitool-link-icon">${l.icon}</span><span><span class="aitool-link-name">${l.name}</span><br><span class="aitool-link-sub">${l.sub}</span></span></a>`).join('')}
+          </div>
+          <div class="aitool-steps">
+            <strong>How to use:</strong> 1. Copy the prompt above &nbsp;→&nbsp; 2. Click any tool to open it &nbsp;→&nbsp; 3. Paste the prompt &nbsp;→&nbsp; 4. Download your result. ${type==='image'?'Tip: Ideogram is best when you need text inside the image.':''}
+          </div>
+        </div>`;
+    } else throw new Error();
+  } catch(e) {
+    status.textContent = '❌ Failed. Please try again.';
+  }
+  btn.disabled = false; btn.textContent = '✨ Generate Prompt + Tool Links';
+}
+
+function copyAIPrompt() {
+  const text = document.getElementById('aiPromptText').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy Prompt', 2000);
+  });
 }
 
 function logout() {
