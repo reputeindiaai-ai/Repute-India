@@ -1485,11 +1485,32 @@ async function loadDashboard() {
       await loadCompetitors(bizId);
       document.getElementById('loadingState').style.display = 'none';
       document.getElementById('dashContent').style.display = 'block';
+      await syncReputeScore(bizId); // single source of truth for the score
       loadFeed(); // Load the daily briefing
     }
   } catch(e) {
     document.getElementById('loadingState').textContent = 'Error loading dashboard. Please refresh.';
   }
+}
+
+// Fetch the REAL live Repute Score once and sync it everywhere
+async function syncReputeScore(bizId) {
+  try {
+    const res = await fetchWithTimeout(`${BACKEND}/api/repute-score/${bizId}`, {}, 60000);
+    const data = await res.json();
+    if (data.success && data.score != null) {
+      if (!currentProfile) currentProfile = {};
+      currentProfile.repute_score = data.score;
+      currentProfile.__scoreBreakdown = data.breakdown;
+      currentProfile.__scoreTasks = data.tasks;
+      scoreLoaded = true; // we already have the data; score tab can render instantly
+      // Refresh all three display points
+      const badge = document.getElementById('reputeScoreBadge');
+      if (badge) badge.textContent = data.score;
+      const feedScore = document.getElementById('feedScore');
+      if (feedScore) feedScore.textContent = data.score;
+    }
+  } catch(e) { console.error('Score sync error:', e); }
 }
 
 // ============================================================
@@ -2796,11 +2817,19 @@ async function generateBrandKit() {
 let scoreLoaded = false;
 
 async function loadScoreTab() {
+  // If we already synced the score on dashboard load, render instantly from cache
+  if (currentProfile && currentProfile.__scoreBreakdown) {
+    renderScore(currentProfile.repute_score, currentProfile.__scoreBreakdown, currentProfile.__scoreTasks);
+    scoreLoaded = true;
+    return;
+  }
   try {
     const res = await fetchWithTimeout(`${BACKEND}/api/repute-score/${currentBizId}`, {}, 70000);
     const data = await res.json();
     if (data.success) {
       renderScore(data.score, data.breakdown, data.tasks);
+      if (!currentProfile) currentProfile = {};
+      currentProfile.repute_score = data.score;
       scoreLoaded = true;
     } else {
       document.getElementById('scoreTasks').innerHTML = '<div class="loading">Could not load score. <button class="btn-ghost" onclick="scoreLoaded=false;loadScoreTab()">Retry</button></div>';
