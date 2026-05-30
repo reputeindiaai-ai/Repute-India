@@ -9,19 +9,13 @@
 :root{--black:#0A0A0A;--black2:#111111;--black3:#1a1a1a;--gold:#C9A84C;--gold-light:#E8C96A;--gold-dark:#A07830;--white:#F5F0E8;--grey:#888888;--grey2:#444444;--green:#4CAF50;--red:#F44336;--yellow:#FFC107;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-serif;min-height:100vh;}
-
-/* TOP NAV */
 .topnav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;background:var(--black2);border-bottom:1px solid #1a1a1a;position:sticky;top:0;z-index:100;}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
 .nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--gold);letter-spacing:2px;}
 .biz-name{font-size:11px;color:var(--grey);letter-spacing:1px;}
 .btn-logout{background:transparent;border:1px solid #333;color:var(--grey);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;cursor:pointer;transition:all 0.3s;}
 .btn-logout:hover{border-color:var(--gold-dark);color:var(--gold);}
-
-/* LAYOUT */
 .dash-wrap{max-width:1200px;margin:0 auto;padding:40px 40px;}
-
-/* STATS ROW */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:32px;}
 .stat-card{background:var(--black2);border:1px solid #1a1a1a;padding:28px 24px;}
 .stat-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--grey);margin-bottom:10px;}
@@ -30,12 +24,8 @@ body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-se
 .stat-value.green{color:var(--green);}
 .stat-value.red{color:var(--red);}
 .stat-sub{font-size:10px;color:var(--grey2);margin-top:6px;}
-
-/* SECTION */
 .section-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--white);margin-bottom:20px;}
 .section-title span{color:var(--gold);}
-
-/* REVIEW CARD */
 .reviews-grid{display:flex;flex-direction:column;gap:2px;}
 .review-card{background:var(--black2);border:1px solid #1a1a1a;padding:24px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:start;transition:border 0.3s;}
 .review-card:hover{border-color:#2a2a2a;}
@@ -50,27 +40,19 @@ body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-se
 .review-actions{display:flex;flex-direction:column;gap:8px;align-items:flex-end;}
 .replied-tag{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--green);padding:4px 10px;border:1px solid rgba(76,175,80,0.3);}
 .pending-tag{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);padding:4px 10px;border:1px solid rgba(255,193,7,0.3);}
-
-/* AI REPLY BOX */
 .ai-reply-box{background:rgba(201,168,76,0.05);border:1px solid var(--gold-dark);padding:16px 20px;margin-top:12px;}
 .ai-reply-label{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
 .ai-reply-text{font-size:11px;color:var(--white);line-height:1.7;}
 .btn-approve{background:var(--gold);color:var(--black);font-size:8px;letter-spacing:2px;text-transform:uppercase;font-weight:700;padding:8px 16px;border:none;cursor:pointer;margin-top:10px;transition:all 0.3s;}
 .btn-approve:hover{background:var(--gold-light);}
-
-/* TRIAL BANNER */
 .trial-banner{background:linear-gradient(90deg,#1a1200,#0f0900);border:1px solid var(--gold-dark);padding:20px 28px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;}
 .trial-text{font-size:12px;color:var(--white);}
 .trial-text strong{color:var(--gold);}
 .trial-days{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;color:var(--gold);}
-
-/* EMPTY STATE */
 .empty-state{background:var(--black2);border:1px solid #1a1a1a;padding:60px;text-align:center;}
 .empty-icon{font-size:48px;margin-bottom:16px;}
 .empty-title{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--white);margin-bottom:8px;}
 .empty-text{font-size:12px;color:var(--grey);line-height:1.7;}
-
-/* REQUEST FORM */
 .request-form{background:var(--black2);border:1px solid #1a1a1a;padding:28px;margin-bottom:32px;}
 .request-row{display:grid;grid-template-columns:1fr 1fr auto;gap:16px;align-items:end;}
 .form-label{display:block;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
@@ -79,26 +61,26 @@ body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-se
 .form-input::placeholder{color:var(--grey2);}
 .btn-send{background:var(--gold);color:var(--black);font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:700;padding:11px 20px;border:none;cursor:pointer;white-space:nowrap;}
 .btn-send:hover{background:var(--gold-light);}
+.loading{text-align:center;padding:60px;color:var(--grey);font-size:12px;letter-spacing:2px;}
 
 /* ── COMPETITOR TRACKING ── */
 .competitor-add-form{background:var(--black2);border:1px solid #1a1a1a;padding:28px;margin-bottom:24px;}
 .comp-add-row{display:grid;grid-template-columns:1fr 1fr auto;gap:16px;align-items:end;}
 .comp-note{font-size:10px;color:var(--grey2);margin-top:10px;line-height:1.6;}
 .comp-note strong{color:var(--gold);}
-
 .competitors-grid{display:flex;flex-direction:column;gap:2px;margin-bottom:40px;}
-
 .comp-card{background:var(--black2);border:1px solid #1a1a1a;padding:28px;}
 .comp-card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;}
 .comp-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--white);}
 .comp-category{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--grey);margin-top:3px;}
-.comp-actions{display:flex;gap:8px;align-items:center;}
+.comp-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
 .btn-refresh-comp{background:transparent;border:1px solid #333;color:var(--grey);font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:6px 12px;cursor:pointer;transition:all 0.3s;}
 .btn-refresh-comp:hover{border-color:var(--gold-dark);color:var(--gold);}
 .btn-delete-comp{background:transparent;border:1px solid rgba(244,67,54,0.3);color:var(--red);font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:6px 12px;cursor:pointer;transition:all 0.3s;}
 .btn-delete-comp:hover{background:rgba(244,67,54,0.08);}
-
-/* RATING COMPARISON BAR */
+.btn-ai-analyse{background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:var(--black);font-size:8px;letter-spacing:2px;text-transform:uppercase;font-weight:700;padding:6px 14px;border:none;cursor:pointer;transition:all 0.3s;}
+.btn-ai-analyse:hover{background:var(--gold-light);}
+.btn-ai-analyse:disabled{background:var(--grey2);cursor:not-allowed;}
 .comp-comparison{display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:center;padding:24px;background:var(--black3);margin-bottom:20px;}
 .comp-side{text-align:center;}
 .comp-side-label{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--grey);margin-bottom:8px;}
@@ -109,35 +91,42 @@ body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-se
 .comp-rating-big.tied{color:var(--gold);}
 .comp-rating-count{font-size:9px;color:var(--grey2);margin-top:4px;letter-spacing:1px;}
 .comp-vs{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--grey2);}
-
-/* RATING BAR VISUAL */
 .comp-bar-wrap{margin-bottom:16px;}
 .comp-bar-label{display:flex;justify-content:space-between;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--grey);margin-bottom:6px;}
 .comp-bar-track{background:#1a1a1a;height:6px;display:flex;gap:2px;}
 .comp-bar-you{background:var(--gold);height:100%;transition:width 0.6s ease;}
 .comp-bar-them{background:#333;height:100%;transition:width 0.6s ease;}
-
-/* DIFF BADGE */
 .comp-diff{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;font-size:10px;font-weight:600;letter-spacing:1px;}
 .comp-diff.ahead{background:rgba(76,175,80,0.12);color:var(--green);border:1px solid rgba(76,175,80,0.3);}
 .comp-diff.behind{background:rgba(244,67,54,0.12);color:var(--red);border:1px solid rgba(244,67,54,0.3);}
 .comp-diff.tied{background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid rgba(201,168,76,0.3);}
-
-/* COMPETITOR RECENT REVIEWS */
-.comp-reviews-title{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--grey);margin-bottom:12px;}
-.comp-review-item{padding:12px 16px;background:var(--black);border-left:2px solid #2a2a2a;margin-bottom:6px;}
-.comp-review-item.negative-review{border-left-color:var(--red);}
-.comp-review-item.positive-review{border-left-color:var(--green);}
-.comp-review-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
-.comp-review-stars{font-size:12px;}
-.comp-review-date{font-size:9px;color:var(--grey2);}
-.comp-review-text{font-size:10px;color:var(--grey);line-height:1.6;font-style:italic;}
-
 .comp-last-updated{font-size:9px;color:var(--grey2);letter-spacing:1px;margin-top:12px;}
 
-/* LOADING */
-.loading{text-align:center;padding:60px;color:var(--grey);font-size:12px;letter-spacing:2px;}
-.comp-loading{text-align:center;padding:32px;color:var(--grey);font-size:11px;letter-spacing:2px;}
+/* ── AI ANALYSIS BOX ── */
+.ai-analysis-box{background:linear-gradient(135deg,rgba(201,168,76,0.06),rgba(160,120,48,0.03));border:1px solid var(--gold-dark);padding:24px;margin-top:20px;}
+.ai-analysis-header{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.ai-analysis-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--gold);}
+.ai-analysis-badge{font-size:8px;letter-spacing:2px;text-transform:uppercase;background:rgba(201,168,76,0.15);color:var(--gold);padding:3px 8px;border:1px solid rgba(201,168,76,0.3);}
+.analysis-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.analysis-section{padding:16px;border:1px solid #2a2a2a;}
+.analysis-section.green-section{border-color:rgba(76,175,80,0.25);background:rgba(76,175,80,0.04);}
+.analysis-section.red-section{border-color:rgba(244,67,54,0.25);background:rgba(244,67,54,0.04);}
+.analysis-section.yellow-section{border-color:rgba(255,193,7,0.25);background:rgba(255,193,7,0.04);}
+.analysis-section.blue-section{border-color:rgba(100,150,255,0.25);background:rgba(100,150,255,0.04);}
+.analysis-section-title{font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;font-weight:600;}
+.analysis-section.green-section .analysis-section-title{color:var(--green);}
+.analysis-section.red-section .analysis-section-title{color:var(--red);}
+.analysis-section.yellow-section .analysis-section-title{color:var(--yellow);}
+.analysis-section.blue-section .analysis-section-title{color:#6496ff;}
+.analysis-point{font-size:11px;color:var(--grey);line-height:1.7;margin-bottom:6px;padding-left:12px;position:relative;}
+.analysis-point::before{content:'•';position:absolute;left:0;color:inherit;}
+.analysis-section.green-section .analysis-point::before{color:var(--green);}
+.analysis-section.red-section .analysis-point::before{color:var(--red);}
+.analysis-section.yellow-section .analysis-point::before{color:var(--yellow);}
+.analysis-section.blue-section .analysis-point::before{color:#6496ff;}
+.analysis-loading{text-align:center;padding:32px;color:var(--gold);font-size:11px;letter-spacing:2px;}
+.analysis-loading-dots::after{content:'...';animation:dots 1.5s infinite;}
+@keyframes dots{0%,100%{content:'.';}50%{content:'...';}75%{content:'...'}}
 
 @media(max-width:900px){
   .topnav,.dash-wrap{padding:16px 20px;}
@@ -146,12 +135,12 @@ body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-se
   .request-row,.comp-add-row{grid-template-columns:1fr;}
   .comp-comparison{grid-template-columns:1fr;gap:12px;}
   .comp-vs{display:none;}
+  .analysis-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
 <body>
 
-<!-- TOP NAV -->
 <div class="topnav">
   <a class="nav-logo" href="index.html">
     <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="15" stroke="#C9A84C" stroke-width="1"/><polygon points="16,6 18.5,12.5 25.5,12.5 20,16.5 22,23 16,19.5 10,23 12,16.5 6.5,12.5 13.5,12.5" fill="#C9A84C"/></svg>
@@ -162,18 +151,15 @@ body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-se
 </div>
 
 <div class="dash-wrap">
-
   <div class="loading" id="loadingState">Loading your dashboard...</div>
 
   <div id="dashContent" style="display:none;">
 
-    <!-- TRIAL BANNER -->
     <div class="trial-banner">
       <div class="trial-text"><strong>Free Trial Active</strong> — Your reputation is being monitored 24/7</div>
       <div class="trial-days" id="trialDays">15 days left</div>
     </div>
 
-    <!-- STATS ROW -->
     <div class="stats-row">
       <div class="stat-card">
         <div class="stat-label">Average Rating</div>
@@ -197,7 +183,6 @@ body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-se
       </div>
     </div>
 
-    <!-- REQUEST REVIEWS -->
     <div class="section-title">Send Review Request <span>via WhatsApp</span></div>
     <div class="request-form">
       <div class="request-row">
@@ -214,22 +199,18 @@ body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-se
       <div id="reqStatus" style="font-size:10px;color:var(--green);margin-top:10px;display:none;"></div>
     </div>
 
-    <!-- RECENT REVIEWS -->
     <div class="section-title">Recent Reviews</div>
     <div class="reviews-grid" id="reviewsGrid">
       <div class="empty-state">
         <div class="empty-icon">⭐</div>
         <div class="empty-title">No Reviews Yet</div>
-        <p class="empty-text">Your reviews will appear here automatically as they come in.</p>
+        <p class="empty-text">Your reviews will appear here automatically.</p>
       </div>
     </div>
 
-    <!-- ══════════════════════════════════════
-         COMPETITOR TRACKING
-    ══════════════════════════════════════ -->
-    <div class="section-title" style="margin-top:48px;">Competitor Tracking <span>vs Your Rating</span></div>
+    <!-- COMPETITOR TRACKING -->
+    <div class="section-title" style="margin-top:48px;">Competitor Tracking <span>& AI Analysis</span></div>
 
-    <!-- ADD COMPETITOR FORM -->
     <div class="competitor-add-form">
       <div class="comp-add-row">
         <div>
@@ -242,22 +223,19 @@ body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-se
         </div>
         <button class="btn-send" onclick="addCompetitor()">Add Competitor 🔍</button>
       </div>
-      <div class="comp-note">
-        <strong>How to get Google Maps URL:</strong> Search your competitor on Google Maps → Click "Share" → Copy link. Paste it above.
-      </div>
+      <div class="comp-note"><strong>How to get Google Maps URL:</strong> Search competitor on Google Maps → Click Share → Copy link.</div>
       <div id="compAddStatus" style="font-size:10px;margin-top:10px;display:none;"></div>
     </div>
 
-    <!-- COMPETITORS LIST -->
     <div class="competitors-grid" id="competitorsGrid">
       <div class="empty-state">
         <div class="empty-icon">🔍</div>
         <div class="empty-title">No Competitors Added Yet</div>
-        <p class="empty-text">Add your competitors above to start tracking their ratings and reviews side-by-side with yours.</p>
+        <p class="empty-text">Add competitors above to track and compare with AI analysis.</p>
       </div>
     </div>
 
-  </div><!-- /dashContent -->
+  </div>
 </div>
 
 <script>
@@ -267,34 +245,28 @@ async function loadDashboard() {
   const bizId = localStorage.getItem('ri_business_id');
   const bizName = localStorage.getItem('ri_business_name');
   if (!bizId) { window.location.href = 'login.html'; return; }
-
   document.getElementById('bizNameNav').textContent = bizName || 'Dashboard';
 
   try {
     const res = await fetch(`${BACKEND}/api/dashboard/${bizId}`);
     const data = await res.json();
-
     if (data.success) {
       const { business, stats } = data;
-
       if (business.trial_ends_at) {
         const daysLeft = Math.max(0, Math.ceil((new Date(business.trial_ends_at) - new Date()) / (1000*60*60*24)));
         document.getElementById('trialDays').textContent = daysLeft + ' days left';
       }
-
       document.getElementById('statRating').textContent = stats.avg_rating > 0 ? stats.avg_rating.toFixed(1) + '★' : '—';
       document.getElementById('statTotal').textContent = stats.total_reviews;
       document.getElementById('statUnreplied').textContent = stats.unreplied_count;
       document.getElementById('statPositive').textContent = stats.sentiment?.positive || 0;
-
       await loadReviews(bizId);
       await loadCompetitors(bizId);
-
       document.getElementById('loadingState').style.display = 'none';
       document.getElementById('dashContent').style.display = 'block';
     }
   } catch(e) {
-    document.getElementById('loadingState').textContent = 'Error loading dashboard. Check your connection.';
+    document.getElementById('loadingState').textContent = 'Error loading dashboard.';
   }
 }
 
@@ -314,11 +286,8 @@ async function loadReviews(bizId) {
         const sentReply = aiReplies.find(r => r.status === 'sent');
         const date = new Date(review.review_date).toLocaleDateString('en-IN', {day:'numeric',month:'short',year:'numeric'});
         let replyHtml = '';
-        if (sentReply) {
-          replyHtml = `<div class="ai-reply-box"><div class="ai-reply-label">✅ Reply Sent</div><div class="ai-reply-text">${sentReply.generated_reply}</div></div>`;
-        } else if (pendingReply) {
-          replyHtml = `<div class="ai-reply-box"><div class="ai-reply-label">✨ AI Reply Ready</div><div class="ai-reply-text">${pendingReply.generated_reply}</div><button class="btn-approve" onclick="approveReply('${pendingReply.id}', this)">Approve & Mark as Sent ✓</button></div>`;
-        }
+        if (sentReply) replyHtml = `<div class="ai-reply-box"><div class="ai-reply-label">✅ Reply Sent</div><div class="ai-reply-text">${sentReply.generated_reply}</div></div>`;
+        else if (pendingReply) replyHtml = `<div class="ai-reply-box"><div class="ai-reply-label">✨ AI Reply Ready</div><div class="ai-reply-text">${pendingReply.generated_reply}</div><button class="btn-approve" onclick="approveReply('${pendingReply.id}', this)">Approve & Mark as Sent ✓</button></div>`;
         const card = document.createElement('div');
         card.className = 'review-card';
         card.innerHTML = `
@@ -334,84 +303,50 @@ async function loadReviews(bizId) {
         grid.appendChild(card);
       });
     }
-  } catch(e) { console.error('Error loading reviews:', e); }
+  } catch(e) { console.error('Reviews error:', e); }
 }
-
-// ── COMPETITOR FUNCTIONS ─────────────────────────────
 
 async function loadCompetitors(bizId) {
   try {
     const res = await fetch(`${BACKEND}/api/competitors/${bizId}`);
     const data = await res.json();
-    if (data.success) {
-      renderCompetitors(data.competitors, bizId);
-    }
-  } catch(e) {
-    console.error('Error loading competitors:', e);
-  }
+    if (data.success) renderCompetitors(data.competitors, bizId);
+  } catch(e) { console.error('Competitors error:', e); }
 }
 
 function renderCompetitors(competitors, bizId) {
   const grid = document.getElementById('competitorsGrid');
   if (!competitors || competitors.length === 0) {
-    grid.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-title">No Competitors Added Yet</div><p class="empty-text">Add your competitors above to start tracking their ratings and reviews side-by-side with yours.</p></div>`;
+    grid.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-title">No Competitors Added Yet</div><p class="empty-text">Add competitors above to track and compare with AI analysis.</p></div>`;
     return;
   }
 
   const myRating = parseFloat(document.getElementById('statRating').textContent) || 0;
   const myName = localStorage.getItem('ri_business_name') || 'Your Business';
+  const myTotal = parseInt(document.getElementById('statTotal').textContent) || 0;
 
   grid.innerHTML = competitors.map(comp => {
     const theirRating = comp.their_rating || 0;
     const diff = (myRating - theirRating).toFixed(1);
     const diffNum = parseFloat(diff);
-
     let diffClass, diffText, myClass, theirClass;
-    if (diffNum > 0) {
-      diffClass = 'ahead'; diffText = `▲ ${diff} ahead of them`; myClass = 'winning'; theirClass = 'losing';
-    } else if (diffNum < 0) {
-      diffClass = 'behind'; diffText = `▼ ${Math.abs(diff)} behind them`; myClass = 'losing'; theirClass = 'winning';
-    } else {
-      diffClass = 'tied'; diffText = 'Tied'; myClass = 'tied'; theirClass = 'tied';
-    }
+    if (diffNum > 0) { diffClass='ahead'; diffText=`▲ ${diff} ahead`; myClass='winning'; theirClass='losing'; }
+    else if (diffNum < 0) { diffClass='behind'; diffText=`▼ ${Math.abs(diff)} behind`; myClass='losing'; theirClass='winning'; }
+    else { diffClass='tied'; diffText='Tied'; myClass='tied'; theirClass='tied'; }
 
-    const maxRating = 5;
-    const myPct = myRating > 0 ? Math.round((myRating / maxRating) * 100) : 0;
-    const theirPct = theirRating > 0 ? Math.round((theirRating / maxRating) * 100) : 0;
-
-    const lastUpdated = comp.last_updated
-      ? new Date(comp.last_updated).toLocaleDateString('en-IN', {day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})
-      : 'Never refreshed';
-
-    // Recent competitor reviews
-    const reviews = comp.recent_reviews || [];
-    let reviewsHtml = '';
-    if (reviews.length > 0) {
-      reviewsHtml = `<div class="comp-reviews-title">Their Recent Reviews</div>` +
-        reviews.slice(0,3).map(r => {
-          const stars = '⭐'.repeat(r.rating || 0) + '☆'.repeat(5 - (r.rating || 0));
-          const cls = (r.rating || 0) <= 2 ? 'negative-review' : 'positive-review';
-          const date = r.date ? new Date(r.date).toLocaleDateString('en-IN', {day:'numeric',month:'short'}) : '';
-          return `<div class="comp-review-item ${cls}">
-            <div class="comp-review-row">
-              <span class="comp-review-stars">${stars}</span>
-              <span class="comp-review-date">${date}</span>
-            </div>
-            <div class="comp-review-text">"${r.text || 'No text'}"</div>
-          </div>`;
-        }).join('');
-    } else {
-      reviewsHtml = `<div class="comp-reviews-title">Their Recent Reviews</div><div style="font-size:11px;color:var(--grey2);padding:12px 0;">No reviews fetched yet. Click Refresh to load.</div>`;
-    }
+    const myPct = myRating > 0 ? Math.round((myRating/5)*100) : 0;
+    const theirPct = theirRating > 0 ? Math.round((theirRating/5)*100) : 0;
+    const lastUpdated = comp.last_updated ? new Date(comp.last_updated).toLocaleDateString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : 'Never refreshed';
 
     return `
-      <div class="comp-card">
+      <div class="comp-card" id="comp-${comp.id}">
         <div class="comp-card-header">
           <div>
             <div class="comp-name">${comp.competitor_name}</div>
             <div class="comp-category">${comp.category || 'Competitor'}</div>
           </div>
           <div class="comp-actions">
+            <button class="btn-ai-analyse" onclick="runAIAnalysis('${comp.id}', '${comp.competitor_name}', '${comp.category || ''}', ${theirRating}, ${comp.their_review_count || 0}, this)">✨ AI Analysis</button>
             <button class="btn-refresh-comp" onclick="refreshCompetitor('${comp.id}', this)">↻ Refresh</button>
             <button class="btn-delete-comp" onclick="deleteCompetitor('${comp.id}', '${bizId}')">✕ Remove</button>
           </div>
@@ -421,14 +356,14 @@ function renderCompetitors(competitors, bizId) {
           <div class="comp-side">
             <div class="comp-side-label">You</div>
             <div class="comp-side-name">${myName}</div>
-            <div class="comp-rating-big ${myClass}">${myRating > 0 ? myRating.toFixed(1) + '★' : '—'}</div>
-            <div class="comp-rating-count">${document.getElementById('statTotal').textContent} reviews</div>
+            <div class="comp-rating-big ${myClass}">${myRating > 0 ? myRating.toFixed(1)+'★' : '—'}</div>
+            <div class="comp-rating-count">${myTotal} reviews</div>
           </div>
           <div class="comp-vs">vs</div>
           <div class="comp-side">
             <div class="comp-side-label">Them</div>
             <div class="comp-side-name">${comp.competitor_name}</div>
-            <div class="comp-rating-big ${theirClass}">${theirRating > 0 ? theirRating.toFixed(1) + '★' : '—'}</div>
+            <div class="comp-rating-big ${theirClass}">${theirRating > 0 ? theirRating.toFixed(1)+'★' : '—'}</div>
             <div class="comp-rating-count">${comp.their_review_count || 0} reviews</div>
           </div>
         </div>
@@ -444,12 +379,83 @@ function renderCompetitors(competitors, bizId) {
           <span class="comp-diff ${diffClass}">${diffText}</span>
         </div>
 
-        ${reviewsHtml}
-
         <div class="comp-last-updated">Last updated: ${lastUpdated} · <a href="${comp.google_maps_url}" target="_blank" style="color:var(--gold);text-decoration:none;">View on Google Maps ↗</a></div>
+
+        <!-- AI Analysis will be injected here -->
+        <div id="analysis-${comp.id}"></div>
       </div>
     `;
   }).join('');
+}
+
+async function runAIAnalysis(compId, compName, compCategory, theirRating, theirReviewCount, btn) {
+  const myName = localStorage.getItem('ri_business_name') || 'Your Business';
+  const myRating = parseFloat(document.getElementById('statRating').textContent) || 0;
+  const myTotal = parseInt(document.getElementById('statTotal').textContent) || 0;
+  const bizId = localStorage.getItem('ri_business_id');
+
+  btn.disabled = true;
+  btn.textContent = '⏳ Analysing...';
+
+  const analysisDiv = document.getElementById(`analysis-${compId}`);
+  analysisDiv.innerHTML = `<div class="ai-analysis-box"><div class="analysis-loading">✨ AI is analysing your competitive position<span class="analysis-loading-dots"></span></div></div>`;
+
+  try {
+    const res = await fetch(`${BACKEND}/api/competitors/${compId}/analyse`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        my_name: myName,
+        my_rating: myRating,
+        my_review_count: myTotal,
+        comp_name: compName,
+        comp_category: compCategory,
+        comp_rating: theirRating,
+        comp_review_count: theirReviewCount,
+        business_id: bizId
+      })
+    });
+    const data = await res.json();
+
+    if (data.success && data.analysis) {
+      const a = data.analysis;
+      analysisDiv.innerHTML = `
+        <div class="ai-analysis-box">
+          <div class="ai-analysis-header">
+            <div class="ai-analysis-title">AI Competitive Analysis</div>
+            <span class="ai-analysis-badge">Powered by Claude AI</span>
+          </div>
+          <div class="analysis-grid">
+            <div class="analysis-section green-section">
+              <div class="analysis-section-title">✅ Where You're Winning</div>
+              ${(a.you_winning || []).map(p => `<div class="analysis-point">${p}</div>`).join('')}
+            </div>
+            <div class="analysis-section red-section">
+              <div class="analysis-section-title">⚠️ Where They're Winning</div>
+              ${(a.they_winning || []).map(p => `<div class="analysis-point">${p}</div>`).join('')}
+            </div>
+            <div class="analysis-section yellow-section">
+              <div class="analysis-section-title">📉 Your Gaps to Fix</div>
+              ${(a.your_gaps || []).map(p => `<div class="analysis-point">${p}</div>`).join('')}
+            </div>
+            <div class="analysis-section blue-section">
+              <div class="analysis-section-title">🎯 Action Recommendations</div>
+              ${(a.recommendations || []).map(p => `<div class="analysis-point">${p}</div>`).join('')}
+            </div>
+          </div>
+          <div style="font-size:9px;color:var(--grey2);margin-top:8px;">Analysis generated by Claude AI based on ratings and business category.</div>
+        </div>
+      `;
+      btn.textContent = '✨ Refresh Analysis';
+      btn.disabled = false;
+    } else {
+      throw new Error(data.error || 'Analysis failed');
+    }
+  } catch(e) {
+    analysisDiv.innerHTML = `<div style="color:var(--red);font-size:11px;padding:12px;">Failed to generate analysis. Try again.</div>`;
+    btn.textContent = '✨ AI Analysis';
+    btn.disabled = false;
+  }
 }
 
 async function addCompetitor() {
@@ -457,83 +463,47 @@ async function addCompetitor() {
   const name = document.getElementById('compName').value.trim();
   const url = document.getElementById('compUrl').value.trim();
   const status = document.getElementById('compAddStatus');
-
-  if (!name) {
-    status.textContent = '⚠️ Please enter competitor name';
-    status.style.color = 'var(--red)'; status.style.display = 'block'; return;
-  }
-  if (!url || !url.includes('google')) {
-    status.textContent = '⚠️ Please enter a valid Google Maps URL';
-    status.style.color = 'var(--red)'; status.style.display = 'block'; return;
-  }
-
-  status.textContent = '⏳ Adding competitor...';
-  status.style.color = 'var(--gold)'; status.style.display = 'block';
-
+  if (!name) { status.textContent='⚠️ Please enter competitor name'; status.style.color='var(--red)'; status.style.display='block'; return; }
+  if (!url || !url.includes('google')) { status.textContent='⚠️ Please enter a valid Google Maps URL'; status.style.color='var(--red)'; status.style.display='block'; return; }
+  status.textContent='⏳ Adding competitor...'; status.style.color='var(--gold)'; status.style.display='block';
   try {
-    const res = await fetch(`${BACKEND}/api/competitors`, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ business_id: bizId, competitor_name: name, google_maps_url: url })
-    });
+    const res = await fetch(`${BACKEND}/api/competitors`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({business_id:bizId,competitor_name:name,google_maps_url:url})});
     const data = await res.json();
     if (data.success) {
-      status.textContent = '✅ Competitor added! Fetching their data...';
-      status.style.color = 'var(--green)';
-      document.getElementById('compName').value = '';
-      document.getElementById('compUrl').value = '';
-      setTimeout(() => { status.style.display = 'none'; }, 3000);
+      status.textContent='✅ Competitor added!'; status.style.color='var(--green)';
+      document.getElementById('compName').value=''; document.getElementById('compUrl').value='';
+      setTimeout(()=>{status.style.display='none';},3000);
       await loadCompetitors(bizId);
-    } else {
-      throw new Error(data.error);
-    }
-  } catch(e) {
-    status.textContent = '❌ Failed to add. Try again.';
-    status.style.color = 'var(--red)';
-  }
+    } else throw new Error(data.error);
+  } catch(e) { status.textContent='❌ Failed to add. Try again.'; status.style.color='var(--red)'; }
 }
 
 async function refreshCompetitor(compId, btn) {
-  btn.disabled = true; btn.textContent = '⏳ Refreshing...';
+  btn.disabled=true; btn.textContent='⏳ Refreshing...';
   try {
-    const res = await fetch(`${BACKEND}/api/competitors/${compId}/refresh`, {method:'POST'});
+    const res = await fetch(`${BACKEND}/api/competitors/${compId}/refresh`,{method:'POST'});
     const data = await res.json();
-    if (data.success) {
-      btn.textContent = '✓ Refreshed';
-      const bizId = localStorage.getItem('ri_business_id');
-      setTimeout(() => { loadCompetitors(bizId); }, 800);
-    } else {
-      btn.textContent = '↻ Refresh';
-      btn.disabled = false;
-    }
-  } catch(e) {
-    btn.textContent = '↻ Refresh';
-    btn.disabled = false;
-  }
+    if (data.success) { btn.textContent='✓ Refreshed'; const bizId=localStorage.getItem('ri_business_id'); setTimeout(()=>{loadCompetitors(bizId);},800); }
+    else { btn.textContent='↻ Refresh'; btn.disabled=false; }
+  } catch(e) { btn.textContent='↻ Refresh'; btn.disabled=false; }
 }
 
 async function deleteCompetitor(compId, bizId) {
-  if (!confirm('Remove this competitor from tracking?')) return;
+  if (!confirm('Remove this competitor?')) return;
   try {
-    const res = await fetch(`${BACKEND}/api/competitors/${compId}`, {method:'DELETE'});
+    const res = await fetch(`${BACKEND}/api/competitors/${compId}`,{method:'DELETE'});
     const data = await res.json();
     if (data.success) await loadCompetitors(bizId);
   } catch(e) { alert('Error removing competitor.'); }
 }
 
-// ── EXISTING FUNCTIONS ───────────────────────────────
-
 async function approveReply(replyId, btn) {
-  btn.disabled = true; btn.textContent = 'Marking...';
+  btn.disabled=true; btn.textContent='Marking...';
   try {
-    const res = await fetch(`${BACKEND}/api/replies/${replyId}/approve`, {method:'POST'});
+    const res = await fetch(`${BACKEND}/api/replies/${replyId}/approve`,{method:'POST'});
     const data = await res.json();
-    if (data.success) {
-      btn.textContent = '✓ Approved & Sent';
-      btn.style.background = 'var(--green)';
-      setTimeout(() => loadDashboard(), 1500);
-    }
-  } catch(e) { btn.textContent = 'Error — try again'; btn.disabled = false; }
+    if (data.success) { btn.textContent='✓ Approved'; btn.style.background='var(--green)'; setTimeout(()=>loadDashboard(),1500); }
+  } catch(e) { btn.textContent='Error'; btn.disabled=false; }
 }
 
 async function sendReviewRequest() {
@@ -541,33 +511,17 @@ async function sendReviewRequest() {
   const custName = document.getElementById('custName').value.trim();
   const custPhone = document.getElementById('custPhone').value.trim().replace(/\D/g,'');
   const status = document.getElementById('reqStatus');
-  if (!custPhone || custPhone.length < 10) {
-    status.textContent = '⚠️ Please enter a valid 10-digit number';
-    status.style.color = 'var(--red)'; status.style.display = 'block'; return;
-  }
+  if (!custPhone || custPhone.length < 10) { status.textContent='⚠️ Please enter a valid 10-digit number'; status.style.color='var(--red)'; status.style.display='block'; return; }
   try {
-    const res = await fetch(`${BACKEND}/api/review-requests`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({business_id: bizId, customer_name: custName, customer_phone: custPhone})
-    });
+    const res = await fetch(`${BACKEND}/api/review-requests`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({business_id:bizId,customer_name:custName,customer_phone:custPhone})});
     const data = await res.json();
-    if (data.success) {
-      status.textContent = '✅ Review request sent via WhatsApp!';
-      status.style.color = 'var(--green)'; status.style.display = 'block';
-      document.getElementById('custName').value = '';
-      document.getElementById('custPhone').value = '';
-      setTimeout(() => { status.style.display = 'none'; }, 4000);
-    } else { throw new Error(data.error); }
-  } catch(e) {
-    status.textContent = '❌ Failed to send. Try again.';
-    status.style.color = 'var(--red)'; status.style.display = 'block';
-  }
+    if (data.success) { status.textContent='✅ Review request sent!'; status.style.color='var(--green)'; status.style.display='block'; document.getElementById('custName').value=''; document.getElementById('custPhone').value=''; setTimeout(()=>{status.style.display='none';},4000); }
+    else throw new Error(data.error);
+  } catch(e) { status.textContent='❌ Failed to send.'; status.style.color='var(--red)'; status.style.display='block'; }
 }
 
 function logout() {
-  localStorage.removeItem('ri_business_id');
-  localStorage.removeItem('ri_business_name');
-  localStorage.removeItem('ri_phone');
+  localStorage.removeItem('ri_business_id'); localStorage.removeItem('ri_business_name'); localStorage.removeItem('ri_phone');
   window.location.href = 'index.html';
 }
 
