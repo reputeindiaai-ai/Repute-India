@@ -558,6 +558,26 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
 .gbp-fix-text{font-size:12px;color:var(--ink3);line-height:1.6;}
 
 /* ============================================================
+   ACTIVATION WALL
+   ============================================================ */
+.activate-wrap{min-height:70vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;}
+.activate-card{background:var(--white);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-lg);padding:48px 44px;max-width:520px;text-align:center;}
+.activate-badge{display:inline-block;background:var(--green-bg);color:var(--green);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:6px 16px;border-radius:20px;margin-bottom:20px;}
+.activate-title{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--ink);margin-bottom:16px;line-height:1.2;}
+.activate-score{display:inline-flex;flex-direction:column;align-items:center;background:linear-gradient(135deg,var(--ink),#2D2926);border-radius:12px;padding:16px 32px;margin-bottom:20px;}
+.activate-score span{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;}
+.activate-score strong{font-family:'Playfair Display',serif;font-size:40px;font-weight:700;color:var(--gold-light);line-height:1;}
+.activate-text{font-size:14px;color:var(--ink3);line-height:1.7;margin-bottom:24px;}
+.activate-offer{background:var(--cream);border-radius:10px;padding:20px 24px;margin-bottom:28px;text-align:left;}
+.activate-offer-row{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink2);padding:6px 0;}
+.activate-offer-row span{color:var(--green);font-weight:700;}
+.activate-btn{display:block;background:#25D366;color:#fff;text-decoration:none;font-size:14px;font-weight:700;letter-spacing:0.5px;padding:16px;border-radius:8px;transition:all 0.2s;margin-bottom:14px;}
+.activate-btn:hover{background:#20BA5A;box-shadow:0 6px 20px rgba(37,211,102,0.3);}
+.activate-note{font-size:12px;color:var(--ink3);line-height:1.6;margin-bottom:20px;}
+.activate-logout{background:transparent;border:none;color:var(--muted);font-size:12px;cursor:pointer;text-decoration:underline;}
+.activate-logout:hover{color:var(--ink);}
+
+/* ============================================================
    LOAN CONNECT TAB
    ============================================================ */
 .loan-hero{background:linear-gradient(135deg,var(--ink),#2D2926);border-radius:12px;padding:32px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:24px;position:relative;overflow:hidden;}
@@ -717,14 +737,12 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
       </div>
 
       <div class="trial-banner">
-        <div class="trial-text"><strong>Free Trial Active</strong> — AI is monitoring your reputation 24/7</div>
+        <div class="trial-text"><strong>Plan Active</strong> — AI is monitoring your reputation 24/7</div>
         <div style="display:flex;align-items:center;gap:28px;">
           <div style="text-align:right;">
             <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:2px;">Repute Score</div>
             <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--gold-light);line-height:1;" id="reputeScoreBadge">—</div>
           </div>
-          <div style="width:1px;height:36px;background:rgba(255,255,255,0.15);"></div>
-          <div class="trial-days" id="trialDays">15 days left</div>
         </div>
       </div>
 
@@ -1660,10 +1678,6 @@ async function loadDashboard() {
     if (data.success) {
       currentBizData = data.business;
       const { business, stats } = data;
-      if (business.trial_ends_at) {
-        const daysLeft = Math.max(0, Math.ceil((new Date(business.trial_ends_at) - new Date()) / (1000*60*60*24)));
-        document.getElementById('trialDays').textContent = daysLeft + ' days left';
-      }
       document.getElementById('statRating').textContent = stats.avg_rating > 0 ? stats.avg_rating.toFixed(1) + '★' : '—';
       document.getElementById('statTotal').textContent = stats.total_reviews;
       document.getElementById('statUnreplied').textContent = stats.unreplied_count;
@@ -1684,6 +1698,12 @@ async function loadDashboard() {
         // Ensure nav overflow is set up even if no persona matched
         setupNavOverflow();
       } catch(e) { console.error('Profile fetch error:', e); }
+
+      // ACTIVATION GATE — if onboarding done but not a paying customer, show paywall
+      if (business.subscription_active !== true) {
+        showActivationWall(business);
+        return;
+      }
 
       await loadReviews(bizId);
       await loadCompetitors(bizId);
@@ -3603,6 +3623,41 @@ async function optimiseGBP() {
     } else throw new Error();
   } catch(e) { status.textContent = '❌ Failed. Please try again.'; }
   btn.disabled = false; btn.textContent = '📍 Audit My Google Profile';
+}
+
+// ============================================================
+// ACTIVATION WALL — shown after onboarding if not a paying customer
+// ============================================================
+function showActivationWall(business) {
+  document.getElementById('loadingState').style.display = 'none';
+  const dash = document.getElementById('dashContent');
+  const firstName = (business.owner_name || '').split(' ')[0] || 'there';
+  const score = (currentProfile && currentProfile.repute_score != null) ? currentProfile.repute_score : null;
+  const waNum = '919737133331'; // ← your business WhatsApp number for activation enquiries
+  const waMsg = encodeURIComponent(`Hi! I'm ${business.owner_name || ''} from ${business.business_name || ''}. I've completed my Repute AI onboarding and want to activate my account.`);
+
+  dash.style.display = 'block';
+  dash.innerHTML = `
+    <div class="activate-wrap">
+      <div class="activate-card">
+        <div class="activate-badge">Onboarding Complete ✓</div>
+        <h1 class="activate-title">You're all set, ${firstName}!</h1>
+        ${score != null ? `<div class="activate-score"><span>Your Repute Score</span><strong>${score}</strong></div>` : ''}
+        <p class="activate-text">Your AI Business OS for <strong>${business.business_name || 'your business'}</strong> is ready and waiting. Activate your plan to unlock everything — reputation management, your AI assistant, marketing studio, government schemes, loan matching and more.</p>
+
+        <div class="activate-offer">
+          <div class="activate-offer-row"><span>✓</span> Zero setup cost</div>
+          <div class="activate-offer-row"><span>✓</span> Simple monthly plan — cancel anytime</div>
+          <div class="activate-offer-row"><span>✓</span> Full access to all features &amp; your AI assistant</div>
+          <div class="activate-offer-row"><span>✓</span> Personalised for your business, from day one</div>
+        </div>
+
+        <a class="activate-btn" href="https://wa.me/${waNum}?text=${waMsg}" target="_blank">💬 Activate My Account</a>
+        <p class="activate-note">Tap above to message us on WhatsApp and we'll activate your account right away. Questions? We're here to help.</p>
+
+        <button class="activate-logout" onclick="logout()">Sign out</button>
+      </div>
+    </div>`;
 }
 
 function logout() {
