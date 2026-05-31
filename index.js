@@ -56,9 +56,7 @@ app.get("/", (req, res) => {
 app.post("/api/businesses", async (req, res) => {
   try {
     const { owner_name, business_name, category, phone, email, city, whatsapp_number, google_place_id, google_maps_url } = req.body;
-    const trial_started_at = new Date();
-    const trial_ends_at = new Date(Date.now() + 15 * 24 * 60 * 60 * 1000);
-    const { data, error } = await supabase.from("businesses").insert([{ owner_name, business_name, category, phone, email, city, whatsapp_number, google_place_id, google_maps_url, plan: "trial", trial_started_at, trial_ends_at, onboarded: true }]).select().single();
+    const { data, error } = await supabase.from("businesses").insert([{ owner_name, business_name, category, phone, email, city, whatsapp_number, google_place_id, google_maps_url, plan: "pending", subscription_active: false, onboarded: true }]).select().single();
     if (error) throw error;
     logEvent("signup", data.id, data.business_name, `${category || ""} · ${city || ""}`);
 
@@ -1871,6 +1869,27 @@ CRITICAL: Output only valid JSON. No line breaks inside values. No double quotes
     res.json({ success: true, audit: result });
   } catch (err) {
     console.error("GBP optimise error:", err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+
+// ============================================================
+// ADMIN — ACTIVATE / DEACTIVATE A CLIENT
+// POST /api/admin/set-active  { business_id, active, plan }
+// ============================================================
+app.post("/api/admin/set-active", async (req, res) => {
+  try {
+    const { business_id, active, plan } = req.body;
+    if (!business_id) return res.status(400).json({ success: false, error: "business_id required" });
+    const update = { subscription_active: !!active, plan: active ? (plan || "active") : "pending" };
+    if (active) update.activated_at = new Date();
+    const { data, error } = await supabase.from("businesses").update(update).eq("id", business_id).select().single();
+    if (error) throw error;
+    logEvent(active ? "activated" : "deactivated", business_id, data.business_name, plan || "");
+    res.json({ success: true, business: data });
+  } catch (err) {
+    console.error("Set active error:", err.message);
     res.status(500).json({ success: false, error: err.message });
   }
 });
