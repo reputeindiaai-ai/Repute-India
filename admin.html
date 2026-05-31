@@ -621,6 +621,11 @@ td.light { color: var(--muted); font-size: 12px; }
   margin-top: 8px;
 }
 .btn-wa:hover { background: #20BA5A; box-shadow: 0 4px 16px rgba(37,211,102,0.3); }
+.btn-activate { display:block; width:100%; background:var(--green); color:#fff; text-align:center; padding:14px; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase; border:none; border-radius:2px; cursor:pointer; transition:all 0.2s; margin-bottom:10px; }
+.btn-activate:hover { background:#246b43; box-shadow:0 4px 16px rgba(45,125,79,0.3); }
+.btn-activate.deactivate { background:var(--amber); }
+.btn-activate.deactivate:hover { background:#9a6516; }
+.btn-activate:disabled { opacity:0.6; cursor:default; }
 
 /* ── RESPONSIVE ── */
 @media(max-width:1024px){
@@ -722,20 +727,20 @@ td.light { color: var(--muted); font-size: 12px; }
             <div class="stat-value" id="sTotalClients">0</div>
             <div class="stat-sub">Registered businesses</div>
           </div>
-          <div class="stat-card amber">
-            <div class="stat-label">On Trial</div>
-            <div class="stat-value" id="sTrialClients">0</div>
-            <div class="stat-sub">Free trial active</div>
-          </div>
           <div class="stat-card green">
-            <div class="stat-label">Paid Active</div>
+            <div class="stat-label">Active Paying</div>
             <div class="stat-value" id="sActiveClients">0</div>
             <div class="stat-sub">Subscribed</div>
           </div>
+          <div class="stat-card amber">
+            <div class="stat-label">Pending Payment</div>
+            <div class="stat-value" id="sTrialClients">0</div>
+            <div class="stat-sub">Onboarded, not paid</div>
+          </div>
           <div class="stat-card red">
-            <div class="stat-label">Trial Expired</div>
+            <div class="stat-label">Not Onboarded</div>
             <div class="stat-value" id="sExpiredClients">0</div>
-            <div class="stat-sub">Need follow-up</div>
+            <div class="stat-sub">Signed up only</div>
           </div>
           <div class="stat-card blue">
             <div class="stat-label">New This Week</div>
@@ -805,10 +810,10 @@ td.light { color: var(--muted); font-size: 12px; }
               <input type="text" class="filter-input" id="searchInput"
                 placeholder="Search name, business, city, phone…" oninput="filterClients()">
               <select class="filter-select" id="planFilter" onchange="filterClients()">
-                <option value="">All Plans</option>
-                <option value="trial">Trial</option>
-                <option value="active">Active</option>
-                <option value="expired">Expired</option>
+                <option value="">All Statuses</option>
+                <option value="active">Active (Paying)</option>
+                <option value="pending">Pending Payment</option>
+                <option value="not_onboarded">Not Onboarded</option>
               </select>
               <select class="filter-select" id="catFilter" onchange="filterClients()">
                 <option value="">All Categories</option>
@@ -826,7 +831,7 @@ td.light { color: var(--muted); font-size: 12px; }
               <thead>
                 <tr>
                   <th>#</th><th>Business</th><th>Owner</th><th>City</th>
-                  <th>Category</th><th>Phone</th><th>Status</th><th>Trial Ends</th><th>Joined</th>
+                  <th>Category</th><th>Phone</th><th>Status</th><th>Plan</th><th>Joined</th>
                 </tr>
               </thead>
               <tbody id="clientsTableBody">
@@ -994,14 +999,14 @@ function renderStats(clients) {
   const now = new Date();
   const week = new Date(now - 7*24*60*60*1000);
   const total   = clients.length;
-  const onTrial = clients.filter(c => { const e = c.trial_ends_at ? new Date(c.trial_ends_at) : null; return c.plan==='trial' && e && e > now; }).length;
   const active  = clients.filter(c => c.subscription_active === true).length;
-  const expired = clients.filter(c => { const e = c.trial_ends_at ? new Date(c.trial_ends_at) : null; return c.plan==='trial' && e && e < now && !c.subscription_active; }).length;
+  const pending = clients.filter(c => c.subscription_active !== true && c.onboarding_completed === true).length;
+  const notOnboarded = clients.filter(c => c.subscription_active !== true && c.onboarding_completed !== true).length;
   const newW    = clients.filter(c => c.created_at && new Date(c.created_at) > week).length;
   document.getElementById('sTotalClients').textContent = total;
-  document.getElementById('sTrialClients').textContent = onTrial;
   document.getElementById('sActiveClients').textContent = active;
-  document.getElementById('sExpiredClients').textContent = expired;
+  document.getElementById('sTrialClients').textContent = pending;
+  document.getElementById('sExpiredClients').textContent = notOnboarded;
   document.getElementById('sNewClients').textContent = newW;
 }
 
@@ -1019,9 +1024,9 @@ function filterClients() {
       (c.phone||'').includes(search) ||
       (c.whatsapp_number||'').includes(search);
     let mp = true;
-    if (plan === 'trial')   { const e = c.trial_ends_at ? new Date(c.trial_ends_at) : null; mp = c.plan==='trial' && e && e > now; }
-    if (plan === 'active')  { mp = c.subscription_active === true; }
-    if (plan === 'expired') { const e = c.trial_ends_at ? new Date(c.trial_ends_at) : null; mp = c.plan==='trial' && e && e < now && !c.subscription_active; }
+    if (plan === 'active')        { mp = c.subscription_active === true; }
+    if (plan === 'pending')       { mp = c.subscription_active !== true && c.onboarding_completed === true; }
+    if (plan === 'not_onboarded') { mp = c.subscription_active !== true && c.onboarding_completed !== true; }
     const mc = !cat || (c.category||'').toLowerCase().includes(cat);
     return ms && mp && mc;
   });
@@ -1036,17 +1041,15 @@ function renderTable(clients) {
     tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-heading">No clients found</div><p class="empty-text">Try adjusting your search or filters.</p></div></td></tr>`;
     return;
   }
-  const now = new Date();
   tbody.innerHTML = clients.map((c,i) => {
-    const trialEnd = c.trial_ends_at ? new Date(c.trial_ends_at) : null;
     const isActive  = c.subscription_active === true;
-    const isExpired = trialEnd && trialEnd < now && !isActive;
+    const isOnboarded = c.onboarding_completed === true;
     const statusBadge = isActive
       ? `<span class="badge active"><span class="badge-dot"></span>Active</span>`
-      : isExpired
-        ? `<span class="badge expired"><span class="badge-dot"></span>Expired</span>`
-        : `<span class="badge trial"><span class="badge-dot"></span>Trial</span>`;
-    const trialStr = trialEnd ? trialEnd.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}) : '—';
+      : isOnboarded
+        ? `<span class="badge trial"><span class="badge-dot"></span>Pending</span>`
+        : `<span class="badge expired"><span class="badge-dot"></span>Not Onboarded</span>`;
+    const planStr = c.plan || 'pending';
     const regStr   = c.created_at ? new Date(c.created_at).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}) : '—';
     const catKey   = (c.category||'other').toLowerCase().replace(/\s+/g,'_');
     const globalIdx = allClients.indexOf(c);
@@ -1058,7 +1061,7 @@ function renderTable(clients) {
       <td><span class="cat-badge ${catKey}">${c.category||'Other'}</span></td>
       <td class="light">${c.phone||c.whatsapp_number||'—'}</td>
       <td>${statusBadge}</td>
-      <td class="light">${trialStr}</td>
+      <td class="light">${planStr}</td>
       <td class="light">${regStr}</td>
     </tr>`;
   }).join('');
@@ -1122,16 +1125,13 @@ function timeAgo(ts) {
 function openDrawer(idx) {
   const c = allClients[idx];
   if (!c) return;
-  const now = new Date();
-  const trialEnd = c.trial_ends_at ? new Date(c.trial_ends_at) : null;
   const isActive  = c.subscription_active === true;
-  const isExpired = trialEnd && trialEnd < now && !isActive;
-  const daysLeft  = trialEnd ? Math.max(0, Math.ceil((trialEnd - now)/(1000*60*60*24))) : null;
+  const isOnboarded = c.onboarding_completed === true;
   const statusBadge = isActive
     ? `<span class="badge active"><span class="badge-dot"></span>Active Subscriber</span>`
-    : isExpired
-      ? `<span class="badge expired"><span class="badge-dot"></span>Trial Expired</span>`
-      : `<span class="badge trial"><span class="badge-dot"></span>Trial — ${daysLeft} days left</span>`;
+    : isOnboarded
+      ? `<span class="badge trial"><span class="badge-dot"></span>Pending Payment</span>`
+      : `<span class="badge expired"><span class="badge-dot"></span>Not Onboarded</span>`;
 
   document.getElementById('drawerBizName').textContent  = c.business_name || '—';
   document.getElementById('drawerOwnerName').textContent = c.owner_name ? `Owner: ${c.owner_name}` : '';
@@ -1157,18 +1157,39 @@ function openDrawer(idx) {
       <div class="d-row"><span class="d-key">Maps Link</span><span class="d-val">${c.google_maps_url ? `<a href="${c.google_maps_url}" target="_blank">Open ↗</a>` : 'Not set'}</span></div>
     </div>
     <div class="d-section">
-      <div class="d-section-label">Timeline</div>
+      <div class="d-section-label">Account Status</div>
       <div class="d-row"><span class="d-key">Registered</span><span class="d-val">${c.created_at ? new Date(c.created_at).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}) : '—'}</span></div>
-      <div class="d-row"><span class="d-key">Trial Started</span><span class="d-val">${c.trial_started_at ? new Date(c.trial_started_at).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}) : '—'}</span></div>
-      <div class="d-row"><span class="d-key">Trial Ends</span><span class="d-val">${trialEnd ? trialEnd.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}) : '—'}</span></div>
+      <div class="d-row"><span class="d-key">Plan</span><span class="d-val">${c.plan || 'pending'}</span></div>
+      <div class="d-row"><span class="d-key">Status</span><span class="d-val">${c.subscription_active ? '✅ Active (Paying)' : '⏳ Pending Payment'}</span></div>
     </div>
-    <a class="btn-wa" href="https://wa.me/${(c.whatsapp_number||c.phone||'').replace(/\D/g,'')}?text=Hello%20${encodeURIComponent(c.owner_name||'')}%2C%20this%20is%20Kushal%20from%20ReputeIndia%20%F0%9F%8C%9F" target="_blank">
+    <button class="btn-activate ${c.subscription_active ? 'deactivate' : ''}" id="activateBtn" onclick="toggleActive('${c.id}', ${c.subscription_active ? 'false' : 'true'})">
+      ${c.subscription_active ? '⏸ Deactivate Account' : '✅ Activate Account (Mark as Paid)'}
+    </button>
+    <a class="btn-wa" href="https://wa.me/${(c.whatsapp_number||c.phone||'').replace(/\D/g,'')}?text=Hello%20${encodeURIComponent(c.owner_name||'')}%2C%20this%20is%20Kushal%20from%20Repute%20AI%20%F0%9F%8C%9F" target="_blank">
       💬 Message on WhatsApp
     </a>
   `;
 
   document.getElementById('drawerOverlay').style.display = 'block';
   document.getElementById('clientDrawer').classList.add('open');
+}
+
+async function toggleActive(businessId, makeActive) {
+  const btn = document.getElementById('activateBtn');
+  if (!btn) return;
+  btn.disabled = true;
+  btn.textContent = '⏳ Updating...';
+  try {
+    const res = await fetch(`${BACKEND}/api/admin/set-active`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ business_id: businessId, active: (makeActive === true || makeActive === 'true') })
+    });
+    const data = await res.json();
+    if (data.success) {
+      closeDrawer();
+      loadClients();
+    } else { btn.disabled = false; btn.textContent = '❌ Failed — try again'; }
+  } catch(e) { btn.disabled = false; btn.textContent = '❌ Failed — try again'; }
 }
 function closeDrawer() {
   document.getElementById('drawerOverlay').style.display = 'none';
