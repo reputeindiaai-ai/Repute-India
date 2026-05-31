@@ -38,7 +38,10 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
 .nav-logo-text{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--ink);letter-spacing:1px;}
 .nav-logo-text span{color:var(--gold);}
-.nav-center{display:flex;align-items:center;gap:4px;}
+.nav-center{display:flex;align-items:center;gap:4px;overflow-x:auto;max-width:calc(100vw - 360px);scrollbar-width:thin;}
+.nav-center::-webkit-scrollbar{height:4px;}
+.nav-center::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
+.nav-tab{flex-shrink:0;}
 .nav-tab{background:transparent;border:none;padding:8px 16px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:var(--ink3);cursor:pointer;border-radius:6px;transition:all 0.2s;letter-spacing:0.3px;white-space:nowrap;}
 .nav-tab:hover{background:var(--paper);color:var(--ink);}
 .nav-tab.active{background:var(--ink);color:var(--white);}
@@ -3285,7 +3288,7 @@ function applyPersona(category) {
   if (badge) { badge.textContent = persona.label; badge.style.display = 'inline-flex'; }
 
   // Reorder nav tabs
-  const navBar = document.querySelector('.nav-bar');
+  const navBar = document.querySelector('.nav-center');
   if (navBar) {
     const allNavBtns = Array.from(navBar.querySelectorAll('.nav-tab'));
     const tabIdMap = {};
