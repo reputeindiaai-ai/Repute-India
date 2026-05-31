@@ -38,10 +38,17 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
 .nav-logo-text{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--ink);letter-spacing:1px;}
 .nav-logo-text span{color:var(--gold);}
-.nav-center{display:flex;align-items:center;gap:4px;overflow-x:auto;max-width:calc(100vw - 360px);scrollbar-width:thin;}
-.nav-center::-webkit-scrollbar{height:4px;}
-.nav-center::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
+.nav-center{display:flex;align-items:center;gap:4px;}
 .nav-tab{flex-shrink:0;}
+.nav-tab.nav-hidden{display:none;}
+.nav-more-wrap{position:relative;flex-shrink:0;}
+.nav-more-btn{display:flex;align-items:center;gap:5px;background:transparent;border:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--ink2);padding:8px 14px;border-radius:8px;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.nav-more-btn:hover{background:var(--cream);color:var(--ink);}
+.nav-more-menu{position:absolute;top:calc(100% + 8px);right:0;background:var(--white);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-lg);padding:6px;min-width:200px;z-index:300;display:none;}
+.nav-more-menu.open{display:block;animation:fadeIn 0.15s;}
+.nav-more-item{display:flex;align-items:center;gap:10px;width:100%;background:transparent;border:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--ink2);padding:11px 14px;border-radius:7px;cursor:pointer;transition:all 0.15s;text-align:left;}
+.nav-more-item:hover{background:var(--cream);color:var(--ink);}
+.nav-more-item .tab-icon{font-size:15px;}
 .nav-tab{background:transparent;border:none;padding:8px 16px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:var(--ink3);cursor:pointer;border-radius:6px;transition:all 0.2s;letter-spacing:0.3px;white-space:nowrap;}
 .nav-tab:hover{background:var(--paper);color:var(--ink);}
 .nav-tab.active{background:var(--ink);color:var(--white);}
@@ -640,6 +647,11 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;m
     <button class="nav-tab" onclick="switchTab('whatsapp-templates',this)"><span class="tab-icon">💬</span>WA Templates</button>
     <button class="nav-tab" onclick="switchTab('complaint',this)"><span class="tab-icon">🛡️</span>Complaints</button>
     <button class="nav-tab" onclick="switchTab('gbp',this)"><span class="tab-icon">📍</span>Google Profile</button>
+  </div>
+
+  <div class="nav-more-wrap">
+    <button class="nav-more-btn" onclick="toggleNavMore()">More <span style="font-size:9px;">▾</span></button>
+    <div class="nav-more-menu" id="navMoreMenu"></div>
   </div>
 
   <div class="nav-right">
@@ -1669,6 +1681,8 @@ async function loadDashboard() {
           window.location.href = 'onboarding.html';
           return;
         }
+        // Ensure nav overflow is set up even if no persona matched
+        setupNavOverflow();
       } catch(e) { console.error('Profile fetch error:', e); }
 
       await loadReviews(bizId);
@@ -3313,7 +3327,53 @@ function applyPersona(category) {
     qa.style.display = 'block';
     window.__personaActions = persona.quickActions;
   }
+
+  // Set up nav overflow (visible tabs + More dropdown)
+  setupNavOverflow();
 }
+
+// Show first N tabs; move the rest into the "More" dropdown
+function setupNavOverflow(visibleCount = 6) {
+  const navBar = document.querySelector('.nav-center');
+  const moreMenu = document.getElementById('navMoreMenu');
+  const moreWrap = document.querySelector('.nav-more-wrap');
+  if (!navBar || !moreMenu) return;
+
+  const allBtns = Array.from(navBar.querySelectorAll('.nav-tab'));
+  moreMenu.innerHTML = '';
+
+  allBtns.forEach((btn, i) => {
+    if (i < visibleCount) {
+      btn.classList.remove('nav-hidden');
+    } else {
+      btn.classList.add('nav-hidden');
+      // Create a matching item in the More menu
+      const fn = btn.getAttribute('onclick') || '';
+      const match = fn.match(/'([^']+)'/);
+      const tabId = match ? match[1] : '';
+      const item = document.createElement('button');
+      item.className = 'nav-more-item';
+      item.innerHTML = btn.innerHTML;
+      item.onclick = () => { switchToTab(tabId); closeNavMore(); };
+      moreMenu.appendChild(item);
+    }
+  });
+
+  // Hide the More button entirely if nothing overflows
+  if (moreWrap) moreWrap.style.display = allBtns.length > visibleCount ? 'block' : 'none';
+}
+
+function toggleNavMore() {
+  document.getElementById('navMoreMenu').classList.toggle('open');
+}
+function closeNavMore() {
+  document.getElementById('navMoreMenu').classList.remove('open');
+}
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+  const wrap = document.querySelector('.nav-more-wrap');
+  if (wrap && !wrap.contains(e.target)) closeNavMore();
+});
 
 function personaQuickAction(i) {
   const actions = window.__personaActions || [];
