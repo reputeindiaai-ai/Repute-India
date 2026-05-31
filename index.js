@@ -61,6 +61,11 @@ app.post("/api/businesses", async (req, res) => {
     const { data, error } = await supabase.from("businesses").insert([{ owner_name, business_name, category, phone, email, city, whatsapp_number, google_place_id, google_maps_url, plan: "trial", trial_started_at, trial_ends_at, onboarded: true }]).select().single();
     if (error) throw error;
     logEvent("signup", data.id, data.business_name, `${category || ""} · ${city || ""}`);
+
+    // Fire welcome messages — non-blocking, never fail signup if these error
+    sendWelcomeEmail(data.email, data.owner_name, data.business_name);
+    sendWelcomeWhatsApp(data.whatsapp_number || data.phone, data.owner_name, data.business_name);
+
     res.json({ success: true, business: data });
   } catch (err) {
     console.error("Register business error:", err);
@@ -561,6 +566,65 @@ async function sendOtpEmail(toEmail, businessName, otp) {
     console.error("Email send error:", err.response?.data || err.message);
     throw new Error("Failed to send OTP email. Please try again.");
   }
+}
+
+// ============================================================
+// HELPER: Send Welcome Email via Resend
+// ============================================================
+async function sendWelcomeEmail(toEmail, ownerName, businessName) {
+  if (!toEmail) return null;
+  const firstName = (ownerName || "").split(" ")[0] || "there";
+  try {
+    const response = await axios.post("https://api.resend.com/emails", {
+      from: "Repute AI <noreply@reputeindiaai.com>",
+      to: [toEmail],
+      subject: `Welcome to Repute AI, ${firstName}! 🎉`,
+      html: `<div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;background:#FFFDF8;color:#1A1612;padding:0;border-radius:10px;overflow:hidden;border:1px solid #E8E3DB;">
+        <div style="background:linear-gradient(135deg,#1A1612,#3a3128);padding:36px 40px;text-align:center;">
+          <h1 style="color:#D4AF50;font-size:26px;letter-spacing:1px;margin:0;font-family:Georgia,serif;">Repute AI</h1>
+          <p style="color:rgba(255,255,255,0.5);font-size:11px;margin-top:6px;letter-spacing:2px;">YOUR AI BUSINESS OPERATING SYSTEM</p>
+        </div>
+        <div style="padding:36px 40px;">
+          <p style="font-size:15px;margin:0 0 16px;">Hi ${firstName}, welcome aboard! 🎉</p>
+          <p style="font-size:14px;line-height:1.7;color:#2E2A25;margin:0 0 16px;">Your <strong>15-day free trial</strong> of Repute AI is now active for <strong>${businessName || "your business"}</strong>. Everything you need to run and grow your business is now in one place:</p>
+          <ul style="font-size:13px;line-height:1.9;color:#2E2A25;padding-left:20px;margin:0 0 24px;">
+            <li>⭐ Reputation &amp; Google review management</li>
+            <li>✨ Your personal AI business assistant</li>
+            <li>📢 Complete marketing studio — posters, posts, campaigns</li>
+            <li>🏛️ Government schemes you qualify for</li>
+            <li>💰 Loan &amp; funding matches</li>
+            <li>📄 Instant business documents</li>
+          </ul>
+          <div style="text-align:center;margin:28px 0;">
+            <a href="https://reputeindiaai.com/dashboard.html" style="display:inline-block;background:#1A1612;color:#fff;text-decoration:none;font-size:13px;font-weight:600;letter-spacing:1px;padding:14px 32px;border-radius:6px;">OPEN YOUR DASHBOARD →</a>
+          </div>
+          <p style="font-size:13px;line-height:1.7;color:#2E2A25;margin:0 0 8px;">Need help getting started? Just reply to this email — we're here for you.</p>
+          <p style="font-size:13px;color:#2E2A25;margin:0;">Here's to growing ${businessName || "your business"}! 🚀</p>
+          <p style="font-size:13px;color:#8A8480;margin:16px 0 0;">— Team Repute AI</p>
+        </div>
+        <div style="background:#F2EFE9;padding:18px 40px;text-align:center;">
+          <p style="color:#8A8480;font-size:10px;letter-spacing:1px;margin:0;">Repute AI — AI Business OS for Indian MSMEs · reputeindiaai.com</p>
+        </div>
+      </div>`
+    }, { headers: { "Authorization": `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" } });
+    console.log("Welcome email sent:", response.data?.id);
+    return response.data;
+  } catch (err) {
+    console.error("Welcome email error:", err.response?.data || err.message);
+    return null; // never block signup on email failure
+  }
+}
+
+// ============================================================
+// HELPER: Send Welcome WhatsApp (uses approved template)
+// ============================================================
+async function sendWelcomeWhatsApp(toPhone, ownerName, businessName) {
+  if (!toPhone) return null;
+  const firstName = (ownerName || "").split(" ")[0] || "there";
+  // Uses the "welcome_message" template you register in Meta Business Manager.
+  // Template body should have 2 variables: {{1}} = first name, {{2}} = business name
+  const result = await sendWhatsAppTemplate(toPhone, "welcome_message", [firstName, businessName || "your business"]);
+  return result;
 }
 
 // ============================================================
