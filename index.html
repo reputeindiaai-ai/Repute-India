@@ -746,13 +746,13 @@ footer { background:var(--ink); border-top:1px solid rgba(255,255,255,0.08); pad
         <h3 style="font-family:'Playfair Display',serif;font-size:28px;color:var(--ink);margin-bottom:14px;">Let's Talk Business</h3>
         <p style="font-size:13px;color:var(--muted);line-height:1.9;font-weight:300;">WhatsApp is the fastest way to reach us. We respond within 30 minutes during business hours. Or register directly and get started in 5 minutes.</p>
         <div class="contact-channels">
-          <a class="contact-channel" href="https://wa.me/918401750099" target="_blank">
+          <a class="contact-channel" href="https://wa.me/918401750099?text=Hi%21+I%27m+interested+in+Repute+AI+for+my+business.+Can+you+tell+me+more%3F" target="_blank">
             <div class="channel-icon">💬</div>
-            <div><div class="channel-label">WhatsApp (Fastest)</div><div class="channel-value">+91 97371 33331</div></div>
+            <div><div class="channel-label">WhatsApp (Fastest)</div><div class="channel-value">+91 84017 50099</div></div>
           </a>
-          <a class="contact-channel" href="mailto:ReputeIndiaAi@gmail.com">
+          <a class="contact-channel" href="mailto:support@reputeindiaai.com">
             <div class="channel-icon">✉️</div>
-            <div><div class="channel-label">Email</div><div class="channel-value">ReputeIndiaAi@gmail.com</div></div>
+            <div><div class="channel-label">Email</div><div class="channel-value">support@reputeindiaai.com</div></div>
           </a>
           <a class="contact-channel" href="register.html">
             <div class="channel-icon">🚀</div>
@@ -767,15 +767,15 @@ footer { background:var(--ink); border-top:1px solid rgba(255,255,255,0.08); pad
       <div class="fade-in">
         <div class="form-group">
           <label class="form-label">Your Name</label>
-          <input type="text" class="form-input" placeholder="e.g. Rajesh Shah / Dr. Sharma">
+          <input type="text" id="contactName" class="form-input" placeholder="e.g. Rajesh Shah / Dr. Sharma">
         </div>
         <div class="form-group">
           <label class="form-label">WhatsApp Number</label>
-          <input type="tel" class="form-input" placeholder="+91 98765 43210">
+          <input type="tel" id="contactPhone" class="form-input" placeholder="+91 98765 43210">
         </div>
         <div class="form-group">
           <label class="form-label">Business Type</label>
-          <select class="form-select">
+          <select id="contactBiz" class="form-select">
             <option value="">Select your industry</option>
             <option>Manufacturer / Exporter</option>
             <option>Doctor / Clinic / Hospital</option>
@@ -790,7 +790,7 @@ footer { background:var(--ink); border-top:1px solid rgba(255,255,255,0.08); pad
         </div>
         <div class="form-group">
           <label class="form-label">Which Plan Interests You?</label>
-          <select class="form-select">
+          <select id="contactPlan" class="form-select">
             <option value="">Select a plan</option>
             <option>Starter — ₹2,999/month</option>
             <option>Growth — ₹4,999/month</option>
@@ -800,9 +800,9 @@ footer { background:var(--ink); border-top:1px solid rgba(255,255,255,0.08); pad
         </div>
         <div class="form-group">
           <label class="form-label">Message (Optional)</label>
-          <textarea class="form-textarea" placeholder="Tell us about your business..."></textarea>
+          <textarea id="contactMsg" class="form-textarea" placeholder="Tell us about your business..."></textarea>
         </div>
-        <button class="btn-primary" style="width:100%;text-align:center;padding:14px;" onclick="alert('Thank you! We will contact you on WhatsApp within 30 minutes.')">Send Message & Get Started →</button>
+        <button class="btn-primary" style="width:100%;text-align:center;padding:14px;" onclick="sendContactWhatsApp()">Send Message & Get Started →</button>
         <p style="font-size:10px;color:var(--muted2);text-align:center;margin-top:12px;letter-spacing:0.5px;">Zero setup cost &nbsp;·&nbsp; Full access from day 1 &nbsp;·&nbsp; Cancel anytime</p>
       </div>
     </div>
@@ -847,7 +847,7 @@ footer { background:var(--ink); border-top:1px solid rgba(255,255,255,0.08); pad
       <ul>
         <li><a href="#about">About Founder</a></li>
         <li><a href="#contact">Contact Us</a></li>
-        <li><a href="https://wa.me/918401750099" target="_blank">WhatsApp Support</a></li>
+        <li><a href="https://wa.me/918401750099?text=Hi%21+I%27m+interested+in+Repute+AI.+Can+you+help+me+get+started%3F" target="_blank">WhatsApp Support</a></li>
         <li><a href="#">Privacy Policy</a></li>
         <li><a href="#">Terms of Service</a></li>
       </ul>
@@ -860,6 +860,28 @@ footer { background:var(--ink); border-top:1px solid rgba(255,255,255,0.08); pad
 </footer>
 
 <script>
+function sendContactWhatsApp() {
+  const name    = document.getElementById('contactName')?.value.trim() || '';
+  const phone   = document.getElementById('contactPhone')?.value.trim() || '';
+  const biz     = document.getElementById('contactBiz')?.value || '';
+  const plan    = document.getElementById('contactPlan')?.value || '';
+  const msg     = document.getElementById('contactMsg')?.value.trim() || '';
+  if (!name && !phone) {
+    alert('Please enter at least your name and WhatsApp number so we can reach you.');
+    return;
+  }
+  const text = `Hi! I'm interested in Repute AI for my business.
+
+Name: ${name || '—'}
+WhatsApp: ${phone || '—'}
+Business Type: ${biz || '—'}
+Plan Interested: ${plan || '—'}
+${msg ? 'Message: ' + msg : ''}
+
+Please get in touch. Thank you!`;
+  window.open(`https://wa.me/918401750099?text=${encodeURIComponent(text)}`, '_blank');
+}
+
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(el => { if(el.isIntersecting) el.target.classList.add('visible'); });
 }, { threshold: 0.1 });
