@@ -1723,7 +1723,9 @@ function applyPersonalization(business, profile) {
   if (!profile) return;
 
   // Apply vertical persona
-  applyPersona(business.category); (industry + state) so it works on first click
+  applyPersona(business.category);
+
+  // 3. Pre-fill Government Schemes (industry + state) so it works on first click
   const indEl = document.getElementById('schemesIndustry');
   if (indEl && !indEl.value) {
     // Use products/services or category as industry hint
