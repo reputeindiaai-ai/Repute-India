@@ -1882,11 +1882,24 @@ app.post("/api/admin/set-active", async (req, res) => {
   try {
     const { business_id, active, plan } = req.body;
     if (!business_id) return res.status(400).json({ success: false, error: "business_id required" });
-    const update = { subscription_active: !!active, plan: active ? (plan || "active") : "pending" };
-    if (active) update.activated_at = new Date();
-    const { data, error } = await supabase.from("businesses").update(update).eq("id", business_id).select().single();
+    const isActive = (active === true || active === "true");
+    const baseUpdate = { subscription_active: isActive, plan: isActive ? (plan || "active") : "pending" };
+
+    // Try with activated_at; if that column doesn't exist, retry without it
+    let data, error;
+    ({ data, error } = await supabase.from("businesses")
+      .update(isActive ? { ...baseUpdate, activated_at: new Date() } : baseUpdate)
+      .eq("id", business_id).select().single());
+
+    if (error) {
+      // Retry without activated_at (column may not exist)
+      ({ data, error } = await supabase.from("businesses")
+        .update(baseUpdate)
+        .eq("id", business_id).select().single());
+    }
     if (error) throw error;
-    logEvent(active ? "activated" : "deactivated", business_id, data.business_name, plan || "");
+
+    logEvent(isActive ? "activated" : "deactivated", business_id, data.business_name, plan || "");
     res.json({ success: true, business: data });
   } catch (err) {
     console.error("Set active error:", err.message);
