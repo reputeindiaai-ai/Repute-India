@@ -314,7 +314,9 @@ app.post("/api/competitors/:id/analyse", async (req, res) => {
     const { my_name, my_rating, my_review_count, comp_name, comp_category, comp_rating, comp_review_count } = req.body;
     const prompt = `You are a business reputation analyst in India. Analyse this competitive situation and give sharp, specific insights.\n\nMY BUSINESS: ${my_name}\nMy Google Rating: ${my_rating > 0 ? my_rating + '/5' : 'Not yet rated'}\nMy Total Reviews: ${my_review_count}\n\nCOMPETITOR: ${comp_name}\nTheir Category: ${comp_category || 'Local Business'}\nTheir Google Rating: ${comp_rating > 0 ? comp_rating + '/5' : 'Not yet rated'}\nTheir Total Reviews: ${comp_review_count}\n\nRespond ONLY with this JSON (no markdown):\n{\n  "you_winning": ["point 1", "point 2", "point 3"],\n  "they_winning": ["point 1", "point 2", "point 3"],\n  "your_gaps": ["gap 1", "gap 2", "gap 3"],\n  "recommendations": ["action 1", "action 2", "action 3"]\n}\n\nEach point must be 1 sentence, specific and actionable for Indian local businesses.`;
     const response = await axios.post("https://api.anthropic.com/v1/messages", { model: "claude-sonnet-4-6", max_tokens: 800, messages: [{ role: "user", content: prompt }] }, { headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "Content-Type": "application/json" } });
-    const analysis = JSON.parse(response.data.content[0].text.trim());
+    const raw = response.data.content[0].text.trim();
+    const match = raw.match(/\{[\s\S]*\}/);
+    const analysis = JSON.parse(match ? match[0] : raw);
     res.json({ success: true, analysis });
   } catch (err) {
     console.error("AI analysis error:", err.message);
