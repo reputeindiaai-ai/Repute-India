@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Repute AI — India's AI Business Operating System for MSMEs</title>
+<title>Repute India AI — Websites, CRM, ERP, Apps & AI Automation</title>
+<meta name="description" content="Repute India AI builds premium websites, CRM systems, ERP platforms, mobile apps, AI agents, WhatsApp automation, reputation management tools, and custom software for growing businesses.">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -63,6 +64,9 @@ nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-i
 .btn-outline { background:transparent; color:var(--ink); padding:14px 36px; font-size:11px; letter-spacing:2px; text-transform:uppercase; font-weight:600; border:1.5px solid var(--border2); cursor:pointer; transition:all 0.25s; text-decoration:none; display:inline-block; border-radius:2px; }
 .btn-outline:hover { border-color:var(--gold); color:var(--gold); background:var(--gold-pale); }
 .home-note { font-size:10px; color:var(--muted2); letter-spacing:0.5px; margin-bottom:52px; }
+.hero-product-link { display:inline-block; margin:8px 0 10px; font-size:12px; letter-spacing:0.5px; color:var(--muted); text-decoration:none; border-bottom:1px solid var(--border2); padding-bottom:2px; transition:color 0.2s,border-color 0.2s; }
+.hero-product-link span { color:var(--gold); font-weight:600; }
+.hero-product-link:hover { color:var(--ink); border-color:var(--gold); }
 .home-stats { display:flex; gap:56px; border-top:1px solid var(--border); padding-top:40px; flex-wrap:wrap; justify-content:center; }
 .stat { text-align:center; }
 .stat-num { font-family:'Playfair Display',serif; font-size:40px; font-weight:700; color:var(--gold); line-height:1; }
@@ -102,8 +106,8 @@ section { min-height:60vh; }
 .solution-item { display:flex; align-items:center; gap:12px; font-size:12px; color:rgba(255,255,255,0.8); font-weight:400; }
 .solution-item::before { content:''; width:20px; height:1.5px; background:var(--gold); flex-shrink:0; }
 
-/* MODULES */
-#modules { background:var(--white); }
+/* SERVICES */
+#services { background:var(--white); }
 .modules-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:56px; }
 .module-card { background:var(--off-white); border:1px solid var(--border); padding:36px 28px; border-radius:3px; transition:all 0.3s; position:relative; overflow:hidden; box-shadow:var(--shadow-sm); }
 .module-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--gold),var(--gold-light)); transform:scaleX(0); transform-origin:left; transition:transform 0.3s; }
@@ -186,8 +190,8 @@ section { min-height:60vh; }
 .industry-pain-label { font-size:8px; letter-spacing:3px; text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; font-weight:600; }
 .industry-pain p { font-size:11px; color:var(--ink2); margin:0; font-weight:300; line-height:1.6; }
 
-/* CASES */
-#cases { background:var(--white); }
+/* CASES / PORTFOLIO */
+#portfolio { background:var(--white); }
 .cases-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px; margin-top:56px; }
 .case-card { background:var(--off-white); padding:40px; border:1px solid var(--border); border-radius:3px; box-shadow:var(--shadow-sm); transition:all 0.3s; }
 .case-card:hover { box-shadow:var(--shadow); }
@@ -251,6 +255,23 @@ footer { background:var(--ink); border-top:1px solid rgba(255,255,255,0.08); pad
 .footer-bottom { max-width:1120px; margin:40px auto 0; padding-top:20px; border-top:1px solid rgba(255,255,255,0.08); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
 .footer-bottom p { font-size:11px; color:rgba(255,255,255,0.25); letter-spacing:0.5px; font-weight:300; }
 
+/* POSITIONING */
+#positioning { background:var(--off-white); }
+.pos-lead { font-family:'Playfair Display',serif; font-size:clamp(22px,3vw,32px); font-style:italic; color:var(--ink); line-height:1.5; max-width:780px; margin-top:8px; }
+.pos-lead em { color:var(--gold); font-style:italic; }
+.pos-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin-top:48px; }
+.pos-item { background:var(--white); border:1px solid var(--border); border-radius:3px; padding:26px 24px; box-shadow:var(--shadow-sm); transition:all 0.3s; }
+.pos-item:hover { box-shadow:var(--shadow); transform:translateY(-2px); }
+.pos-icon { font-size:24px; margin-bottom:14px; display:block; }
+.pos-item h4 { font-family:'Playfair Display',serif; font-size:16px; color:var(--ink); margin-bottom:6px; font-weight:600; }
+.pos-item p { font-size:12px; color:var(--muted); line-height:1.7; font-weight:300; }
+
+/* PORTFOLIO CAPABILITY CHIPS */
+.case-headline { font-family:'Playfair Display',serif; font-size:28px; font-weight:700; color:var(--ink); margin:6px 0 14px; }
+.cap-chips { display:flex; flex-wrap:wrap; gap:10px; margin-top:24px; }
+.cap-chip { font-size:11px; letter-spacing:0.4px; color:var(--ink2); background:var(--white); border:1px solid var(--border2); border-radius:30px; padding:8px 16px; font-weight:400; }
+.case-note { font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--gold); font-weight:600; margin-top:24px; }
+
 /* ANIMATIONS */
 .fade-in { opacity:0; transform:translateY(24px); transition:opacity 0.7s ease,transform 0.7s ease; }
 .fade-in.visible { opacity:1; transform:translateY(0); }
@@ -286,197 +307,197 @@ footer { background:var(--ink); border-top:1px solid rgba(255,255,255,0.08); pad
       <circle cx="16" cy="16" r="15" stroke="#B8952A" stroke-width="1.5"/>
       <polygon points="16,6 18.5,12.5 25.5,12.5 20,16.5 22,23 16,19.5 10,23 12,16.5 6.5,12.5 13.5,12.5" fill="#B8952A"/>
     </svg>
-    <span class="nav-wordmark">Repute<span>AI</span></span>
+    <span class="nav-wordmark">Repute India <span>AI</span></span>
   </a>
   <ul class="nav-links">
-    <li><a href="#modules">Modules</a></li>
-    <li><a href="#how">How It Works</a></li>
-    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#services">Services</a></li>
     <li><a href="#industries">Industries</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#pricing">Pricing</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
   <div class="nav-right">
     <a href="login.html" class="nav-login">Login</a>
-    <a href="register.html" class="nav-cta">Get Started</a>
+    <a href="#contact" class="nav-cta">Get Free Quote</a>
   </div>
   <button class="mobile-menu-btn">☰</button>
 </nav>
 
 <!-- HERO -->
 <section id="home">
-  <div class="home-eyebrow">India's First AI Business Operating System</div>
+  <div class="home-eyebrow">AI &amp; Software Solutions Company</div>
   <h1 class="home-h1">
-    One Platform.<br>
-    <em>Every Business Need.</em>
+    Premium Software.<br>
+    AI Automation. <em>Business Growth.</em>
   </h1>
   <p class="home-sub">
-    Stop juggling 20 tools, consultants, and agencies. Repute AI is the single platform that handles your reputation, documents, compliance, marketing, and government schemes — all powered by AI.
+    We build websites, CRM systems, ERP platforms, mobile applications, AI agents, WhatsApp automation, reputation management tools, and custom software for growing businesses.
   </p>
   <p class="home-sub2">
-    Starting with what matters most: <strong>your Google reputation.</strong> Then growing into your complete Business OS.
+    From <strong>idea to launch</strong> — we plan, design, develop, and deliver complete digital systems that run your business.
   </p>
   <div class="home-btns">
-    <a href="register.html" class="btn-primary">Get Started — Zero Setup Cost</a>
-    <a href="#modules" class="btn-outline">Explore All Modules</a>
+    <a href="#contact" class="btn-primary">Get Free Consultation</a>
+    <a href="#services" class="btn-outline">View Services</a>
   </div>
-  <div class="home-note">Zero setup cost &nbsp;·&nbsp; Simple monthly plan &nbsp;·&nbsp; Cancel anytime</div>
+  <a href="register.html" class="hero-product-link">Or try our <span>reputation &amp; business tool</span> →</a>
+  <div class="home-note">Free consultation &nbsp;·&nbsp; Custom-built solutions &nbsp;·&nbsp; Pan-India delivery</div>
   <div class="home-stats">
-    <div class="stat"><div class="stat-num">7</div><div class="stat-label">AI Modules</div></div>
-    <div class="stat"><div class="stat-num">₹0</div><div class="stat-label">Setup Cost</div></div>
-    <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">AI Working for You</div></div>
-    <div class="stat"><div class="stat-num">₹0</div><div class="stat-label">Setup Cost</div></div>
+    <div class="stat"><div class="stat-num">10+</div><div class="stat-label">Core Services</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Custom-Built</div></div>
+    <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">AI Automation</div></div>
+    <div class="stat"><div class="stat-num">Pan-India</div><div class="stat-label">Delivery</div></div>
   </div>
 </section>
 
 <!-- MODULES STRIP -->
 <div class="modules-strip">
-  <div class="module-item"><span class="module-item-icon">⭐</span><span class="module-item-text">Reputation Engine</span></div>
-  <div class="module-item"><span class="module-item-icon">✨</span><span class="module-item-text">AI Assistant</span></div>
-  <div class="module-item"><span class="module-item-icon">📄</span><span class="module-item-text">Document Hub</span></div>
-  <div class="module-item"><span class="module-item-icon">🏛️</span><span class="module-item-text">Gov Schemes</span></div>
-  <div class="module-item"><span class="module-item-icon">📢</span><span class="module-item-text">Marketing Engine</span></div>
-  <div class="module-item"><span class="module-item-icon">📋</span><span class="module-item-text">Compliance Engine</span></div>
-  <div class="module-item"><span class="module-item-icon">📊</span><span class="module-item-text">Business Intelligence</span></div>
+  <div class="module-item"><span class="module-item-icon">🌐</span><span class="module-item-text">Websites</span></div>
+  <div class="module-item"><span class="module-item-icon">📇</span><span class="module-item-text">CRM</span></div>
+  <div class="module-item"><span class="module-item-icon">🧩</span><span class="module-item-text">ERP</span></div>
+  <div class="module-item"><span class="module-item-icon">📱</span><span class="module-item-text">Mobile Apps</span></div>
+  <div class="module-item"><span class="module-item-icon">🤖</span><span class="module-item-text">AI Agents</span></div>
+  <div class="module-item"><span class="module-item-icon">💬</span><span class="module-item-text">WhatsApp Automation</span></div>
+  <div class="module-item"><span class="module-item-icon">⚙️</span><span class="module-item-text">Custom Software</span></div>
 </div>
 
-<!-- PROBLEM / SOLUTION -->
-<section id="problem">
+<!-- POSITIONING -->
+<section id="positioning">
   <div class="section-inner">
-    <div class="section-eyebrow fade-in">The Problem</div>
-    <h2 class="section-title fade-in">Indian MSMEs Are <em>Drowning</em> in Fragmentation</h2>
-    <p class="section-desc fade-in">A typical business owner in India uses 8–12 different tools, consultants, and agencies. Every month.</p>
+    <div class="section-eyebrow fade-in">More Than a Website Company</div>
+    <h2 class="section-title fade-in">We Build Complete <em>Digital Operating Systems</em></h2>
+    <p class="pos-lead fade-in">Repute India AI is not just a website company. We build the complete software that <em>runs</em> a business — from the first lead to the final sale, and everything in between.</p>
     <div class="divider fade-in"></div>
-    <div class="problem-grid">
-      <div class="problem-list">
-        <div class="problem-item fade-in"><div class="problem-item-icon">💸</div><div><div class="problem-item-title">CA + Lawyer + Marketing Agency</div><div class="problem-item-text">₹40,000–₹1,00,000/month spent across consultants who don't talk to each other.</div></div></div>
-        <div class="problem-item fade-in"><div class="problem-item-icon">🕐</div><div><div class="problem-item-title">Time Wasted on Scattered Tools</div><div class="problem-item-text">Excel sheets, WhatsApp, email, Google — information everywhere, insight nowhere.</div></div></div>
-        <div class="problem-item fade-in"><div class="problem-item-icon">😟</div><div><div class="problem-item-title">Missing Government Money</div><div class="problem-item-text">Crores in MSME subsidies go unclaimed every year because no one tells you about them.</div></div></div>
-        <div class="problem-item fade-in"><div class="problem-item-icon">📉</div><div><div class="problem-item-title">Reputation Managed Manually</div><div class="problem-item-text">Reviews piling up unanswered. One bad review costing you 10 customers.</div></div></div>
-        <div class="problem-item fade-in"><div class="problem-item-icon">⚠️</div><div><div class="problem-item-title">Compliance Deadlines Missed</div><div class="problem-item-text">GST late fees, ROC penalties, PF defaults — all avoidable with timely reminders.</div></div></div>
-      </div>
-      <div class="solution-box fade-in">
-        <div class="solution-eyebrow">The Solution</div>
-        <div class="solution-title">One AI.<br><em>Every Task.</em><br>One Dashboard.</div>
-        <div class="solution-desc">Repute AI replaces your fragmented stack with a single intelligent platform. Ask it anything. It delivers.</div>
-        <div class="solution-items">
-          <div class="solution-item">"Draft an NDA for my new vendor"</div>
-          <div class="solution-item">"Find MSME subsidies for my textile unit"</div>
-          <div class="solution-item">"Create a Diwali WhatsApp campaign"</div>
-          <div class="solution-item">"Explain this GST notice I received"</div>
-          <div class="solution-item">"Generate a professional invoice"</div>
-          <div class="solution-item">"When is my ROC filing due?"</div>
-        </div>
-      </div>
+    <div class="pos-grid">
+      <div class="pos-item fade-in"><span class="pos-icon">🎯</span><h4>Lead Management</h4><p>Capture every enquiry from every source into one organised system — nothing slips through the cracks.</p></div>
+      <div class="pos-item fade-in"><span class="pos-icon">📞</span><h4>Customer Follow-Up</h4><p>Automated reminders and messages so every customer is followed up at the right time.</p></div>
+      <div class="pos-item fade-in"><span class="pos-icon">📈</span><h4>Sales Automation</h4><p>Move deals through your pipeline automatically and close more without the manual chasing.</p></div>
+      <div class="pos-item fade-in"><span class="pos-icon">⭐</span><h4>Review Management</h4><p>Monitor, respond to, and grow your online reviews to build a reputation customers trust.</p></div>
+      <div class="pos-item fade-in"><span class="pos-icon">🖥️</span><h4>Team Dashboards</h4><p>Give every team member the right view of their work, targets, and daily priorities.</p></div>
+      <div class="pos-item fade-in"><span class="pos-icon">📊</span><h4>Business Analytics</h4><p>Real-time numbers on sales, customers, and performance — clarity to make confident decisions.</p></div>
+      <div class="pos-item fade-in"><span class="pos-icon">🔄</span><h4>Custom Workflows</h4><p>Software shaped around exactly how your business works — not the other way around.</p></div>
     </div>
   </div>
 </section>
 
-<!-- MODULES -->
-<section id="modules">
+<!-- SERVICES -->
+<section id="services">
   <div class="section-inner">
-    <div class="section-eyebrow fade-in">Platform Modules</div>
-    <h2 class="section-title fade-in">Seven Modules. <em>One Subscription.</em></h2>
-    <p class="section-desc fade-in">Each module is a standalone tool. Together, they become your complete Business Operating System.</p>
+    <div class="section-eyebrow fade-in">What We Build</div>
+    <h2 class="section-title fade-in">Premium Software, <em>End to End</em></h2>
+    <p class="section-desc fade-in">From your website to your internal systems — every piece of software your business needs, designed and built to a premium standard.</p>
     <div class="divider fade-in"></div>
     <div class="modules-grid">
+      <div class="module-card fade-in">
+        <span class="module-icon">🌐</span>
+        <div class="module-tag">Web</div>
+        <h3>Website Development</h3>
+        <p>Premium, fast, conversion-focused websites that make your business look world-class and turn visitors into enquiries.</p>
+        <ul class="module-features">
+          <li>Custom design & branding</li>
+          <li>Mobile-first & lightning fast</li>
+          <li>SEO-ready foundation</li>
+        </ul>
+      </div>
+      <div class="module-card fade-in">
+        <span class="module-icon">📇</span>
+        <div class="module-tag">Sales</div>
+        <h3>CRM Development</h3>
+        <p>A central system to capture every lead, follow up on time, and never let a customer slip through the cracks.</p>
+        <ul class="module-features">
+          <li>Lead capture & tracking</li>
+          <li>Automated follow-ups & reminders</li>
+          <li>Sales pipeline & reporting</li>
+        </ul>
+      </div>
+      <div class="module-card fade-in">
+        <span class="module-icon">🧩</span>
+        <div class="module-tag">Operations</div>
+        <h3>Custom Business Management Systems</h3>
+        <p>Bespoke operations software (ERP) built around exactly how your business runs — not a rigid, off-the-shelf package you have to fit into.</p>
+        <ul class="module-features">
+          <li>Tailored to your workflow</li>
+          <li>Orders, inventory & billing</li>
+          <li>One connected operations hub</li>
+        </ul>
+      </div>
+      <div class="module-card fade-in">
+        <span class="module-icon">📱</span>
+        <div class="module-tag">Mobile</div>
+        <h3>Mobile App Development</h3>
+        <p>Native-quality Android and iOS apps that put your business directly in your customers' pockets.</p>
+        <ul class="module-features">
+          <li>Android & iOS</li>
+          <li>Clean, intuitive experience</li>
+          <li>Notifications & integrations</li>
+        </ul>
+      </div>
       <div class="module-card highlight fade-in">
+        <span class="module-icon">🤖</span>
+        <div class="module-tag">AI</div>
+        <h3>AI Agents</h3>
+        <p>Custom AI assistants that answer questions, qualify leads, and handle support 24/7 — in your customer's language.</p>
+        <ul class="module-features">
+          <li>Trained on your business</li>
+          <li>English, Hindi & Gujarati</li>
+          <li>Works round the clock</li>
+        </ul>
+      </div>
+      <div class="module-card fade-in">
+        <span class="module-icon">💬</span>
+        <div class="module-tag">Messaging</div>
+        <h3>WhatsApp Automation</h3>
+        <p>Turn WhatsApp into a growth engine — automated replies, broadcasts, reminders, and review requests.</p>
+        <ul class="module-features">
+          <li>Auto-replies & chatbots</li>
+          <li>Bulk broadcasts & campaigns</li>
+          <li>Payment & booking reminders</li>
+        </ul>
+      </div>
+      <div class="module-card fade-in">
         <span class="module-icon">⭐</span>
-        <div class="module-tag">Module 01 — Live Now</div>
-        <h3>Reputation Engine</h3>
-        <p>Monitor Google Reviews, auto-generate AI replies, track competitors, and send review requests via WhatsApp.</p>
+        <div class="module-tag">Reputation</div>
+        <h3>Reputation Management</h3>
+        <p>Monitor, respond to, and grow your Google reviews automatically — and protect your brand online.</p>
         <ul class="module-features">
-          <li>Google Reviews monitoring & sync</li>
-          <li>AI reply generation (Claude)</li>
-          <li>Competitor tracking & analysis</li>
-          <li>WhatsApp review requests</li>
-          <li>Sentiment analysis dashboard</li>
+          <li>Google review monitoring</li>
+          <li>AI-drafted replies</li>
+          <li>Automated review requests</li>
         </ul>
-        <span class="module-available live">✓ Live Now</span>
       </div>
       <div class="module-card fade-in">
-        <span class="module-icon">✨</span>
-        <div class="module-tag">Module 02 — Live Now</div>
-        <h3>AI Business Assistant</h3>
-        <p>Ask anything about your business. Get India-specific answers on legal, compliance, finance, and operations instantly.</p>
+        <span class="module-icon">⚙️</span>
+        <div class="module-tag">Bespoke</div>
+        <h3>Custom Software Development</h3>
+        <p>Bespoke software built exactly for your workflow, for when off-the-shelf tools simply don't fit.</p>
         <ul class="module-features">
-          <li>GST & compliance guidance</li>
-          <li>Legal document drafting</li>
-          <li>Government scheme discovery</li>
-          <li>Business strategy advice</li>
-          <li>Full conversation memory</li>
+          <li>Tailored to your process</li>
+          <li>Scalable & secure</li>
+          <li>Built to grow with you</li>
         </ul>
-        <span class="module-available live">✓ Live Now</span>
       </div>
       <div class="module-card fade-in">
-        <span class="module-icon">📄</span>
-        <div class="module-tag">Module 03 — Live Now</div>
-        <h3>Document Hub</h3>
-        <p>Generate professional legal, HR, and business documents in seconds. India-specific, legally sound, ready to use.</p>
+        <span class="module-icon">🛒</span>
+        <div class="module-tag">Retail</div>
+        <h3>E-commerce Development</h3>
+        <p>Online stores that sell — fast, beautiful, and built to turn browsers into paying buyers.</p>
         <ul class="module-features">
-          <li>NDA, Vendor & Service Agreements</li>
-          <li>GST Invoices & Quotations</li>
-          <li>Offer, Experience & Warning Letters</li>
-          <li>Partnership Deed</li>
-          <li>Business Proposals</li>
+          <li>Storefront & catalogue</li>
+          <li>Payments & logistics</li>
+          <li>Offers & analytics</li>
         </ul>
-        <span class="module-available live">✓ Live Now</span>
       </div>
       <div class="module-card fade-in">
-        <span class="module-icon">🏛️</span>
-        <div class="module-tag">Module 04 — Live Now</div>
-        <h3>Government Schemes</h3>
-        <p>AI identifies every MSME scheme, subsidy, loan, and export benefit your business qualifies for — by industry and state.</p>
+        <span class="module-icon">🔄</span>
+        <div class="module-tag">Automation</div>
+        <h3>Business Process Automation</h3>
+        <p>Automate the repetitive work — data entry, reports, notifications — so your team can focus on growth.</p>
         <ul class="module-features">
-          <li>Central & state scheme matching</li>
-          <li>Export incentives (RODTEP, etc.)</li>
-          <li>MSME loans & credit schemes</li>
-          <li>Eligibility determination</li>
-          <li>Application process guidance</li>
+          <li>Workflow automation</li>
+          <li>System integrations</li>
+          <li>Real time & cost savings</li>
         </ul>
-        <span class="module-available live">✓ Live Now</span>
-      </div>
-      <div class="module-card fade-in">
-        <span class="module-icon">📢</span>
-        <div class="module-tag">Module 05 — Live Now</div>
-        <h3>Marketing Engine</h3>
-        <p>AI-generated content for Instagram, Facebook, LinkedIn, WhatsApp, Email, and Blog — in English, Hindi, or Gujarati.</p>
-        <ul class="module-features">
-          <li>Platform-specific content</li>
-          <li>Festival & seasonal campaigns</li>
-          <li>Hinglish & Gujarati support</li>
-          <li>Multiple tone options</li>
-          <li>One-click copy & share</li>
-        </ul>
-        <span class="module-available live">✓ Live Now</span>
-      </div>
-      <div class="module-card fade-in">
-        <span class="module-icon">📋</span>
-        <div class="module-tag">Module 06 — Coming Soon</div>
-        <h3>Compliance Engine</h3>
-        <p>Never miss a GST filing, ROC deadline, PF payment, or ESI compliance date again. AI tracks and alerts you automatically.</p>
-        <ul class="module-features">
-          <li>GST, ROC, PF & ESI tracking</li>
-          <li>WhatsApp & email reminders</li>
-          <li>Filing checklists</li>
-          <li>Penalty calculator</li>
-          <li>Compliance calendar</li>
-        </ul>
-        <span class="module-available soon">Coming Soon</span>
-      </div>
-      <div class="module-card fade-in">
-        <span class="module-icon">📊</span>
-        <div class="module-tag">Module 07 — Coming Soon</div>
-        <h3>Business Intelligence</h3>
-        <p>AI-generated Business Health Score combining reputation, compliance, marketing performance, and revenue tracking.</p>
-        <ul class="module-features">
-          <li>Business Health Score</li>
-          <li>Revenue tracking dashboard</li>
-          <li>Opportunity pipeline</li>
-          <li>Unified analytics view</li>
-          <li>Weekly AI insights report</li>
-        </ul>
-        <span class="module-available soon">Coming Soon</span>
       </div>
     </div>
   </div>
@@ -485,117 +506,40 @@ footer { background:var(--ink); border-top:1px solid rgba(255,255,255,0.08); pad
 <!-- HOW IT WORKS -->
 <section id="how">
   <div class="section-inner">
-    <div class="section-eyebrow fade-in">How It Works</div>
-    <h2 class="section-title fade-in">Up and Running in <em>5 Minutes</em></h2>
-    <p class="section-desc fade-in">No technical knowledge required. No agency needed. No long setup calls.</p>
+    <div class="section-eyebrow fade-in">How We Work</div>
+    <h2 class="section-title fade-in">From Idea to <em>Launch</em></h2>
+    <p class="section-desc fade-in">A clear, professional process — so you always know what's happening and what comes next.</p>
     <div class="divider fade-in"></div>
     <div class="steps">
       <div class="step fade-in">
         <div class="step-num">01</div>
-        <div class="step-icon">🏢</div>
-        <h3>Register Your Business</h3>
-        <p>Enter your business name, category, city and Google Maps link. Takes 2 minutes to get started.</p>
+        <div class="step-icon">💬</div>
+        <h3>Consult</h3>
+        <p>A free consultation to understand your business, your goals, and exactly what you want to build.</p>
       </div>
       <div class="step fade-in">
         <div class="step-num">02</div>
-        <div class="step-icon">🤖</div>
-        <h3>AI Builds Your Profile</h3>
-        <p>Our AI understands your industry, location, and compliance requirements — and personalises your entire dashboard instantly.</p>
+        <div class="step-icon">📝</div>
+        <h3>Plan & Quote</h3>
+        <p>We define the scope, features, and timeline — and give you a clear, transparent quote before any work begins.</p>
       </div>
       <div class="step fade-in">
         <div class="step-num">03</div>
-        <div class="step-icon">⭐</div>
-        <h3>Reputation Goes Live</h3>
-        <p>Your Google reviews sync automatically. AI drafts responses. WhatsApp alerts start flowing. Your reputation is now managed 24/7.</p>
+        <div class="step-icon">🎨</div>
+        <h3>Design</h3>
+        <p>We craft premium, easy-to-use designs and share them with you for feedback before development starts.</p>
       </div>
       <div class="step fade-in">
         <div class="step-num">04</div>
-        <div class="step-icon">✨</div>
-        <h3>Ask Your AI Assistant</h3>
-        <p>Type any business question. "Draft an NDA." "Find subsidies for my unit." "Explain this GST notice." AI answers instantly.</p>
+        <div class="step-icon">⚙️</div>
+        <h3>Develop</h3>
+        <p>Our team builds your software with regular updates, so you can see real progress at every stage.</p>
       </div>
       <div class="step fade-in">
         <div class="step-num">05</div>
-        <div class="step-icon">📈</div>
-        <h3>Grow Every Month</h3>
-        <p>More modules unlock as your plan grows. More AI. More automation. More time saved. More money earned.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PRICING -->
-<section id="pricing">
-  <div class="section-inner">
-    <div class="section-eyebrow fade-in">Simple Pricing</div>
-    <h2 class="section-title fade-in">Replace ₹50,000/month of Consultants <em>for a Fraction</em></h2>
-    <p class="section-desc fade-in">Zero setup cost. No contracts. Cancel anytime.</p>
-    <div class="divider fade-in"></div>
-    <div class="plans">
-      <div class="plan fade-in">
-        <div class="plan-name">Starter</div>
-        <div class="plan-price">₹2,999 <span>/ month</span></div>
-        <div class="plan-desc">For businesses starting their AI journey. Core tools to build your reputation and productivity.</div>
-        <ul class="plan-features">
-          <li class="included">AI Business Assistant</li>
-          <li class="included">Document Hub (11 types)</li>
-          <li class="included">Reputation Engine</li>
-          <li class="included">WhatsApp Alerts</li>
-          <li class="included">Zero Setup Cost</li>
-          <li>Marketing Engine</li>
-          <li>Gov Schemes Finder</li>
-          <li>Compliance Engine</li>
-        </ul>
-        <button class="plan-btn" onclick="window.location.href='register.html'">Get Started</button>
-      </div>
-      <div class="plan featured fade-in">
-        <div class="plan-badge">Most Popular</div>
-        <div class="plan-name">Growth</div>
-        <div class="plan-price">₹4,999 <span>/ month</span></div>
-        <div class="plan-desc">For growing businesses. All 5 live modules. Replace your marketing agency and save lakhs.</div>
-        <ul class="plan-features">
-          <li class="included">Everything in Starter</li>
-          <li class="included">Marketing Engine</li>
-          <li class="included">Government Schemes Finder</li>
-          <li class="included">Competitor Tracking & AI Analysis</li>
-          <li class="included">Weekly Reputation Report</li>
-          <li class="included">Hindi + Gujarati + English</li>
-          <li>Compliance Engine</li>
-          <li>Business Intelligence</li>
-        </ul>
-        <button class="plan-btn" onclick="window.location.href='register.html'">Get Started</button>
-      </div>
-      <div class="plan fade-in">
-        <div class="plan-name">Business</div>
-        <div class="plan-price">₹7,999 <span>/ month</span></div>
-        <div class="plan-desc">For established businesses. Full OS including compliance tracking and business intelligence.</div>
-        <ul class="plan-features">
-          <li class="included">Everything in Growth</li>
-          <li class="included">Compliance Engine</li>
-          <li class="included">Business Intelligence Dashboard</li>
-          <li class="included">Business Health Score</li>
-          <li class="included">Multi-location Support</li>
-          <li class="included">Priority WhatsApp Support</li>
-          <li class="included">Crisis Alert System</li>
-          <li>Dedicated Account Manager</li>
-        </ul>
-        <button class="plan-btn" onclick="window.location.href='register.html'">Get Started</button>
-      </div>
-      <div class="plan fade-in">
-        <div class="plan-name">Enterprise</div>
-        <div class="plan-price">₹14,999 <span>/ month</span></div>
-        <div class="plan-desc">For large businesses, chains, and groups. Full platform with dedicated onboarding and support.</div>
-        <ul class="plan-features">
-          <li class="included">Everything in Business</li>
-          <li class="included">Dedicated Account Manager</li>
-          <li class="included">Custom AI Brand Voice</li>
-          <li class="included">Multi-user Access</li>
-          <li class="included">Unlimited Locations</li>
-          <li class="included">Custom Integrations</li>
-          <li class="included">Monthly Strategy Call</li>
-          <li class="included">SLA-backed Support</li>
-        </ul>
-        <button class="plan-btn" onclick="window.location.href='register.html'">Contact Us</button>
+        <div class="step-icon">🚀</div>
+        <h3>Launch & Support</h3>
+        <p>We deploy, train your team, and stay with you with ongoing support as your business grows.</p>
       </div>
     </div>
   </div>
@@ -605,106 +549,229 @@ footer { background:var(--ink); border-top:1px solid rgba(255,255,255,0.08); pad
 <section id="industries">
   <div class="section-inner">
     <div class="section-eyebrow fade-in">Industries We Serve</div>
-    <h2 class="section-title fade-in">Built for <em>Every</em> Indian Business</h2>
-    <p class="section-desc fade-in">Repute AI adapts to your industry — not a one-size-fits-all solution.</p>
+    <h2 class="section-title fade-in">Software Built for <em>Your</em> Industry</h2>
+    <p class="section-desc fade-in">We tailor every system to how your industry actually works — not a one-size-fits-all template.</p>
     <div class="divider fade-in"></div>
     <div class="industries-grid">
       <div class="industry-card fade-in">
-        <div class="industry-icon">🏭</div>
-        <h3>Manufacturers & Exporters</h3>
-        <p>Access MSME subsidies worth lakhs, manage vendor agreements, track export incentives, and never miss a compliance deadline.</p>
-        <div class="industry-pain"><div class="industry-pain-label">Key Use Case</div><p>One client found ₹18 lakh in unclaimed MSME subsidies using our Government Schemes module.</p></div>
+        <div class="industry-icon">🎓</div>
+        <h3>Coaching Institutes</h3>
+        <p>Manage admissions, enquiries, batches, fees, and student records in one CRM — plus campaigns to fill every batch.</p>
+        <div class="industry-pain"><div class="industry-pain-label">We Build</div><p>Education CRM, admission funnels, fee management, and WhatsApp automation.</p></div>
+      </div>
+      <div class="industry-card fade-in">
+        <div class="industry-icon">🏫</div>
+        <h3>Schools & Colleges</h3>
+        <p>Digitise admissions, attendance, fees, and parent communication with a system your whole institution can run on.</p>
+        <div class="industry-pain"><div class="industry-pain-label">We Build</div><p>Student information systems, fee portals, and parent apps.</p></div>
       </div>
       <div class="industry-card fade-in">
         <div class="industry-icon">🏥</div>
-        <h3>Doctors & Clinics</h3>
-        <p>One negative review costs you 10 patients. Our AI protects your medical reputation, drafts patient-appropriate responses, and builds trust online.</p>
-        <div class="industry-pain"><div class="industry-pain-label">Key Use Case</div><p>Vadodara clinic went from 3.8★ to 4.7★ in 30 days. 47 unanswered reviews responded overnight.</p></div>
-      </div>
-      <div class="industry-card fade-in">
-        <div class="industry-icon">🍽️</div>
-        <h3>Restaurants & Hotels</h3>
-        <p>70% of diners choose based on reviews. Our AI ensures every Zomato and Google review gets responded to — even during your busiest service hours.</p>
-        <div class="industry-pain"><div class="industry-pain-label">Key Use Case</div><p>Surat restaurant went from 2 reviews/month to 25 with automated WhatsApp review requests.</p></div>
-      </div>
-      <div class="industry-card fade-in">
-        <div class="industry-icon">💼</div>
-        <h3>Consultants & Agencies</h3>
-        <p>Generate proposals, agreements, and invoices in seconds. Use AI for content marketing. Let the platform do the admin while you focus on clients.</p>
-        <div class="industry-pain"><div class="industry-pain-label">Key Use Case</div><p>Agency owners saving 15+ hours/month on document creation and social media content generation.</p></div>
+        <h3>Clinics & Hospitals</h3>
+        <p>Appointments, patient records, and reputation — managed digitally so your team focuses on care, not paperwork.</p>
+        <div class="industry-pain"><div class="industry-pain-label">We Build</div><p>Booking systems, patient CRM, and review management.</p></div>
       </div>
       <div class="industry-card fade-in">
         <div class="industry-icon">🏗️</div>
-        <h3>Builders & Real Estate</h3>
-        <p>One angry buyer review can destroy ten deals. Monitor your reputation in real time, respond to complaints instantly, and flag crisis reviews within seconds.</p>
-        <div class="industry-pain"><div class="industry-pain-label">Key Use Case</div><p>Delayed possession complaints handled professionally within 30 minutes — before they go viral.</p></div>
+        <h3>Real Estate</h3>
+        <p>Capture and nurture every property enquiry, automate follow-ups, and never lose a hot lead again.</p>
+        <div class="industry-pain"><div class="industry-pain-label">We Build</div><p>Real-estate CRM, lead automation, and project websites.</p></div>
       </div>
       <div class="industry-card fade-in">
-        <div class="industry-icon">🎓</div>
-        <h3>Coaching & Education</h3>
-        <p>Manage student reviews across platforms, create admission campaign content, generate appointment letters and fee agreements instantly.</p>
-        <div class="industry-pain"><div class="industry-pain-label">Key Use Case</div><p>Coaching institutes using AI to generate Diwali admission campaigns and respond to Google reviews.</p></div>
+        <div class="industry-icon">🍽️</div>
+        <h3>Restaurants & Cafes</h3>
+        <p>Online ordering, table bookings, loyalty, and automated review requests that keep your ratings climbing.</p>
+        <div class="industry-pain"><div class="industry-pain-label">We Build</div><p>Ordering sites, booking systems, and reputation tools.</p></div>
+      </div>
+      <div class="industry-card fade-in">
+        <div class="industry-icon">💇</div>
+        <h3>Salons & Gyms</h3>
+        <p>Memberships, bookings, reminders, and renewals automated — so your calendar stays full and clients keep coming back.</p>
+        <div class="industry-pain"><div class="industry-pain-label">We Build</div><p>Booking apps, membership CRM, and WhatsApp reminders.</p></div>
+      </div>
+      <div class="industry-card fade-in">
+        <div class="industry-icon">🏭</div>
+        <h3>Manufacturers</h3>
+        <p>Connect inventory, orders, billing, and dispatch in one ERP built around your production and supply chain.</p>
+        <div class="industry-pain"><div class="industry-pain-label">We Build</div><p>ERP systems, inventory management, and order tracking.</p></div>
+      </div>
+      <div class="industry-card fade-in">
+        <div class="industry-icon">⚖️</div>
+        <h3>CA / Law Firms</h3>
+        <p>Track clients, cases, deadlines, and documents in a secure system designed for professional practices.</p>
+        <div class="industry-pain"><div class="industry-pain-label">We Build</div><p>Practice management, client portals, and document systems.</p></div>
+      </div>
+      <div class="industry-card fade-in">
+        <div class="industry-icon">🏪</div>
+        <h3>Local Businesses</h3>
+        <p>A premium website, online presence, and simple tools to win more customers in your area.</p>
+        <div class="industry-pain"><div class="industry-pain-label">We Build</div><p>Websites, Google profiles, and reputation management.</p></div>
+      </div>
+      <div class="industry-card fade-in">
+        <div class="industry-icon">🚀</div>
+        <h3>Startups</h3>
+        <p>From MVP to scale — websites, apps, and custom software that get your idea to market fast.</p>
+        <div class="industry-pain"><div class="industry-pain-label">We Build</div><p>MVPs, web & mobile apps, and AI-powered products.</p></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CASES -->
-<section id="cases">
+<!-- PORTFOLIO -->
+<section id="portfolio">
   <div class="section-inner">
-    <div class="section-eyebrow fade-in">Results That Speak</div>
-    <h2 class="section-title fade-in">Real Businesses. <em>Real Numbers.</em></h2>
-    <p class="section-desc fade-in">What happens when Indian businesses run on AI.</p>
+    <div class="section-eyebrow fade-in">Portfolio · Flagship Project</div>
+    <h2 class="section-title fade-in">Proven on a Real Business, <em>Every Day</em></h2>
+    <p class="section-desc fade-in">Our work isn't theory. This is a complete system we designed and built — and it runs a real, established academy from morning to night.</p>
     <div class="divider fade-in"></div>
-    <div class="cases-grid">
-      <div class="case-card fade-in">
-        <div class="case-industry">🏥 Medical Clinic — Vadodara</div>
-        <div class="case-result">+0.8★</div>
-        <div class="case-result-label">Rating Increase in 30 Days</div>
-        <div class="case-story">"We had 47 unanswered reviews. Repute AI responded to all of them in 3 languages within 24 hours. Our patients noticed the difference immediately."</div>
-        <div class="case-metrics">
-          <div class="case-metric"><div class="case-metric-num">47</div><div class="case-metric-label">Reviews Responded</div></div>
-          <div class="case-metric"><div class="case-metric-num">+40%</div><div class="case-metric-label">New Enquiries</div></div>
-          <div class="case-metric"><div class="case-metric-num">4.7★</div><div class="case-metric-label">Current Rating</div></div>
-        </div>
+    <div class="case-card fade-in" style="padding:48px;">
+      <div class="case-industry">🎓 Education CRM & Student Management System</div>
+      <div class="case-headline">Chahal Academy CRM</div>
+      <p style="font-size:15px;color:var(--ink);line-height:1.85;font-weight:400;max-width:800px;">A custom-built education CRM and student management system that runs <strong>one of Gujarat's leading UPSC academies</strong> end to end — handling admissions, enquiries, batches, fees, student records, faculty coordination, lecture access, and day-to-day internal operations from a single platform.</p>
+      <p style="font-size:13px;color:var(--muted);line-height:1.9;font-weight:300;max-width:800px;margin-top:14px;">It replaced scattered registers, spreadsheets, and WhatsApp groups with one reliable system the entire team works on — giving management real-time visibility and staff a faster, simpler way to work. This is not a demo or a template: it's production software, in active daily use, built and maintained in-house.</p>
+      <div class="case-metrics" style="margin-top:30px;flex-wrap:wrap;gap:32px;">
+        <div class="case-metric"><div class="case-metric-num">8+</div><div class="case-metric-label">Modules in One System</div></div>
+        <div class="case-metric"><div class="case-metric-num">Live</div><div class="case-metric-label">In Daily Production Use</div></div>
+        <div class="case-metric"><div class="case-metric-num">End-to-End</div><div class="case-metric-label">Full Student Lifecycle</div></div>
+        <div class="case-metric"><div class="case-metric-num">In-House</div><div class="case-metric-label">Built & Maintained</div></div>
       </div>
-      <div class="case-card fade-in">
-        <div class="case-industry">🍽️ Restaurant — Surat</div>
-        <div class="case-result">3x</div>
-        <div class="case-result-label">More 5-Star Reviews in 60 Days</div>
-        <div class="case-story">"The AI sends WhatsApp review requests to customers automatically. We went from 2 reviews a month to 25. And the AI Assistant helped us draft vendor agreements we previously paid a lawyer for."</div>
-        <div class="case-metrics">
-          <div class="case-metric"><div class="case-metric-num">25</div><div class="case-metric-label">Reviews/Month</div></div>
-          <div class="case-metric"><div class="case-metric-num">100%</div><div class="case-metric-label">Response Rate</div></div>
-          <div class="case-metric"><div class="case-metric-num">4.8★</div><div class="case-metric-label">Current Rating</div></div>
-        </div>
+      <div style="height:1px;background:var(--border);margin:32px 0;"></div>
+      <div class="cap-chips" style="margin-top:0;">
+        <span class="cap-chip">Admissions</span>
+        <span class="cap-chip">Enquiry Management</span>
+        <span class="cap-chip">Batch Management</span>
+        <span class="cap-chip">Fees & Payments</span>
+        <span class="cap-chip">Student Records</span>
+        <span class="cap-chip">Faculty Coordination</span>
+        <span class="cap-chip">Lecture Access</span>
+        <span class="cap-chip">Internal Operations</span>
       </div>
-      <div class="case-card fade-in">
-        <div class="case-industry">🏭 Textile Manufacturer — Surat</div>
-        <div class="case-result">₹18L</div>
-        <div class="case-result-label">Subsidy Discovered via Gov Schemes</div>
-        <div class="case-story">"I never knew about CLCSS and PMEGP. The Government Schemes module found 6 schemes I was eligible for. My CA confirmed them. I applied for ₹18 lakh in subsidies I was leaving on the table."</div>
-        <div class="case-metrics">
-          <div class="case-metric"><div class="case-metric-num">6</div><div class="case-metric-label">Schemes Found</div></div>
-          <div class="case-metric"><div class="case-metric-num">₹18L</div><div class="case-metric-label">Subsidy Applied</div></div>
-          <div class="case-metric"><div class="case-metric-num">2 hrs</div><div class="case-metric-label">Time Taken</div></div>
-        </div>
+      <div class="case-note">Designed, built & deployed by Repute India AI — running live for a real, established academy</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-inner">
+    <div class="section-eyebrow fade-in">Pricing</div>
+    <h2 class="section-title fade-in">Transparent <em>Starting Packages</em></h2>
+    <p class="section-desc fade-in">Clear starting prices on our most-requested services. Larger, bespoke builds are custom-quoted to your exact needs.</p>
+    <div class="divider fade-in"></div>
+    <div class="plans">
+      <div class="plan fade-in">
+        <div class="plan-name">Website</div>
+        <div class="plan-price">₹15,000 <span>starting</span></div>
+        <div class="plan-desc">Premium, mobile-first websites that make your business look world-class.</div>
+        <ul class="plan-features">
+          <li class="included">Custom design & branding</li>
+          <li class="included">Mobile-first & fast</li>
+          <li class="included">SEO-ready foundation</li>
+          <li class="included">Contact & enquiry forms</li>
+        </ul>
+        <button class="plan-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a Quote</button>
+      </div>
+      <div class="plan featured fade-in">
+        <div class="plan-badge">Most Popular</div>
+        <div class="plan-name">CRM</div>
+        <div class="plan-price">₹50,000 <span>starting</span></div>
+        <div class="plan-desc">Capture every lead, follow up on time, and close more sales — all in one system.</div>
+        <ul class="plan-features">
+          <li class="included">Lead capture & tracking</li>
+          <li class="included">Automated follow-ups</li>
+          <li class="included">Sales pipeline & reports</li>
+          <li class="included">Team dashboards</li>
+        </ul>
+        <button class="plan-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a Quote</button>
+      </div>
+      <div class="plan fade-in">
+        <div class="plan-name">WhatsApp Automation</div>
+        <div class="plan-price">₹15,000 <span>starting</span></div>
+        <div class="plan-desc">Turn WhatsApp into a growth engine — replies, broadcasts, reminders, and reviews.</div>
+        <ul class="plan-features">
+          <li class="included">Auto-replies & chatbots</li>
+          <li class="included">Broadcasts & campaigns</li>
+          <li class="included">Reminders & follow-ups</li>
+          <li class="included">Automated review requests</li>
+        </ul>
+        <button class="plan-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a Quote</button>
+      </div>
+      <div class="plan fade-in">
+        <div class="plan-name">AI Automation</div>
+        <div class="plan-price">₹25,000 <span>starting</span></div>
+        <div class="plan-desc">AI agents and automations that handle leads, support, and repetitive work 24/7.</div>
+        <ul class="plan-features">
+          <li class="included">Custom AI agents</li>
+          <li class="included">Workflow automation</li>
+          <li class="included">Multilingual support</li>
+          <li class="included">Works round the clock</li>
+        </ul>
+        <button class="plan-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a Quote</button>
+      </div>
+      <div class="plan fade-in">
+        <div class="plan-name">Business Systems</div>
+        <div class="plan-price">Custom <span>quote</span></div>
+        <div class="plan-desc">Bespoke operations software (ERP) built around exactly how your business runs.</div>
+        <ul class="plan-features">
+          <li class="included">Tailored to your workflow</li>
+          <li class="included">Orders, inventory & billing</li>
+          <li class="included">One connected operations hub</li>
+          <li class="included">Custom reports & roles</li>
+        </ul>
+        <button class="plan-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Talk to Us</button>
+      </div>
+      <div class="plan fade-in">
+        <div class="plan-name">Mobile App</div>
+        <div class="plan-price">Custom <span>quote</span></div>
+        <div class="plan-desc">Native-quality Android & iOS apps that put your business in customers' pockets.</div>
+        <ul class="plan-features">
+          <li class="included">Android & iOS</li>
+          <li class="included">Clean, intuitive UX</li>
+          <li class="included">Push notifications</li>
+          <li class="included">Backend & integrations</li>
+        </ul>
+        <button class="plan-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Talk to Us</button>
+      </div>
+      <div class="plan fade-in">
+        <div class="plan-name">E-commerce</div>
+        <div class="plan-price">Custom <span>quote</span></div>
+        <div class="plan-desc">Online stores built to convert browsers into paying buyers.</div>
+        <ul class="plan-features">
+          <li class="included">Storefront & catalogue</li>
+          <li class="included">Payments & logistics</li>
+          <li class="included">Offers & analytics</li>
+          <li class="included">Mobile-ready</li>
+        </ul>
+        <button class="plan-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Talk to Us</button>
+      </div>
+      <div class="plan fade-in">
+        <div class="plan-name">Custom Software</div>
+        <div class="plan-price">Custom <span>quote</span></div>
+        <div class="plan-desc">Bespoke software built exactly for your business when off-the-shelf won't do.</div>
+        <ul class="plan-features">
+          <li class="included">Tailored to your process</li>
+          <li class="included">Scalable & secure</li>
+          <li class="included">End-to-end delivery</li>
+          <li class="included">Ongoing support</li>
+        </ul>
+        <button class="plan-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Talk to Us</button>
       </div>
     </div>
+    <p class="section-desc fade-in" style="text-align:center;margin:36px auto 0;max-width:640px;">Starting prices reflect typical projects. Final pricing depends on scope, features, integrations, and timeline — book a free consultation for an exact quote.</p>
   </div>
 </section>
 
 <!-- TESTIMONIAL -->
 <div class="testimonial-strip">
-  <div class="testimonial-text">"Indian businesses are world-class. Their tools should be too. Repute AI is built for Bharat — not Silicon Valley."</div>
-  <div class="testimonial-author">Kushal Jain — Founder & CEO, Repute AI</div>
+  <div class="testimonial-text">"Indian businesses deserve software as good as anything built anywhere in the world — designed for how India actually works."</div>
+  <div class="testimonial-author">Kushal Jain — Founder & CEO, Repute India AI</div>
 </div>
 
 <!-- ABOUT -->
 <section id="about">
   <div class="section-inner">
     <div class="section-eyebrow fade-in">The Founder</div>
-    <h2 class="section-title fade-in">Built by Someone Who <em>Understands</em> India</h2>
+    <h2 class="section-title fade-in">Software Built by Someone Who <em>Runs</em> a Business</h2>
     <div class="divider fade-in"></div>
     <div class="about-grid">
       <div class="about-image-box fade-in">
@@ -716,10 +783,10 @@ footer { background:var(--ink); border-top:1px solid rgba(255,255,255,0.08); pad
       </div>
       <div class="fade-in">
         <div class="founder-name">Kushal Jain</div>
-        <div class="founder-sub">Founder & CEO — Repute AI</div>
-        <div class="about-quote">"I built Repute AI because I watched talented Indian business owners waste hours every week on tasks that AI can do in seconds."</div>
+        <div class="founder-sub">Founder & CEO — Repute India AI</div>
+        <div class="about-quote">"I started Repute India AI because I watched great businesses held back by the lack of good software — and decided to build it for them."</div>
         <p class="about-text">Kushal Jain is a finance professional, educator, and entrepreneur based in Gujarat. With experience at J.P. Morgan Chase & Co. as a CTR Analyst and an MBA in Finance, he understands how systems — and the lack of them — directly impact business profitability.</p>
-        <p class="about-text">A two-time UPSC Mains qualifier, recipient of the <strong style="color:var(--ink2);">Drona Award</strong> from the Education Minister of Gujarat, and Director at Chahal Academy Gujarat, Kushal built Repute AI to give every Indian MSME the tools that only large corporations could previously afford.</p>
+        <p class="about-text">A two-time UPSC Mains qualifier, recipient of the <strong style="color:var(--ink2);">Drona Award</strong> from the Education Minister of Gujarat, and Director at Chahal Academy Gujarat, Kushal founded Repute India AI to give every growing business the premium software and automation that only large corporations could previously afford.</p>
         <div class="about-creds">
           <div class="about-cred">Ex J.P. Morgan Chase & Co. — CTR Analyst</div>
           <div class="about-cred">MBA Finance — Visvesvaraya University</div>
@@ -737,16 +804,16 @@ footer { background:var(--ink); border-top:1px solid rgba(255,255,255,0.08); pad
 <!-- CONTACT -->
 <section id="contact">
   <div class="section-inner">
-    <div class="section-eyebrow fade-in">Get Started</div>
-    <h2 class="section-title fade-in">Get Started — <em>Zero Setup Cost</em></h2>
-    <p class="section-desc fade-in">Zero setup cost. No contracts. Full platform access from day one.</p>
+    <div class="section-eyebrow fade-in">Contact</div>
+    <h2 class="section-title fade-in">Tell Us What You Want to <em>Build</em></h2>
+    <p class="section-desc fade-in">We will help you plan, design, develop, and launch it.</p>
     <div class="divider fade-in"></div>
     <div class="contact-grid">
       <div class="fade-in">
-        <h3 style="font-family:'Playfair Display',serif;font-size:28px;color:var(--ink);margin-bottom:14px;">Let's Talk Business</h3>
-        <p style="font-size:13px;color:var(--muted);line-height:1.9;font-weight:300;">WhatsApp is the fastest way to reach us. We respond within 30 minutes during business hours. Or register directly and get started in 5 minutes.</p>
+        <h3 style="font-family:'Playfair Display',serif;font-size:28px;color:var(--ink);margin-bottom:14px;">Let's Build Something</h3>
+        <p style="font-size:13px;color:var(--muted);line-height:1.9;font-weight:300;">WhatsApp is the fastest way to reach us — we respond within 30 minutes during business hours. Tell us about your project and we'll get back with a clear plan and quote.</p>
         <div class="contact-channels">
-          <a class="contact-channel" href="https://wa.me/918401750099?text=Hi%21+I%27m+interested+in+Repute+AI+for+my+business.+Can+you+tell+me+more%3F" target="_blank">
+          <a class="contact-channel" href="https://wa.me/918401750099?text=Hi%21+I%27d+like+to+discuss+a+software+project+with+Repute+India+AI.+Can+you+help%3F" target="_blank">
             <div class="channel-icon">💬</div>
             <div><div class="channel-label">WhatsApp (Fastest)</div><div class="channel-value">+91 84017 50099</div></div>
           </a>
@@ -754,9 +821,9 @@ footer { background:var(--ink); border-top:1px solid rgba(255,255,255,0.08); pad
             <div class="channel-icon">✉️</div>
             <div><div class="channel-label">Email</div><div class="channel-value">support@reputeindiaai.com</div></div>
           </a>
-          <a class="contact-channel" href="register.html">
-            <div class="channel-icon">🚀</div>
-            <div><div class="channel-label">Register Directly</div><div class="channel-value">reputeindiaai.com/register.html</div></div>
+          <a class="contact-channel" href="#services">
+            <div class="channel-icon">🧩</div>
+            <div><div class="channel-label">Our Services</div><div class="channel-value">Web · CRM · ERP · Apps · AI</div></div>
           </a>
           <a class="contact-channel" href="#">
             <div class="channel-icon">📍</div>
@@ -767,43 +834,54 @@ footer { background:var(--ink); border-top:1px solid rgba(255,255,255,0.08); pad
       <div class="fade-in">
         <div class="form-group">
           <label class="form-label">Your Name</label>
-          <input type="text" id="contactName" class="form-input" placeholder="e.g. Rajesh Shah / Dr. Sharma">
+          <input type="text" id="contactName" class="form-input" placeholder="e.g. Rajesh Shah">
         </div>
         <div class="form-group">
-          <label class="form-label">WhatsApp Number</label>
+          <label class="form-label">Phone / WhatsApp Number</label>
           <input type="tel" id="contactPhone" class="form-input" placeholder="+91 98765 43210">
         </div>
         <div class="form-group">
-          <label class="form-label">Business Type</label>
-          <select id="contactBiz" class="form-select">
-            <option value="">Select your industry</option>
-            <option>Manufacturer / Exporter</option>
-            <option>Doctor / Clinic / Hospital</option>
-            <option>Restaurant / Cafe / Hotel</option>
-            <option>Builder / Real Estate</option>
-            <option>Salon / Spa / Beauty</option>
-            <option>Coaching Institute / School</option>
-            <option>Consultant / Agency</option>
-            <option>Trader / Distributor</option>
-            <option>Other Business</option>
+          <label class="form-label">Email</label>
+          <input type="email" id="contactEmail" class="form-input" placeholder="you@example.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Business Name</label>
+          <input type="text" id="contactBizName" class="form-input" placeholder="e.g. Shah Enterprises">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Service Required</label>
+          <select id="contactService" class="form-select">
+            <option value="">Select a service</option>
+            <option>Website Development</option>
+            <option>CRM Development</option>
+            <option>ERP Development</option>
+            <option>Mobile App Development</option>
+            <option>AI Agents</option>
+            <option>WhatsApp Automation</option>
+            <option>Reputation Management</option>
+            <option>E-commerce Development</option>
+            <option>Custom Software Development</option>
+            <option>Business Process Automation</option>
+            <option>Not sure — need advice</option>
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">Which Plan Interests You?</label>
-          <select id="contactPlan" class="form-select">
-            <option value="">Select a plan</option>
-            <option>Starter — ₹2,999/month</option>
-            <option>Growth — ₹4,999/month</option>
-            <option>Business — ₹7,999/month</option>
-            <option>Enterprise — ₹14,999+/month</option>
+          <label class="form-label">Project Budget</label>
+          <select id="contactBudget" class="form-select">
+            <option value="">Select a budget range</option>
+            <option>Under ₹25,000</option>
+            <option>₹25,000 – ₹75,000</option>
+            <option>₹75,000 – ₹2,00,000</option>
+            <option>₹2,00,000+</option>
+            <option>Not sure yet</option>
           </select>
         </div>
         <div class="form-group">
           <label class="form-label">Message (Optional)</label>
-          <textarea id="contactMsg" class="form-textarea" placeholder="Tell us about your business..."></textarea>
+          <textarea id="contactMsg" class="form-textarea" placeholder="Tell us what you want to build..."></textarea>
         </div>
-        <button class="btn-primary" style="width:100%;text-align:center;padding:14px;" onclick="sendContactWhatsApp()">Send Message & Get Started →</button>
-        <p style="font-size:10px;color:var(--muted2);text-align:center;margin-top:12px;letter-spacing:0.5px;">Zero setup cost &nbsp;·&nbsp; Full access from day 1 &nbsp;·&nbsp; Cancel anytime</p>
+        <button class="btn-primary" style="width:100%;text-align:center;padding:14px;" onclick="sendContactWhatsApp()">Send Enquiry →</button>
+        <p style="font-size:10px;color:var(--muted2);text-align:center;margin-top:12px;letter-spacing:0.5px;">Free consultation &nbsp;·&nbsp; Clear quote &nbsp;·&nbsp; No obligation</p>
       </div>
     </div>
   </div>
@@ -818,43 +896,43 @@ footer { background:var(--ink); border-top:1px solid rgba(255,255,255,0.08); pad
           <circle cx="16" cy="16" r="15" stroke="#B8952A" stroke-width="1.5"/>
           <polygon points="16,6 18.5,12.5 25.5,12.5 20,16.5 22,23 16,19.5 10,23 12,16.5 6.5,12.5 13.5,12.5" fill="#B8952A"/>
         </svg>
-        <span class="footer-logo-text">Repute AI</span>
+        <span class="footer-logo-text">Repute India AI</span>
       </div>
-      <p class="footer-desc">India's first AI Business Operating System for MSMEs. Reputation, documents, compliance, marketing, and government schemes — one platform, one subscription.</p>
+      <p class="footer-desc">An AI & software solutions company. We build premium websites, CRM & ERP systems, mobile apps, AI agents, WhatsApp automation, and custom software for growing businesses.</p>
     </div>
     <div class="footer-col">
-      <h4>Platform</h4>
+      <h4>Services</h4>
       <ul>
-        <li><a href="#modules">All Modules</a></li>
-        <li><a href="#pricing">Pricing</a></li>
-        <li><a href="#how">How It Works</a></li>
-        <li><a href="register.html">Get Started</a></li>
-        <li><a href="login.html">Login</a></li>
+        <li><a href="#services">Website Development</a></li>
+        <li><a href="#services">CRM & ERP</a></li>
+        <li><a href="#services">Mobile Apps</a></li>
+        <li><a href="#services">AI & Automation</a></li>
+        <li><a href="#services">Custom Software</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Industries</h4>
       <ul>
-        <li><a href="#industries">Manufacturers</a></li>
-        <li><a href="#industries">Doctors & Clinics</a></li>
-        <li><a href="#industries">Restaurants</a></li>
+        <li><a href="#industries">Coaching & Education</a></li>
+        <li><a href="#industries">Clinics & Hospitals</a></li>
         <li><a href="#industries">Real Estate</a></li>
-        <li><a href="#industries">Consultants</a></li>
+        <li><a href="#industries">Restaurants & Cafes</a></li>
+        <li><a href="#industries">Manufacturers</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Company</h4>
       <ul>
         <li><a href="#about">About Founder</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#pricing">Pricing</a></li>
         <li><a href="#contact">Contact Us</a></li>
-        <li><a href="https://wa.me/918401750099?text=Hi%21+I%27m+interested+in+Repute+AI.+Can+you+help+me+get+started%3F" target="_blank">WhatsApp Support</a></li>
-        <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">Terms of Service</a></li>
+        <li><a href="https://wa.me/918401750099?text=Hi%21+I%27d+like+to+discuss+a+project+with+Repute+India+AI." target="_blank">WhatsApp Support</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2026 Repute AI. All rights reserved. Made with ♥ in Gujarat, India.</p>
+    <p>© 2026 Repute India AI. All rights reserved. Made with ♥ in Gujarat, India.</p>
     <p>Pan India — Serving all states and cities</p>
   </div>
 </footer>
@@ -863,19 +941,23 @@ footer { background:var(--ink); border-top:1px solid rgba(255,255,255,0.08); pad
 function sendContactWhatsApp() {
   const name    = document.getElementById('contactName')?.value.trim() || '';
   const phone   = document.getElementById('contactPhone')?.value.trim() || '';
-  const biz     = document.getElementById('contactBiz')?.value || '';
-  const plan    = document.getElementById('contactPlan')?.value || '';
+  const email   = document.getElementById('contactEmail')?.value.trim() || '';
+  const bizName = document.getElementById('contactBizName')?.value.trim() || '';
+  const service = document.getElementById('contactService')?.value || '';
+  const budget  = document.getElementById('contactBudget')?.value || '';
   const msg     = document.getElementById('contactMsg')?.value.trim() || '';
   if (!name && !phone) {
-    alert('Please enter at least your name and WhatsApp number so we can reach you.');
+    alert('Please enter at least your name and phone number so we can reach you.');
     return;
   }
-  const text = `Hi! I'm interested in Repute AI for my business.
+  const text = `Hi! I'd like to discuss a project with Repute India AI.
 
 Name: ${name || '—'}
-WhatsApp: ${phone || '—'}
-Business Type: ${biz || '—'}
-Plan Interested: ${plan || '—'}
+Phone: ${phone || '—'}
+Email: ${email || '—'}
+Business Name: ${bizName || '—'}
+Service Required: ${service || '—'}
+Project Budget: ${budget || '—'}
 ${msg ? 'Message: ' + msg : ''}
 
 Please get in touch. Thank you!`;

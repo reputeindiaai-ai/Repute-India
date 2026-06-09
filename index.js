@@ -1,5 +1,5 @@
 // ============================================================
-// REPUTE AI BUSINESS OS — index.js
+// REPUTE INDIA AI BUSINESS OS — index.js
 // ============================================================
 
 const express = require("express");
@@ -47,7 +47,7 @@ async function logEvent(eventType, businessId = null, businessName = null, detai
 // HEALTH CHECK
 // ============================================================
 app.get("/", (req, res) => {
-  res.json({ status: "Repute AI Business OS backend is live", time: new Date() });
+  res.json({ status: "Repute India AI Business OS backend is live", time: new Date() });
 });
 
 // ============================================================
@@ -555,10 +555,10 @@ app.post("/webhook", async (req, res) => {
 async function sendOtpEmail(toEmail, businessName, otp) {
   try {
     const response = await axios.post("https://api.resend.com/emails", {
-      from: "ReputeIndia <noreply@reputeindiaai.com>",
+      from: "Repute India AI <noreply@reputeindiaai.com>",
       to: [toEmail],
-      subject: `${otp} is your ReputeIndia login OTP`,
-      html: `<div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;background:#111;color:#F5F0E8;padding:40px;border-radius:8px;"><div style="text-align:center;margin-bottom:32px;"><h1 style="color:#C9A84C;font-size:24px;letter-spacing:2px;margin:0;">ReputeIndia</h1><p style="color:#888;font-size:12px;margin-top:4px;letter-spacing:1px;">YOUR REPUTATION. REIMAGINED.</p></div><p style="color:#888;font-size:13px;margin-bottom:8px;">Hello ${businessName},</p><p style="color:#F5F0E8;font-size:13px;margin-bottom:28px;">Your login OTP for ReputeIndia Dashboard is:</p><div style="background:#1a1a1a;border:1px solid #C9A84C;padding:24px;text-align:center;margin-bottom:28px;"><span style="font-size:42px;font-weight:700;letter-spacing:12px;color:#C9A84C;">${otp}</span></div><p style="color:#888;font-size:11px;line-height:1.6;">Valid for <strong style="color:#F5F0E8;">10 minutes</strong>. Do not share with anyone.</p><hr style="border:none;border-top:1px solid #222;margin:28px 0;"><p style="color:#444;font-size:10px;text-align:center;letter-spacing:1px;">ReputeIndia — AI Reputation Management for Indian Businesses</p></div>`
+      subject: `${otp} is your Repute India AI login OTP`,
+      html: `<div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;background:#111;color:#F5F0E8;padding:40px;border-radius:8px;"><div style="text-align:center;margin-bottom:32px;"><h1 style="color:#C9A84C;font-size:24px;letter-spacing:2px;margin:0;">Repute India AI</h1><p style="color:#888;font-size:12px;margin-top:4px;letter-spacing:1px;">YOUR REPUTATION. REIMAGINED.</p></div><p style="color:#888;font-size:13px;margin-bottom:8px;">Hello ${businessName},</p><p style="color:#F5F0E8;font-size:13px;margin-bottom:28px;">Your login OTP for Repute India AI Dashboard is:</p><div style="background:#1a1a1a;border:1px solid #C9A84C;padding:24px;text-align:center;margin-bottom:28px;"><span style="font-size:42px;font-weight:700;letter-spacing:12px;color:#C9A84C;">${otp}</span></div><p style="color:#888;font-size:11px;line-height:1.6;">Valid for <strong style="color:#F5F0E8;">10 minutes</strong>. Do not share with anyone.</p><hr style="border:none;border-top:1px solid #222;margin:28px 0;"><p style="color:#444;font-size:10px;text-align:center;letter-spacing:1px;">Repute India AI — AI Reputation Management for Indian Businesses</p></div>`
     }, { headers: { "Authorization": `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" } });
     console.log("OTP email sent:", response.data);
     return response.data;
@@ -576,17 +576,17 @@ async function sendWelcomeEmail(toEmail, ownerName, businessName) {
   const firstName = (ownerName || "").split(" ")[0] || "there";
   try {
     const response = await axios.post("https://api.resend.com/emails", {
-      from: "Repute AI <noreply@reputeindiaai.com>",
+      from: "Repute India AI <noreply@reputeindiaai.com>",
       to: [toEmail],
-      subject: `Welcome to Repute AI, ${firstName}! 🎉`,
+      subject: `Welcome to Repute India AI, ${firstName}! 🎉`,
       html: `<div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;background:#FFFDF8;color:#1A1612;padding:0;border-radius:10px;overflow:hidden;border:1px solid #E8E3DB;">
         <div style="background:linear-gradient(135deg,#1A1612,#3a3128);padding:36px 40px;text-align:center;">
-          <h1 style="color:#D4AF50;font-size:26px;letter-spacing:1px;margin:0;font-family:Georgia,serif;">Repute AI</h1>
+          <h1 style="color:#D4AF50;font-size:26px;letter-spacing:1px;margin:0;font-family:Georgia,serif;">Repute India AI</h1>
           <p style="color:rgba(255,255,255,0.5);font-size:11px;margin-top:6px;letter-spacing:2px;">YOUR AI BUSINESS OPERATING SYSTEM</p>
         </div>
         <div style="padding:36px 40px;">
           <p style="font-size:15px;margin:0 0 16px;">Hi ${firstName}, welcome aboard! 🎉</p>
-          <p style="font-size:14px;line-height:1.7;color:#2E2A25;margin:0 0 16px;">Your <strong>15-day free trial</strong> of Repute AI is now active for <strong>${businessName || "your business"}</strong>. Everything you need to run and grow your business is now in one place:</p>
+          <p style="font-size:14px;line-height:1.7;color:#2E2A25;margin:0 0 16px;">Your <strong>Repute India AI</strong> account is now active for <strong>${businessName || "your business"}</strong>. Everything you need to run and grow your business is now in one place:</p>
           <ul style="font-size:13px;line-height:1.9;color:#2E2A25;padding-left:20px;margin:0 0 24px;">
             <li>⭐ Reputation &amp; Google review management</li>
             <li>✨ Your personal AI business assistant</li>
@@ -600,10 +600,10 @@ async function sendWelcomeEmail(toEmail, ownerName, businessName) {
           </div>
           <p style="font-size:13px;line-height:1.7;color:#2E2A25;margin:0 0 8px;">Need help getting started? Just reply to this email — we're here for you.</p>
           <p style="font-size:13px;color:#2E2A25;margin:0;">Here's to growing ${businessName || "your business"}! 🚀</p>
-          <p style="font-size:13px;color:#8A8480;margin:16px 0 0;">— Team Repute AI</p>
+          <p style="font-size:13px;color:#8A8480;margin:16px 0 0;">— Team Repute India AI</p>
         </div>
         <div style="background:#F2EFE9;padding:18px 40px;text-align:center;">
-          <p style="color:#8A8480;font-size:10px;letter-spacing:1px;margin:0;">Repute AI — AI Business OS for Indian MSMEs · reputeindiaai.com</p>
+          <p style="color:#8A8480;font-size:10px;letter-spacing:1px;margin:0;">Repute India AI — AI Business OS for Indian MSMEs · reputeindiaai.com</p>
         </div>
       </div>`
     }, { headers: { "Authorization": `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" } });
@@ -699,7 +699,7 @@ async function generateAndSaveReply(business, review) {
     const reply = await generateReply(business, review, tone);
     await supabase.from("ai_replies").insert([{ review_id: review.id, business_id: business.id, generated_reply: reply, tone, status: "pending" }]);
     const alertTo = business.whatsapp_number || business.phone;
-    await sendWhatsApp(alertTo, `AI Reply Generated\n\nFor the ${review.rating} star review by ${review.reviewer_name || "Anonymous"}:\n\n"${reply}"\n\nLog in to your dashboard to approve.\n\n_ReputeIndia_`);
+    await sendWhatsApp(alertTo, `AI Reply Generated\n\nFor the ${review.rating} star review by ${review.reviewer_name || "Anonymous"}:\n\n"${reply}"\n\nLog in to your dashboard to approve.\n\n_Repute India AI_`);
   } catch (err) {
     console.error("Auto-reply error:", err.message);
   }
@@ -866,7 +866,7 @@ cron.schedule("0 9 * * 1", async () => {
       const avg = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
       const positive = reviews.filter(r => r.sentiment === "positive").length;
       const negative = reviews.filter(r => r.sentiment === "negative").length;
-      await sendWhatsApp(business.whatsapp_number || business.phone, `Weekly Report - ${business.business_name}\n\n${reviews.length} new reviews\nAvg: ${avg.toFixed(1)}/5\nPositive: ${positive} | Negative: ${negative}\n\n_ReputeIndia_`);
+      await sendWhatsApp(business.whatsapp_number || business.phone, `Weekly Report - ${business.business_name}\n\n${reviews.length} new reviews\nAvg: ${avg.toFixed(1)}/5\nPositive: ${positive} | Negative: ${negative}\n\n_Repute India AI_`);
     }
   } catch (err) { console.error("Weekly report error:", err.message); }
 });
@@ -896,7 +896,7 @@ app.post("/api/onboarding/chat", async (req, res) => {
       "reputation — current Google rating and main customer complaint (current_google_rating, main_review_complaint)"
     ];
 
-    const systemPrompt = `You are Arya, a warm, sharp AI business consultant onboarding a new client to Repute AI (an AI Business OS for Indian MSMEs).
+    const systemPrompt = `You are Arya, a warm, sharp AI business consultant onboarding a new client to Repute India AI (an AI Business OS for Indian MSMEs).
 
 CLIENT: ${business_name}, a ${business_category} business in ${business_city || "India"}.
 
@@ -1178,7 +1178,7 @@ app.post("/api/daily-briefing", async (req, res) => {
 - Current Google Rating: ${avg_rating || p.current_google_rating || "Not specified"}
 - Main Complaint: ${p.main_review_complaint || "Not specified"}`;
 
-    const prompt = `You are Arya, the AI business intelligence engine for Repute AI. Generate today's personalised daily briefing for an Indian MSME.
+    const prompt = `You are Arya, the AI business intelligence engine for Repute India AI. Generate today's personalised daily briefing for an Indian MSME.
 
 TODAY'S DATE: ${date || new Date().toDateString()}
 
@@ -1909,5 +1909,5 @@ app.post("/api/admin/set-active", async (req, res) => {
 // START SERVER
 // ============================================================
 app.listen(PORT, () => {
-  console.log(`Repute AI Business OS backend running on port ${PORT}`);
+  console.log(`Repute India AI Business OS backend running on port ${PORT}`);
 });

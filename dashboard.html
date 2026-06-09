@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Repute — Reputation Command Center</title>
+<title>Repute India AI — Reputation Command Center</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -134,7 +134,7 @@ button{font-family:inherit;cursor:pointer}
     <div class="brand">
       <div class="brand-mark">R</div>
       <div>
-        <div class="brand-name">Repute</div>
+        <div class="brand-name">Repute India AI</div>
         <div class="brand-sub">REPUTATION COMMAND CENTER</div>
       </div>
     </div>
@@ -223,7 +223,7 @@ button{font-family:inherit;cursor:pointer}
               <div class="sc-stars">★★★★★</div>
               <div class="sc-quote" id="scQuote">"Pick a review on the left to see it styled here."</div>
               <div class="sc-author" id="scAuthor">— Your customer</div>
-              <div class="sc-foot"><span class="sc-brand" id="scBiz">Your Business</span><span class="muted" style="font-size:11px">via Repute</span></div>
+              <div class="sc-foot"><span class="sc-brand" id="scBiz">Your Business</span><span class="muted" style="font-size:11px">via Repute India AI</span></div>
             </div>
           </div>
           <button class="btn-gold btn" style="margin-top:14px" onclick="downloadShowcase()">⬇ Download post image</button>
@@ -526,7 +526,7 @@ function buildReport(){
     <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:10px">
       <div><div class="serif" style="font-size:22px">${esc(BIZ.business_name||'Your Business')}</div>
       <div class="muted">Reputation report · ${month}</div></div>
-      <span class="pill">Powered by Repute</span>
+      <span class="pill">Powered by Repute India AI</span>
     </div>
     <div class="grid cols-4" style="margin-top:20px">
       <div><div class="stat-label">Rating</div><div class="stat-val">${STATS.avg_rating?STATS.avg_rating.toFixed(1):'—'}<span class="unit">★</span></div></div>
@@ -542,7 +542,7 @@ function downloadReport(){
   });
 }
 function shareReportWhatsApp(){
-  const txt=`${BIZ.business_name||'Our business'} reputation update: ${STATS.avg_rating?STATS.avg_rating.toFixed(1):'—'}★ across ${STATS.total_reviews||0} reviews. Managed by Repute.`;
+  const txt=`${BIZ.business_name||'Our business'} reputation update: ${STATS.avg_rating?STATS.avg_rating.toFixed(1):'—'}★ across ${STATS.total_reviews||0} reviews. Managed by Repute India AI.`;
   window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');
 }
 
@@ -552,7 +552,7 @@ function showWall(){
   const w=document.getElementById('wall');w.style.display='block';
   const first=(BIZ.owner_name||'there').split(' ')[0];
   const waNum='918401750099';
-  const waMsg=encodeURIComponent(`Hi, I'm ${BIZ.owner_name||''} from ${BIZ.business_name||''}. I've paid — please activate my Repute account.`);
+  const waMsg=encodeURIComponent(`Hi, I'm ${BIZ.owner_name||''} from ${BIZ.business_name||''}. I've paid — please activate my Repute India AI account.`);
   w.innerHTML=`<div class="wrap"><div class="wall">
     <div class="brand-mark" style="margin:0 auto 18px">R</div>
     <div class="serif" style="font-size:28px">You're all set, ${esc(first)}!</div>
