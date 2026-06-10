@@ -1,0 +1,16 @@
+# ── Private business info — NEVER publish (served publicly via GitHub Pages otherwise) ──
+CLAUDE.md
+
+# ── Local environment / secret keys ──
+.env
+.env.*
+
+# ── Old homepage backups — keep locally, do NOT serve publicly ──
+index.backup.html
+index-old.html
+index-new.html
+
+# ── Dependencies / OS cruft ──
+node_modules/
+.DS_Store
+Thumbs.db
