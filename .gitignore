@@ -10,6 +10,15 @@ index.backup.html
 index-old.html
 index-new.html
 
+# ── Messy-named original photo (clean copy Image/founder.jpg is the one we publish) ──
+Image/Founder.jpg.jpeg
+
+# ── Internal sales scripts & office documents — keep local, NEVER publish ──
+showcase/*/sales.html
+Sales Script.docx
+*.docx
+*.xlsx
+
 # ── Dependencies / OS cruft ──
 node_modules/
 .DS_Store

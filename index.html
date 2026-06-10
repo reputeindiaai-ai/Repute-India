@@ -185,7 +185,7 @@ select.fld option{ background:#111119; } textarea.fld{ min-height:104px; resize:
 <header class="nav" id="nav">
   <a class="brand" href="#home"><span class="orb"></span> Repute India <span class="ac">AI</span></a>
   <nav class="nav-links">
-    <a href="#services">Services</a><a href="#edge">AI Edge</a><a href="#industries">Industries</a><a href="#work">Work</a><a href="#contact">Contact</a>
+    <a href="#services">Services</a><a href="#edge">AI Edge</a><a href="#industries">Industries</a><a href="#work">Work</a><a href="showcase/index.html">Demos</a><a href="#contact">Contact</a>
   </nav>
   <div class="nav-right">
     <a href="login.html" class="nav-links" style="font-size:.9rem;color:var(--txt2)">Login</a>
@@ -230,15 +230,15 @@ select.fld option{ background:#111119; } textarea.fld{ min-height:104px; resize:
   <div class="wrap">
     <div class="sec-head reveal"><span class="eyebrow">What we build</span><h2 class="h-lg">Premium software, <span class="grad-txt">end to end.</span></h2><p class="lead">Every piece of software your business needs — designed, built and delivered to a premium standard.</p></div>
     <div class="grid g3" id="svcGrid">
-      <div class="scard reveal"><div class="ic">🌐</div><h3>Website Development</h3><p>Fast, premium, conversion-built websites that make your business look world-class.</p><div class="more">Learn more →</div></div>
-      <div class="scard reveal d1"><div class="ic">📇</div><h3>CRM Development</h3><p>Capture every lead, automate follow-ups and close more — all in one system.</p><div class="more">Learn more →</div></div>
-      <div class="scard reveal d2"><div class="ic">🧩</div><h3>Custom Business Systems</h3><p>Bespoke operations software (ERP-style) built around exactly how you work.</p><div class="more">Learn more →</div></div>
-      <div class="scard reveal"><div class="ic">📱</div><h3>Mobile Apps</h3><p>Native-quality Android &amp; iOS apps that put your business in customers' pockets.</p><div class="more">Learn more →</div></div>
-      <div class="scard reveal d1"><div class="ic">🤖</div><h3>AI Agents</h3><p>Custom AI assistants that answer, qualify and support 24/7 in your customer's language.</p><div class="more">Learn more →</div></div>
-      <div class="scard reveal d2"><div class="ic">💬</div><h3>WhatsApp Automation</h3><p>Auto-replies, broadcasts, reminders and review requests — WhatsApp as a growth engine.</p><div class="more">Learn more →</div></div>
-      <div class="scard reveal"><div class="ic">⭐</div><h3>Reputation Management</h3><p>Monitor, respond to and grow your Google reviews — automatically.</p><div class="more">Learn more →</div></div>
-      <div class="scard reveal d1"><div class="ic">🔄</div><h3>Business Process Automation</h3><p>Automate the repetitive work so your team focuses on growth, not data entry.</p><div class="more">Learn more →</div></div>
-      <div class="scard reveal d2"><div class="ic">🛒</div><h3>E-commerce</h3><p>Online stores built to convert browsers into paying buyers — fast and beautiful.</p><div class="more">Learn more →</div></div>
+      <div class="scard reveal"><div class="ic">🌐</div><h3>Website Development</h3><p>Fast, premium, conversion-built websites that make your business look world-class.</p></div>
+      <div class="scard reveal d1"><div class="ic">📇</div><h3>CRM Development</h3><p>Capture every lead, automate follow-ups and close more — all in one system.</p></div>
+      <div class="scard reveal d2"><div class="ic">🧩</div><h3>Custom Business Systems</h3><p>Bespoke operations software (ERP-style) built around exactly how you work.</p></div>
+      <div class="scard reveal"><div class="ic">📱</div><h3>Mobile Apps</h3><p>Native-quality Android &amp; iOS apps that put your business in customers' pockets.</p></div>
+      <div class="scard reveal d1"><div class="ic">🤖</div><h3>AI Agents</h3><p>Custom AI assistants that answer, qualify and support 24/7 in your customer's language.</p></div>
+      <div class="scard reveal d2"><div class="ic">💬</div><h3>WhatsApp Automation</h3><p>Auto-replies, broadcasts, reminders and review requests — WhatsApp as a growth engine.</p></div>
+      <div class="scard reveal"><div class="ic">⭐</div><h3>Reputation Management</h3><p>Monitor, respond to and grow your Google reviews — automatically.</p></div>
+      <div class="scard reveal d1"><div class="ic">🔄</div><h3>Business Process Automation</h3><p>Automate the repetitive work so your team focuses on growth, not data entry.</p></div>
+      <div class="scard reveal d2"><div class="ic">🛒</div><h3>E-commerce</h3><p>Online stores built to convert browsers into paying buyers — fast and beautiful.</p></div>
     </div>
   </div>
 </section>
@@ -324,6 +324,52 @@ select.fld option{ background:#111119; } textarea.fld{ min-height:104px; resize:
         <p class="muted" style="max-width:520px">Not ready for a custom build yet? Try our ready-made AI tool for reviews, marketing, documents and business assistance — live now.</p>
       </div>
       <a href="register.html" class="btn btn-glass btn-arrow">Try the tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT THE FOUNDER -->
+<style>
+.founder{ display:grid; grid-template-columns:.82fr 1.18fr; gap:clamp(28px,4vw,56px); align-items:center; }
+.founder-photo{ position:relative; border-radius:var(--r-lg); overflow:hidden; border:1px solid var(--line2);
+  background:var(--bg3); box-shadow:0 30px 80px rgba(0,0,0,.55), 0 0 40px rgba(52,229,255,.08); }
+.founder-photo img{ display:block; width:100%; height:auto; }
+.founder-photo::after{ content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(180deg, transparent 60%, rgba(10,10,15,.55)); }
+.founder-badge{ position:absolute; left:16px; bottom:16px; z-index:2; display:flex; align-items:center; gap:10px;
+  padding:9px 14px; border-radius:var(--r-full); background:rgba(10,10,15,.74); border:1px solid var(--line2); backdrop-filter:blur(10px); }
+.founder-badge .t{ width:30px; height:30px; border-radius:50%; display:grid; place-items:center; font-size:.95rem; background:var(--grad); }
+.founder-badge b{ font-size:.82rem; } .founder-badge small{ display:block; font-size:.68rem; color:var(--txt2); }
+.fcreds{ display:flex; flex-wrap:wrap; gap:10px; margin:22px 0 4px; }
+.fchip{ display:inline-flex; align-items:center; gap:8px; font-size:.84rem; color:var(--txt); padding:9px 14px;
+  background:var(--panel); border:1px solid var(--line); border-radius:var(--r-full); }
+.fchip span{ filter:saturate(1.2); }
+.founder-actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:24px; }
+@media (max-width:960px){ .founder{ grid-template-columns:1fr; } .founder-photo{ max-width:430px; margin:0 auto; } }
+</style>
+<section class="sec" id="founder" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">About the founder</span><h2 class="h-lg">Built by someone who has <span class="grad-txt">actually built it.</span></h2></div>
+    <div class="founder">
+      <div class="founder-photo reveal">
+        <img src="Image/founder.jpg" alt="Kushal Jain receiving the Drona Award 2023 from Gujarat's Education Minister" loading="lazy">
+        <div class="founder-badge"><span class="t">🏆</span><div><b>Drona Award 2023</b><small>Presented by Gujarat's Education Minister</small></div></div>
+      </div>
+      <div class="reveal d1">
+        <h3 class="h-md" style="margin-bottom:5px">Kushal Jain</h3>
+        <div style="font-size:.74rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:16px">Founder · Repute India AI</div>
+        <p class="lead" style="font-size:1.06rem">I'm an educator and Director / Head of Content at <b style="color:var(--txt)">Chahal Academy</b>, a leading UPSC &amp; GPSC coaching institute in Gujarat. I built Chahal's full CRM and student-management system myself — and today I build premium websites, CRMs and AI software for businesses through Repute India AI.</p>
+        <p class="muted" style="margin-top:14px">When you work with us, you work directly with someone who has designed, built and run real systems in daily production — not a faceless agency that hands you off to juniors.</p>
+        <div class="fcreds">
+          <div class="fchip"><span>🏆</span> Drona Award recipient</div>
+          <div class="fchip"><span>🎓</span> Director, Chahal Academy</div>
+          <div class="fchip"><span>🛠️</span> Built the Chahal CRM</div>
+        </div>
+        <div class="founder-actions">
+          <a href="#contact" class="btn btn-accent btn-arrow">Get a free consultation <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a href="showcase/chahal/index.html" class="btn btn-glass btn-arrow">See the Chahal CRM <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
