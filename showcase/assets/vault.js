@@ -70,4 +70,22 @@
 
   // Year stamp
   document.querySelectorAll("[data-year]").forEach(function (el) { el.textContent = "2026"; });
+
+  // ── Local-only "Sales script" tab ────────────────────────────────────
+  // Shows the Sales script tab ONLY when a demo page is opened from your
+  // own computer (file:// or localhost). On the public live site it never
+  // appears — and the sales-script files are not published online at all.
+  (function () {
+    var local = (location.protocol === "file:" ||
+                 location.hostname === "localhost" ||
+                 location.hostname === "127.0.0.1");
+    if (!local) return;
+    document.querySelectorAll(".tabs").forEach(function (tabs) {
+      if (tabs.querySelector('a[href="sales.html"]')) return; // already there (e.g. the sales page itself)
+      var a = document.createElement("a");
+      a.href = "sales.html";
+      a.textContent = "Sales script";
+      tabs.appendChild(a);
+    });
+  })();
 })();
