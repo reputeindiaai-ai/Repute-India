@@ -25,6 +25,104 @@ const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY;
 const PORT = process.env.PORT || 3000;
 
 // ============================================================
+// LOGIN SECURITY (added Aug 2026)
+// ------------------------------------------------------------
+// Plain English: before this, ANY person on the internet who knew a
+// business id could read that business's data, and anyone could call the
+// admin "activate account" route. Now every customer route needs a login
+// pass ("token") that the server itself signs and checks, and the admin
+// routes need a secret admin key.
+//
+// The token is signed with AUTH_SECRET. If that isn't set on the server we
+// fall back to an existing secret key so the app keeps working — but set
+// AUTH_SECRET in Render for the cleanest setup.
+// ============================================================
+const crypto = require("crypto");
+
+const AUTH_SECRET =
+  process.env.AUTH_SECRET ||
+  process.env.SUPABASE_SECRET_KEY ||
+  process.env.ANTHROPIC_API_KEY ||
+  "";
+
+const ADMIN_KEY = process.env.ADMIN_KEY || "";
+
+if (!process.env.AUTH_SECRET) {
+  console.warn("[auth] AUTH_SECRET not set — using a fallback secret. Add AUTH_SECRET in Render.");
+}
+if (!ADMIN_KEY) {
+  console.warn("[auth] ADMIN_KEY not set — the admin panel will refuse to work until you add it in Render.");
+}
+
+const TOKEN_DAYS = 30;
+
+// Make a login pass for a business. Given out at registration and at OTP login.
+function signToken(businessId) {
+  const payload = Buffer.from(JSON.stringify({
+    b: String(businessId),
+    exp: Date.now() + TOKEN_DAYS * 24 * 60 * 60 * 1000
+  })).toString("base64url");
+  const sig = crypto.createHmac("sha256", AUTH_SECRET).update(payload).digest("base64url");
+  return payload + "." + sig;
+}
+
+// Check a login pass. Returns the business id, or null if it's fake/expired.
+function verifyToken(token) {
+  if (!token || !AUTH_SECRET) return null;
+  const parts = String(token).split(".");
+  if (parts.length !== 2) return null;
+  const [payload, sig] = parts;
+  const expected = crypto.createHmac("sha256", AUTH_SECRET).update(payload).digest("base64url");
+  const a = Buffer.from(sig);
+  const b = Buffer.from(expected);
+  if (a.length !== b.length) return null;
+  if (!crypto.timingSafeEqual(a, b)) return null;
+  try {
+    const data = JSON.parse(Buffer.from(payload, "base64url").toString("utf8"));
+    if (!data.exp || Date.now() > data.exp) return null;
+    return data.b;
+  } catch (e) {
+    return null;
+  }
+}
+
+// Must be logged in as SOME business.
+function requireAuth(req, res, next) {
+  const header = req.headers.authorization || "";
+  const token = header.startsWith("Bearer ") ? header.slice(7) : "";
+  const businessId = verifyToken(token);
+  if (!businessId) {
+    return res.status(401).json({ success: false, error: "Please log in again.", code: "AUTH_REQUIRED" });
+  }
+  req.businessId = businessId;
+  next();
+}
+
+// Must be logged in AS the business being asked about — stops one customer
+// reading another customer's data.
+function sameBusiness(req, res, next) {
+  const target = req.params.business_id || req.params.id || (req.body && req.body.business_id);
+  if (target && String(target) !== String(req.businessId)) {
+    return res.status(403).json({ success: false, error: "Not allowed.", code: "FORBIDDEN" });
+  }
+  next();
+}
+
+// Admin-only routes (Kushal's panel).
+function requireAdmin(req, res, next) {
+  if (!ADMIN_KEY) {
+    return res.status(503).json({ success: false, error: "Admin key is not set on the server yet.", code: "ADMIN_UNCONFIGURED" });
+  }
+  const key = req.headers["x-admin-key"] || (req.body && req.body.admin_key) || "";
+  const a = Buffer.from(String(key));
+  const b = Buffer.from(ADMIN_KEY);
+  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
+    return res.status(401).json({ success: false, error: "Wrong admin key.", code: "ADMIN_AUTH" });
+  }
+  next();
+}
+
+// ============================================================
 // AUDIT LOGGING HELPER
 // Fire-and-forget: never blocks or breaks a request if it fails.
 // Stores only event_type, business id/name, short detail + timestamp.
@@ -64,7 +162,8 @@ app.post("/api/businesses", async (req, res) => {
     sendWelcomeEmail(data.email, data.owner_name, data.business_name);
     sendWelcomeWhatsApp(data.whatsapp_number || data.phone, data.owner_name, data.business_name);
 
-    res.json({ success: true, business: data });
+    // Hand out a login pass so the new owner can go straight into onboarding
+    res.json({ success: true, business: data, token: signToken(data.id) });
   } catch (err) {
     console.error("Register business error:", err);
     res.status(500).json({ success: false, error: err.message });
@@ -74,7 +173,7 @@ app.post("/api/businesses", async (req, res) => {
 // ============================================================
 // 2. GET ALL BUSINESSES
 // ============================================================
-app.get("/api/businesses", async (req, res) => {
+app.get("/api/businesses", requireAdmin, async (req, res) => {
   try {
     const { data, error } = await supabase.from("businesses").select("*").order("created_at", { ascending: false });
     if (error) throw error;
@@ -120,7 +219,8 @@ app.post("/api/auth/verify-otp", async (req, res) => {
     await supabase.from("otp_verifications").update({ used: true }).eq("id", record.id);
     const { data: business } = await supabase.from("businesses").select("*").or(`phone.eq.${cleanPhone},whatsapp_number.eq.${cleanPhone}`).single();
     if (business) logEvent("login", business.id, business.business_name, "OTP login");
-    res.json({ success: true, business });
+    if (!business) return res.status(404).json({ success: false, error: "Account not found." });
+    res.json({ success: true, business, token: signToken(business.id) });
   } catch (err) {
     console.error("Verify OTP error:", err);
     res.status(500).json({ success: false, error: err.message });
@@ -130,7 +230,7 @@ app.post("/api/auth/verify-otp", async (req, res) => {
 // ============================================================
 // 3. GET SINGLE BUSINESS
 // ============================================================
-app.get("/api/businesses/:id", async (req, res) => {
+app.get("/api/businesses/:id", requireAuth, sameBusiness, async (req, res) => {
   try {
     const { id } = req.params;
     const [bizRes, reviewsRes, analyticsRes] = await Promise.all([
@@ -147,7 +247,7 @@ app.get("/api/businesses/:id", async (req, res) => {
 // ============================================================
 // 4. ADD A REVIEW
 // ============================================================
-app.post("/api/reviews", async (req, res) => {
+app.post("/api/reviews", requireAuth, sameBusiness, async (req, res) => {
   try {
     const { business_id, reviewer_name, rating, review_text, review_date, platform, google_review_id } = req.body;
     const sentiment = await analyseSentiment(review_text, rating);
@@ -165,7 +265,7 @@ app.post("/api/reviews", async (req, res) => {
 // ============================================================
 // 5. GET REVIEWS
 // ============================================================
-app.get("/api/reviews/:business_id", async (req, res) => {
+app.get("/api/reviews/:business_id", requireAuth, sameBusiness, async (req, res) => {
   try {
     const { business_id } = req.params;
     const { limit = 20, unreplied } = req.query;
@@ -182,7 +282,7 @@ app.get("/api/reviews/:business_id", async (req, res) => {
 // ============================================================
 // 6. GENERATE AI REPLY
 // ============================================================
-app.post("/api/reviews/:review_id/generate-reply", async (req, res) => {
+app.post("/api/reviews/:review_id/generate-reply", requireAuth, async (req, res) => {
   try {
     const { review_id } = req.params;
     const { tone = "professional" } = req.body;
@@ -200,7 +300,7 @@ app.post("/api/reviews/:review_id/generate-reply", async (req, res) => {
 // ============================================================
 // 7. APPROVE REPLY
 // ============================================================
-app.post("/api/replies/:reply_id/approve", async (req, res) => {
+app.post("/api/replies/:reply_id/approve", requireAuth, async (req, res) => {
   try {
     const { reply_id } = req.params;
     const { data, error } = await supabase.from("ai_replies").update({ status: "sent", approved_by: "owner", approved_at: new Date(), sent_at: new Date() }).eq("id", reply_id).select().single();
@@ -215,7 +315,7 @@ app.post("/api/replies/:reply_id/approve", async (req, res) => {
 // ============================================================
 // 8. SEND REVIEW REQUEST
 // ============================================================
-app.post("/api/review-requests", async (req, res) => {
+app.post("/api/review-requests", requireAuth, sameBusiness, async (req, res) => {
   try {
     const { business_id, customer_name, customer_phone } = req.body;
     const { data: business } = await supabase.from("businesses").select("*").eq("id", business_id).single();
@@ -233,7 +333,7 @@ app.post("/api/review-requests", async (req, res) => {
 // ============================================================
 // 9. DASHBOARD STATS
 // ============================================================
-app.get("/api/dashboard/:business_id", async (req, res) => {
+app.get("/api/dashboard/:business_id", requireAuth, sameBusiness, async (req, res) => {
   try {
     const { business_id } = req.params;
     const [bizRes, reviewsRes, unrepliedRes, latestAnalytics] = await Promise.all([
@@ -254,7 +354,7 @@ app.get("/api/dashboard/:business_id", async (req, res) => {
 // ============================================================
 // COMPETITOR TRACKING
 // ============================================================
-app.post("/api/competitors", async (req, res) => {
+app.post("/api/competitors", requireAuth, sameBusiness, async (req, res) => {
   try {
     const { business_id, competitor_name, google_maps_url } = req.body;
     if (!business_id || !competitor_name || !google_maps_url) return res.status(400).json({ success: false, error: "business_id, competitor_name, google_maps_url required" });
@@ -272,7 +372,7 @@ app.post("/api/competitors", async (req, res) => {
   }
 });
 
-app.get("/api/competitors/:business_id", async (req, res) => {
+app.get("/api/competitors/:business_id", requireAuth, sameBusiness, async (req, res) => {
   try {
     const { business_id } = req.params;
     const { data, error } = await supabase.from("competitors").select("*").eq("business_id", business_id).order("created_at", { ascending: true });
@@ -283,7 +383,7 @@ app.get("/api/competitors/:business_id", async (req, res) => {
   }
 });
 
-app.post("/api/competitors/:id/refresh", async (req, res) => {
+app.post("/api/competitors/:id/refresh", requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
     const { data: comp, error: fetchErr } = await supabase.from("competitors").select("*").eq("id", id).single();
@@ -298,7 +398,7 @@ app.post("/api/competitors/:id/refresh", async (req, res) => {
   }
 });
 
-app.delete("/api/competitors/:id", async (req, res) => {
+app.delete("/api/competitors/:id", requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
     const { error } = await supabase.from("competitors").delete().eq("id", id);
@@ -309,7 +409,7 @@ app.delete("/api/competitors/:id", async (req, res) => {
   }
 });
 
-app.post("/api/competitors/:id/analyse", async (req, res) => {
+app.post("/api/competitors/:id/analyse", requireAuth, async (req, res) => {
   try {
     const { my_name, my_rating, my_review_count, comp_name, comp_category, comp_rating, comp_review_count } = req.body;
     const prompt = `You are a business reputation analyst in India. Analyse this competitive situation and give sharp, specific insights.\n\nMY BUSINESS: ${my_name}\nMy Google Rating: ${my_rating > 0 ? my_rating + '/5' : 'Not yet rated'}\nMy Total Reviews: ${my_review_count}\n\nCOMPETITOR: ${comp_name}\nTheir Category: ${comp_category || 'Local Business'}\nTheir Google Rating: ${comp_rating > 0 ? comp_rating + '/5' : 'Not yet rated'}\nTheir Total Reviews: ${comp_review_count}\n\nRespond ONLY with this JSON (no markdown):\n{\n  "you_winning": ["point 1", "point 2", "point 3"],\n  "they_winning": ["point 1", "point 2", "point 3"],\n  "your_gaps": ["gap 1", "gap 2", "gap 3"],\n  "recommendations": ["action 1", "action 2", "action 3"]\n}\n\nEach point must be 1 sentence, specific and actionable for Indian local businesses.`;
@@ -327,7 +427,7 @@ app.post("/api/competitors/:id/analyse", async (req, res) => {
 // ============================================================
 // GOOGLE REVIEWS SYNC
 // ============================================================
-app.post("/api/businesses/:id/sync-reviews", async (req, res) => {
+app.post("/api/businesses/:id/sync-reviews", requireAuth, sameBusiness, async (req, res) => {
   try {
     const { id } = req.params;
     const { data: business, error: bizErr } = await supabase.from("businesses").select("*").eq("id", id).single();
@@ -361,7 +461,7 @@ app.post("/api/businesses/:id/sync-reviews", async (req, res) => {
   }
 });
 
-app.get("/api/businesses/:id/google-rating", async (req, res) => {
+app.get("/api/businesses/:id/google-rating", requireAuth, sameBusiness, async (req, res) => {
   try {
     const { id } = req.params;
     const { data: business } = await supabase.from("businesses").select("*").eq("id", id).single();
@@ -379,7 +479,7 @@ app.get("/api/businesses/:id/google-rating", async (req, res) => {
 // ============================================================
 // MODULE 1: AI BUSINESS ASSISTANT (personalized with Business DNA)
 // ============================================================
-app.post("/api/ai-assistant", async (req, res) => {
+app.post("/api/ai-assistant", requireAuth, async (req, res) => {
   try {
     const { message, business_name, business_category, business_city, business_profile, conversation = [] } = req.body;
     if (!message) return res.status(400).json({ success: false, error: "Message required" });
@@ -433,7 +533,7 @@ Rules:
 // ============================================================
 // MODULE 2: DOCUMENT GENERATOR
 // ============================================================
-app.post("/api/generate-document", async (req, res) => {
+app.post("/api/generate-document", requireAuth, async (req, res) => {
   try {
     const { doc_type, doc_name, fields, business_name } = req.body;
     if (!doc_type) return res.status(400).json({ success: false, error: "doc_type required" });
@@ -468,7 +568,7 @@ app.post("/api/generate-document", async (req, res) => {
 // ============================================================
 // MODULE 3: GOVERNMENT SCHEMES FINDER
 // ============================================================
-app.post("/api/government-schemes", async (req, res) => {
+app.post("/api/government-schemes", requireAuth, async (req, res) => {
   try {
     const { industry, state, scheme_type, business_name } = req.body;
     if (!industry) return res.status(400).json({ success: false, error: "Industry required" });
@@ -493,7 +593,7 @@ app.post("/api/government-schemes", async (req, res) => {
 // ============================================================
 // MODULE 4: MARKETING CONTENT GENERATOR
 // ============================================================
-app.post("/api/generate-marketing", async (req, res) => {
+app.post("/api/generate-marketing", requireAuth, async (req, res) => {
   try {
     const { platform, theme, tone, language, details, business_name, business_category, business_city, products_services, target_customers } = req.body;
     if (!platform || !theme) return res.status(400).json({ success: false, error: "Platform and theme required" });
@@ -875,7 +975,7 @@ cron.schedule("0 9 * * 1", async () => {
 // AI ONBOARDING INTERVIEW
 // POST /api/onboarding/chat
 // ============================================================
-app.post("/api/onboarding/chat", async (req, res) => {
+app.post("/api/onboarding/chat", requireAuth, async (req, res) => {
   try {
     const {
       business_id, business_name, business_category, business_city,
@@ -1068,7 +1168,7 @@ CRITICAL JSON RULES (follow exactly or the system breaks):
 // GET BUSINESS PROFILE (Business DNA)
 // GET /api/business-profile/:business_id
 // ============================================================
-app.get("/api/business-profile/:business_id", async (req, res) => {
+app.get("/api/business-profile/:business_id", requireAuth, sameBusiness, async (req, res) => {
   try {
     const { business_id } = req.params;
     const { data, error } = await supabase
@@ -1158,7 +1258,7 @@ function getScoreBreakdown(profile, category) {
 // DAILY INTELLIGENCE BRIEFING
 // POST /api/daily-briefing
 // ============================================================
-app.post("/api/daily-briefing", async (req, res) => {
+app.post("/api/daily-briefing", requireAuth, async (req, res) => {
   try {
     const {
       business_id, business_name, business_category, business_city,
@@ -1256,7 +1356,7 @@ CRITICAL JSON RULES:
 // MARKETING 2.0 — FESTIVAL CALENDAR
 // POST /api/festival-calendar
 // ============================================================
-app.post("/api/festival-calendar", async (req, res) => {
+app.post("/api/festival-calendar", requireAuth, async (req, res) => {
   try {
     const { business_name, business_category, business_city, products_services, date } = req.body;
 
@@ -1303,7 +1403,7 @@ CRITICAL: Output only valid JSON. No line breaks inside values. No double quotes
 // MARKETING 2.0 — POSTER COPY GENERATOR
 // POST /api/poster-copy
 // ============================================================
-app.post("/api/poster-copy", async (req, res) => {
+app.post("/api/poster-copy", requireAuth, async (req, res) => {
   try {
     const { theme, headline, offer, business_name, business_category, business_city, products_services } = req.body;
     if (!theme) return res.status(400).json({ success: false, error: "Theme required" });
@@ -1349,7 +1449,7 @@ CRITICAL: Output only valid JSON. No line breaks inside values. No double quotes
 // MARKETING 2.0 — AI TOOL PROMPT GENERATOR
 // POST /api/ai-tool-prompt
 // ============================================================
-app.post("/api/ai-tool-prompt", async (req, res) => {
+app.post("/api/ai-tool-prompt", requireAuth, async (req, res) => {
   try {
     const { type, description, business_name, business_category, business_city, products_services } = req.body;
     if (!description) return res.status(400).json({ success: false, error: "Description required" });
@@ -1388,7 +1488,7 @@ Write ONLY the final prompt/script they should paste into the AI tool. Make it d
 // ============================================================
 // MARKETING 2.0 PASS 2 — VIDEO SCRIPT
 // ============================================================
-app.post("/api/video-script", async (req, res) => {
+app.post("/api/video-script", requireAuth, async (req, res) => {
   try {
     const { topic, video_type, language, business_name, business_category, business_city, products_services } = req.body;
     if (!topic) return res.status(400).json({ success: false, error: "Topic required" });
@@ -1424,7 +1524,7 @@ Make it specific to this business, achievable on a phone, ${language === "Gujara
 // ============================================================
 // MARKETING 2.0 PASS 2 — 30-DAY CONTENT CALENDAR
 // ============================================================
-app.post("/api/content-calendar", async (req, res) => {
+app.post("/api/content-calendar", requireAuth, async (req, res) => {
   try {
     const { goal, frequency, business_name, business_category, business_city, products_services } = req.body;
 
@@ -1466,7 +1566,7 @@ CRITICAL: Output only valid JSON. No line breaks inside values. No double quotes
 // ============================================================
 // MARKETING 2.0 PASS 2 — AD COPY
 // ============================================================
-app.post("/api/ad-copy", async (req, res) => {
+app.post("/api/ad-copy", requireAuth, async (req, res) => {
   try {
     const { ad_platform, product, goal, business_name, business_category, business_city, products_services } = req.body;
     if (!product) return res.status(400).json({ success: false, error: "Product required" });
@@ -1501,7 +1601,7 @@ Make it compelling, India-relevant, with clear value props and urgency. Label ea
 // ============================================================
 // MARKETING 2.0 PASS 2 — BRAND KIT
 // ============================================================
-app.post("/api/brand-kit", async (req, res) => {
+app.post("/api/brand-kit", requireAuth, async (req, res) => {
   try {
     const { business_name, business_category, business_city, products_services, target_customers } = req.body;
 
@@ -1549,7 +1649,7 @@ CRITICAL: Output only valid JSON. No line breaks inside values. No double quotes
 // REPUTE SCORE — full breakdown + improvement tasks
 // GET /api/repute-score/:business_id
 // ============================================================
-app.get("/api/repute-score/:business_id", async (req, res) => {
+app.get("/api/repute-score/:business_id", requireAuth, sameBusiness, async (req, res) => {
   try {
     const { business_id } = req.params;
 
@@ -1619,7 +1719,7 @@ app.get("/api/repute-score/:business_id", async (req, res) => {
 // LOAN CONNECT — MATCH
 // POST /api/loan-match
 // ============================================================
-app.post("/api/loan-match", async (req, res) => {
+app.post("/api/loan-match", requireAuth, async (req, res) => {
   try {
     const { purpose, amount, business_name, business_category, business_city, profile = {}, repute_score } = req.body;
 
@@ -1674,7 +1774,7 @@ CRITICAL: Output only valid JSON. No line breaks inside values. No double quotes
 // LOAN CONNECT — EXPRESS INTEREST (lead capture)
 // POST /api/loan-interest
 // ============================================================
-app.post("/api/loan-interest", async (req, res) => {
+app.post("/api/loan-interest", requireAuth, async (req, res) => {
   try {
     const { business_id, business_name, loan_name, phone } = req.body;
     // Try to save the lead; if table doesn't exist, don't fail the user
@@ -1698,7 +1798,7 @@ app.post("/api/loan-interest", async (req, res) => {
 // GET /api/admin/logs?limit=100
 // GET /api/admin/analytics
 // ============================================================
-app.get("/api/admin/logs", async (req, res) => {
+app.get("/api/admin/logs", requireAdmin, async (req, res) => {
   try {
     const limit = Math.min(parseInt(req.query.limit) || 100, 500);
     const { data, error } = await supabase
@@ -1714,7 +1814,7 @@ app.get("/api/admin/logs", async (req, res) => {
   }
 });
 
-app.get("/api/admin/analytics", async (req, res) => {
+app.get("/api/admin/analytics", requireAdmin, async (req, res) => {
   try {
     // Pull businesses for funnel
     const { data: businesses } = await supabase.from("businesses").select("id, onboarding_completed, subscription_active, created_at");
@@ -1771,7 +1871,7 @@ app.get("/api/admin/analytics", async (req, res) => {
 // COMPLAINT HANDLER
 // POST /api/complaint-handler
 // ============================================================
-app.post("/api/complaint-handler", async (req, res) => {
+app.post("/api/complaint-handler", requireAuth, async (req, res) => {
   try {
     const { complaint, source, severity, business_name, business_category } = req.body;
     if (!complaint) return res.status(400).json({ success: false, error: "Complaint required" });
@@ -1816,7 +1916,7 @@ CRITICAL: Output only valid JSON. No line breaks inside values. No double quotes
 // GOOGLE BUSINESS PROFILE OPTIMISER
 // POST /api/gbp-optimise
 // ============================================================
-app.post("/api/gbp-optimise", async (req, res) => {
+app.post("/api/gbp-optimise", requireAuth, async (req, res) => {
   try {
     const { audit, business_name, business_category, business_city, avg_rating } = req.body;
 
@@ -1875,7 +1975,7 @@ CRITICAL: Output only valid JSON. No line breaks inside values. No double quotes
 // ADMIN — ACTIVATE / DEACTIVATE A CLIENT
 // POST /api/admin/set-active  { business_id, active, plan }
 // ============================================================
-app.post("/api/admin/set-active", async (req, res) => {
+app.post("/api/admin/set-active", requireAdmin, async (req, res) => {
   try {
     const { business_id, active, plan } = req.body;
     if (!business_id) return res.status(400).json({ success: false, error: "business_id required" });

@@ -256,6 +256,7 @@ async function registerBusiness() {
       localStorage.setItem('ri_business_id', data.business.id);
       localStorage.setItem('ri_business_name', data.business.business_name);
       localStorage.setItem('ri_phone', phone);
+      if (data.token) localStorage.setItem('ri_token', data.token); // login pass for the secured backend
       localStorage.setItem('ri_category', category);
       localStorage.setItem('ri_city', city);
 

@@ -15,6 +15,7 @@ Image/Founder.jpg.jpeg
 
 # ── Internal sales scripts & office documents — keep local, NEVER publish ──
 showcase/*/sales.html
+sales-kit/
 Sales Script.docx
 *.docx
 *.xlsx

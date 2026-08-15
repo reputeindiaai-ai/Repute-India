@@ -878,7 +878,22 @@ td.light { color: var(--muted); font-size: 12px; }
 
 <script>
 const BACKEND = 'https://repute-india.onrender.com';
-const ADMIN_PASSWORD = 'RI@Admin2024'; // ← Change this to your password
+
+// The admin password is no longer stored in this page (anyone could read it here).
+// It now lives on the server as ADMIN_KEY in Render, and whatever you type at the
+// login screen is checked by the server itself. Change it in Render, not here.
+function adminKey(){ return sessionStorage.getItem('ri_admin_key') || ''; }
+
+// Every admin call automatically carries the key.
+const _rawFetch = window.fetch.bind(window);
+window.fetch = function(url, opts){
+  const u = String(url);
+  if(u.indexOf(BACKEND) === 0){
+    opts = Object.assign({}, opts || {});
+    opts.headers = Object.assign({}, opts.headers || {}, { 'x-admin-key': adminKey() });
+  }
+  return _rawFetch(url, opts);
+};
 
 let allClients = [];
 let clientsLoaded = false;
@@ -886,26 +901,44 @@ let analyticsLoaded = false;
 let activityLoaded = false;
 
 // ── AUTH ────────────────────────────────────
-function doLogin() {
+async function doLogin() {
   const pass = document.getElementById('adminPass').value;
   const err  = document.getElementById('loginError');
-  if (pass === ADMIN_PASSWORD) {
+  if (!pass) { err.style.display = 'block'; return; }
+
+  // Ask the server whether this key is right — the check now happens there,
+  // so nobody can read the password out of this page.
+  sessionStorage.setItem('ri_admin_key', pass);
+  err.style.display = 'none';
+  try {
+    const res = await fetch(`${BACKEND}/api/admin/analytics`);
+    if (res.status === 401 || res.status === 503) {
+      sessionStorage.removeItem('ri_admin_key');
+      const body = await res.json().catch(()=>({}));
+      err.textContent = body.code === 'ADMIN_UNCONFIGURED'
+        ? 'Set ADMIN_KEY in Render first, then log in.'
+        : 'Wrong password. Try again.';
+      err.style.display = 'block';
+      document.getElementById('adminPass').value = '';
+      document.getElementById('adminPass').focus();
+      return;
+    }
     sessionStorage.setItem('ri_admin', '1');
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('adminPanel').style.display = 'block';
     initAdmin();
-  } else {
+  } catch (e) {
+    err.textContent = 'Could not reach the server — it may be waking up. Try again in a moment.';
     err.style.display = 'block';
-    document.getElementById('adminPass').value = '';
-    document.getElementById('adminPass').focus();
   }
 }
 function adminLogout() {
   sessionStorage.removeItem('ri_admin');
+  sessionStorage.removeItem('ri_admin_key');
   location.reload();
 }
 window.addEventListener('load', () => {
-  if (sessionStorage.getItem('ri_admin') === '1') {
+  if (sessionStorage.getItem('ri_admin') === '1' && adminKey()) {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('adminPanel').style.display = 'block';
     initAdmin();

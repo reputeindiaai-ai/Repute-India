@@ -200,6 +200,7 @@ async function verifyOtp() {
       localStorage.setItem('ri_business_id', data.business.id);
       localStorage.setItem('ri_business_name', data.business.business_name);
       localStorage.setItem('ri_phone', currentPhone);
+      if (data.token) localStorage.setItem('ri_token', data.token); // login pass for the secured backend
       showSuccess('✅ Verified! Redirecting to your dashboard...');
       setTimeout(() => window.location.href = 'dashboard.html', 1200);
     } else {

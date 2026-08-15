@@ -308,7 +308,11 @@ async function sendMessage() {
   try {
     const res = await fetch(`${BACKEND}/api/onboarding/chat`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        // login pass — the backend now refuses requests without it
+        'Authorization': 'Bearer ' + (localStorage.getItem('ri_token') || '')
+      },
       body: JSON.stringify({
         business_id: bizId,
         business_name: bizName,
@@ -320,6 +324,14 @@ async function sendMessage() {
         conversation: conversation.slice(-8)
       })
     });
+
+    // Session expired or missing — send them back to log in again
+    if (res.status === 401 || res.status === 403) {
+      removeTyping(typingId);
+      alert('Your session has expired. Please log in again.');
+      window.location.href = 'login.html';
+      return;
+    }
 
     const data = await res.json();
     removeTyping(typingId);

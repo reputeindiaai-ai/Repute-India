@@ -115,6 +115,43 @@ button{font-family:inherit;cursor:pointer}
 .pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--gold-soft);background:var(--gold-dim);padding:5px 13px;border-radius:999px;border:1px solid rgba(203,161,53,.25)}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#fff;border:1px solid var(--gold);color:var(--ink);padding:12px 20px;border-radius:10px;font-size:14px;z-index:120;opacity:0;transition:.3s;box-shadow:var(--shadow)}
 .toast.show{opacity:1}
+
+/* ---- AI Business OS additions ---- */
+.subtabs{display:flex;gap:7px;overflow-x:auto;margin-bottom:18px;padding-bottom:4px}
+.subtabs::-webkit-scrollbar{display:none}
+.subtab{background:none;border:1px solid var(--line);color:var(--ink3);padding:8px 15px;border-radius:999px;font-size:13px;cursor:pointer;white-space:nowrap;transition:.2s;font-family:inherit}
+.subtab:hover{color:var(--ink2);border-color:var(--gold-soft)}
+.subtab.active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold-soft);font-weight:600}
+.subview{display:none}.subview.active{display:block}
+.out{white-space:pre-wrap;line-height:1.7;font-size:14px;color:var(--ink2);margin-top:14px;background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:12px;padding:18px}
+.out:empty{display:none}
+.out-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.thinking{display:flex;align-items:center;gap:9px;color:var(--ink3);font-size:13px;padding:14px 0}
+.thinking .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulse 1.2s infinite}
+.thinking .dot:nth-child(2){animation-delay:.2s}.thinking .dot:nth-child(3){animation-delay:.4s}
+@keyframes pulse{0%,100%{opacity:.25}50%{opacity:1}}
+.ai-item{border:1px solid var(--line);border-radius:13px;padding:17px;margin-bottom:11px;background:rgba(255,255,255,.015)}
+.ai-item h4{font-size:15px;font-weight:600;margin-bottom:5px;color:var(--ink)}
+.ai-item .meta{font-size:12px;color:var(--ink3);margin-bottom:9px}
+.ai-item p{font-size:13.5px;color:var(--ink2);line-height:1.65;margin-bottom:7px}
+.ai-item a{color:var(--gold-soft)}
+.tagline{display:inline-block;font-size:11px;padding:3px 9px;border-radius:999px;background:var(--gold-dim);color:var(--gold-soft);border:1px solid rgba(203,161,53,.25);margin-bottom:8px}
+.tagline.high{background:rgba(76,175,80,.12);color:#7fd18a;border-color:rgba(76,175,80,.3)}
+.tagline.urgent{background:rgba(229,115,115,.12);color:#e58787;border-color:rgba(229,115,115,.3)}
+.chat{height:min(52vh,440px);overflow-y:auto;border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:13px;background:rgba(255,255,255,.015)}
+.msg{margin-bottom:14px;display:flex;gap:10px}
+.msg .who{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700}
+.msg.user .who{background:var(--line);color:var(--ink2)}
+.msg.ai .who{background:var(--gold-dim);color:var(--gold-soft);border:1px solid rgba(203,161,53,.3)}
+.msg .txt{font-size:14px;line-height:1.7;color:var(--ink2);white-space:pre-wrap;padding-top:4px}
+.chat-row{display:flex;gap:9px}
+.chat-row .input{flex:1}
+.sw{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}
+.sw button{background:none;border:1px solid var(--line);color:var(--ink3);padding:7px 13px;border-radius:999px;font-size:12.5px;cursor:pointer;font-family:inherit;transition:.2s}
+.sw button:hover{border-color:var(--gold-soft);color:var(--ink2)}
+.swatch{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.swatch .chip{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);flex:none}
+select.input{appearance:none;cursor:pointer}
 </style>
 </head>
 <body>
@@ -135,7 +172,7 @@ button{font-family:inherit;cursor:pointer}
       <div class="brand-mark">R</div>
       <div>
         <div class="brand-name">Repute India AI</div>
-        <div class="brand-sub">REPUTATION COMMAND CENTER</div>
+        <div class="brand-sub">AI BUSINESS OS</div>
       </div>
     </div>
     <div class="top-actions">
@@ -147,6 +184,11 @@ button{font-family:inherit;cursor:pointer}
   <div class="wrap">
     <div class="tabs" id="tabs">
       <button class="tab active" data-v="overview" onclick="go('overview')">Overview</button>
+      <button class="tab" data-v="today" onclick="go('today')">Today</button>
+      <button class="tab" data-v="arya" onclick="go('arya')">Ask Arya</button>
+      <button class="tab" data-v="marketing" onclick="go('marketing')">Marketing</button>
+      <button class="tab" data-v="schemes" onclick="go('schemes')">Schemes &amp; Loans</button>
+      <button class="tab" data-v="documents" onclick="go('documents')">Documents</button>
       <button class="tab" data-v="reviews" onclick="go('reviews')">Reviews Inbox</button>
       <button class="tab" data-v="grow" onclick="go('grow')">Grow</button>
       <button class="tab" data-v="showcase" onclick="go('showcase')">Showcase</button>
@@ -176,6 +218,186 @@ button{font-family:inherit;cursor:pointer}
 
       <div class="section-head"><h3>Needs your attention</h3><button class="btn" onclick="go('reviews')">Open inbox</button></div>
       <div id="attentionList"></div>
+    </div>
+
+    <!-- ============ TODAY — DAILY BRIEFING ============ -->
+    <div class="view" id="v-today">
+      <div class="page-title serif">Today at <span id="tdBiz">your business</span></div>
+      <div class="page-sub">Your personalised briefing — what deserves your attention today.</div>
+      <div id="briefingBox"></div>
+      <button class="btn" style="margin-top:14px" onclick="loadBriefing(true)">⟳ Refresh briefing</button>
+    </div>
+
+    <!-- ============ ARYA — AI BUSINESS ASSISTANT ============ -->
+    <div class="view" id="v-arya">
+      <div class="page-title serif">Ask Arya</div>
+      <div class="page-sub">Your AI business advisor — GST, licences, MSME, hiring, pricing, marketing. She already knows your business.</div>
+      <div class="sw" id="aryaSuggest"></div>
+      <div class="chat" id="aryaChat"></div>
+      <div class="chat-row">
+        <input class="input" id="aryaInput" placeholder="Ask anything about your business…" onkeydown="if(event.key==='Enter')askArya()">
+        <button class="btn-gold btn" onclick="askArya()">Ask →</button>
+      </div>
+    </div>
+
+    <!-- ============ MARKETING STUDIO ============ -->
+    <div class="view" id="v-marketing">
+      <div class="page-title serif">Marketing Studio</div>
+      <div class="page-sub">Your whole marketing team, in one place. Everything written for your business, your city, your customers.</div>
+
+      <div class="subtabs" id="mkTabs">
+        <button class="subtab active" onclick="mkGo('social',this)">Social post</button>
+        <button class="subtab" onclick="mkGo('poster',this)">Poster copy</button>
+        <button class="subtab" onclick="mkGo('ad',this)">Ad copy</button>
+        <button class="subtab" onclick="mkGo('video',this)">Video script</button>
+        <button class="subtab" onclick="mkGo('calendar',this)">30-day calendar</button>
+        <button class="subtab" onclick="mkGo('brand',this)">Brand kit</button>
+        <button class="subtab" onclick="mkGo('festivals',this)">Festival calendar</button>
+      </div>
+
+      <div class="subview active" id="mk-social"><div class="card">
+        <h3 class="serif" style="font-size:17px;margin-bottom:14px">Write a social media post</h3>
+        <div class="grid cols-2" style="gap:10px">
+          <div class="field"><label>Platform</label><select class="input" id="soPlatform">
+            <option>Instagram</option><option>Facebook</option><option>WhatsApp Status</option><option>LinkedIn</option><option>Google Business Post</option></select></div>
+          <div class="field"><label>Language</label><select class="input" id="soLang">
+            <option>English</option><option>Hindi</option><option>Hinglish</option><option>Gujarati</option><option>Marathi</option><option>Tamil</option></select></div>
+        </div>
+        <div class="grid cols-2" style="gap:10px">
+          <div class="field"><label>What is the post about?</label><input class="input" id="soTheme" placeholder="e.g. Diwali offer, new service launch"></div>
+          <div class="field"><label>Tone</label><select class="input" id="soTone">
+            <option>Friendly</option><option>Professional</option><option>Festive</option><option>Urgent / offer</option><option>Inspiring</option></select></div>
+        </div>
+        <div class="field"><label>Any details to include (optional)</label><input class="input" id="soDetails" placeholder="e.g. 20% off till Sunday, free home delivery"></div>
+        <button class="btn-gold btn" onclick="genSocial()">✨ Write my post</button>
+        <div class="out" id="soOut"></div>
+      </div></div>
+
+      <div class="subview" id="mk-poster"><div class="card">
+        <h3 class="serif" style="font-size:17px;margin-bottom:14px">Poster / banner copy</h3>
+        <div class="grid cols-2" style="gap:10px">
+          <div class="field"><label>Occasion or theme</label><input class="input" id="poTheme" placeholder="e.g. Grand opening, Diwali sale"></div>
+          <div class="field"><label>Offer (optional)</label><input class="input" id="poOffer" placeholder="e.g. Flat 30% off"></div>
+        </div>
+        <div class="field"><label>Headline idea (optional)</label><input class="input" id="poHeadline" placeholder="Leave blank and Arya will write one"></div>
+        <button class="btn-gold btn" onclick="genPoster()">✨ Write poster copy</button>
+        <div id="poOut"></div>
+      </div></div>
+
+      <div class="subview" id="mk-ad"><div class="card">
+        <h3 class="serif" style="font-size:17px;margin-bottom:14px">Advertisement copy</h3>
+        <div class="grid cols-2" style="gap:10px">
+          <div class="field"><label>Where will it run?</label><select class="input" id="adPlatform">
+            <option>Google Ads</option><option>Facebook / Instagram Ads</option><option>Newspaper</option><option>Pamphlet</option><option>Radio</option></select></div>
+          <div class="field"><label>Goal</label><select class="input" id="adGoal">
+            <option>Get enquiries / calls</option><option>Get walk-ins</option><option>Sell a specific offer</option><option>Build awareness</option></select></div>
+        </div>
+        <div class="field"><label>What are you advertising?</label><input class="input" id="adProduct" placeholder="e.g. Monthly gym membership"></div>
+        <button class="btn-gold btn" onclick="genAd()">✨ Write my ad</button>
+        <div class="out" id="adOut"></div>
+      </div></div>
+
+      <div class="subview" id="mk-video"><div class="card">
+        <h3 class="serif" style="font-size:17px;margin-bottom:14px">Reel / video script</h3>
+        <div class="grid cols-2" style="gap:10px">
+          <div class="field"><label>Video type</label><select class="input" id="viType">
+            <option>Instagram Reel (30 sec)</option><option>YouTube Short</option><option>WhatsApp status video</option><option>Customer testimonial</option><option>Product demo</option></select></div>
+          <div class="field"><label>Language</label><select class="input" id="viLang">
+            <option>Hinglish</option><option>Hindi</option><option>English</option><option>Gujarati</option><option>Marathi</option><option>Tamil</option></select></div>
+        </div>
+        <div class="field"><label>What should the video be about?</label><input class="input" id="viTopic" placeholder="e.g. Why our biryani is different"></div>
+        <button class="btn-gold btn" onclick="genVideo()">✨ Write my script</button>
+        <div class="out" id="viOut"></div>
+      </div></div>
+
+      <div class="subview" id="mk-calendar"><div class="card">
+        <h3 class="serif" style="font-size:17px;margin-bottom:14px">Your 30-day content calendar</h3>
+        <p class="muted" style="margin-bottom:14px">A month of posts planned for you — so you never wonder what to put up.</p>
+        <div class="grid cols-2" style="gap:10px">
+          <div class="field"><label>What's the goal?</label><select class="input" id="caGoal">
+            <option>Get more customers</option><option>Build trust and reputation</option><option>Promote a specific offer</option><option>Grow followers</option></select></div>
+          <div class="field"><label>How often can you post?</label><select class="input" id="caFreq">
+            <option>3 times a week</option><option>Every day</option><option>Twice a week</option><option>Once a week</option></select></div>
+        </div>
+        <button class="btn-gold btn" onclick="genCalendar()">✨ Plan my month</button>
+        <div id="caOut"></div>
+      </div></div>
+
+      <div class="subview" id="mk-brand"><div class="card">
+        <h3 class="serif" style="font-size:17px;margin-bottom:6px">Your brand kit</h3>
+        <p class="muted" style="margin-bottom:14px">Colours, fonts and the voice your business should speak in — built from your profile.</p>
+        <button class="btn-gold btn" onclick="genBrand()">✨ Build my brand kit</button>
+        <div id="brOut"></div>
+      </div></div>
+
+      <div class="subview" id="mk-festivals"><div class="card">
+        <h3 class="serif" style="font-size:17px;margin-bottom:6px">Festivals &amp; occasions coming up</h3>
+        <p class="muted" style="margin-bottom:14px">Every occasion worth a post or an offer — with a campaign idea for your business.</p>
+        <button class="btn-gold btn" onclick="genFestivals()">✨ Show what's coming</button>
+        <div id="feOut"></div>
+      </div></div>
+    </div>
+
+    <!-- ============ SCHEMES & LOANS ============ -->
+    <div class="view" id="v-schemes">
+      <div class="page-title serif">Government schemes &amp; loans</div>
+      <div class="page-sub">Subsidies, schemes and loans your business may qualify for — most owners never find out these exist.</div>
+
+      <div class="subtabs">
+        <button class="subtab active" onclick="scGo('schemes',this)">Government schemes</button>
+        <button class="subtab" onclick="scGo('loans',this)">Loan matching</button>
+      </div>
+
+      <div class="subview active" id="sc-schemes"><div class="card">
+        <div class="grid cols-2" style="gap:10px">
+          <div class="field"><label>Your industry</label><input class="input" id="schIndustry" placeholder="e.g. Restaurant, Manufacturing"></div>
+          <div class="field"><label>Your state</label><input class="input" id="schState" placeholder="e.g. Gujarat"></div>
+        </div>
+        <div class="field"><label>What are you looking for?</label><select class="input" id="schType">
+          <option value="all">Everything I qualify for</option>
+          <option value="subsidy">Subsidies</option>
+          <option value="loan">Loan schemes</option>
+          <option value="tax">Tax benefits</option>
+          <option value="training">Training &amp; skill support</option>
+          <option value="export">Export support</option></select></div>
+        <button class="btn-gold btn" onclick="genSchemes()">✨ Find my schemes</button>
+        <div id="schOut"></div>
+      </div></div>
+
+      <div class="subview" id="sc-loans"><div class="card">
+        <div class="grid cols-2" style="gap:10px">
+          <div class="field"><label>What do you need the money for?</label><select class="input" id="lnPurpose">
+            <option>Working capital</option><option>Buying equipment / machinery</option><option>Expanding or opening a new branch</option><option>Renovation</option><option>Stock / inventory</option><option>Starting a new business</option></select></div>
+          <div class="field"><label>How much do you need?</label><select class="input" id="lnAmount">
+            <option>Up to ₹5 lakh</option><option>₹5–10 lakh</option><option>₹10–25 lakh</option><option>₹25–50 lakh</option><option>₹50 lakh – ₹1 crore</option><option>Above ₹1 crore</option></select></div>
+        </div>
+        <button class="btn-gold btn" onclick="genLoans()">✨ Match me to loans</button>
+        <div id="lnOut"></div>
+      </div></div>
+    </div>
+
+    <!-- ============ DOCUMENTS ============ -->
+    <div class="view" id="v-documents">
+      <div class="page-title serif">Document generator</div>
+      <div class="page-sub">Professional business documents in seconds — no lawyer, no templates to hunt for.</div>
+      <div class="card">
+        <div class="field"><label>What document do you need?</label><select class="input" id="dcType" onchange="dcFields()">
+          <option value="nda">Non-Disclosure Agreement (NDA)</option>
+          <option value="invoice">Invoice</option>
+          <option value="quotation">Quotation</option>
+          <option value="offer_letter">Offer letter</option>
+          <option value="employment_contract">Employment contract</option>
+          <option value="experience_letter">Experience letter</option>
+          <option value="warning_letter">Warning letter</option>
+          <option value="service_agreement">Service agreement</option>
+          <option value="vendor_agreement">Vendor agreement</option>
+          <option value="partnership_deed">Partnership deed</option>
+          <option value="business_proposal">Business proposal</option>
+        </select></div>
+        <div id="dcFieldBox"></div>
+        <button class="btn-gold btn" onclick="genDoc()">✨ Generate document</button>
+        <div class="out" id="dcOut"></div>
+      </div>
     </div>
 
     <!-- ============ REVIEWS INBOX ============ -->
@@ -283,12 +505,65 @@ async function fetchTimeout(url, opts={}, ms=60000){
   try{ return await fetch(url,{...opts,signal:c.signal}); } finally{ clearTimeout(id); }
 }
 
+// ---- LOGIN PASS ----
+// The backend now refuses any request without a valid login pass. Every call
+// goes through api() so the pass is attached automatically, and an expired
+// session sends the owner back to the login page instead of showing an error.
+let _expired = false;
+function sessionExpired(){
+  if(_expired) return;            // only ever fire once
+  _expired = true;
+  try{ localStorage.removeItem('ri_token'); }catch(e){}
+  alert('Your session has expired. Please log in again.');
+  location.href = 'login.html';
+}
+
+// Attach the login pass to EVERY backend call automatically, wherever it is
+// made from. This way no call can accidentally be left unauthenticated.
+const _rawFetch = window.fetch.bind(window);
+window.fetch = async function(url, opts){
+  const u = String(url);
+  const mine = u.indexOf(BACKEND) === 0;
+  if(mine){
+    opts = Object.assign({}, opts || {});
+    opts.headers = Object.assign({}, opts.headers || {}, {
+      'Authorization': 'Bearer ' + (localStorage.getItem('ri_token') || '')
+    });
+  }
+  const res = await _rawFetch(url, opts);
+  if(mine && (res.status === 401 || res.status === 403)) sessionExpired();
+  return res;
+};
+async function api(path, opts={}, ms=60000){
+  const o = Object.assign({}, opts);
+  o.headers = Object.assign({}, o.headers || {}, {
+    'Authorization': 'Bearer ' + (localStorage.getItem('ri_token') || '')
+  });
+  if(o.body && !o.headers['Content-Type']) o.headers['Content-Type'] = 'application/json';
+  const res = await fetchTimeout(`${BACKEND}${path}`, o, ms);
+  if(res.status === 401 || res.status === 403){ sessionExpired(); throw new Error('AUTH'); }
+  return res;
+}
+// POST some JSON and get the parsed answer back
+async function post(path, body, ms=90000){
+  const r = await api(path, { method:'POST', body: JSON.stringify(body) }, ms);
+  return await r.json();
+}
+async function getJSON(path, ms=60000){
+  const r = await api(path, {}, ms);
+  return await r.json();
+}
+
 function go(v){
   document.querySelectorAll('.view').forEach(e=>e.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));
   document.getElementById('v-'+v).classList.add('active');
   document.querySelector('.tab[data-v="'+v+'"]').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
   if(v==='reports') buildReport();
+  if(v==='today') loadBriefing();      // loads once, then stays
+  if(v==='arya') initArya();
+  if(v==='documents') dcFields();
 }
 
 // ---- INIT ----
@@ -310,7 +585,9 @@ function go(v){
     await loadReviews();
     loadScore();
     loadCompetitors();
+    loadProfile();          // details the AI features need about this business
     buildQR();
+    prefillForms();
     document.getElementById('loader').style.display='none';
     document.getElementById('app').style.display='block';
   }catch(e){
@@ -455,7 +732,7 @@ function downloadShowcase(){
 // ---- COMPETITORS ----
 async function loadCompetitors(){
   try{
-    const r=await fetch(`${BACKEND}/api/competitors/${bizId}`);const d=await r.json();
+    const d=await getJSON(`/api/competitors/${bizId}`);
     renderCompetitors((d.success&&d.competitors)?d.competitors:[]);
   }catch(e){ renderCompetitors([]); }
 }
@@ -484,7 +761,7 @@ async function addCompetitor(){
   if(!name||!url){toast('Enter name and Google Maps link');return;}
   toast('Adding…');
   try{
-    await fetch(`${BACKEND}/api/competitors`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({business_id:bizId,competitor_name:name,google_maps_url:url})});
+    await post('/api/competitors',{business_id:bizId,competitor_name:name,google_maps_url:url});
     document.getElementById('compName').value='';document.getElementById('compUrl').value='';
     loadCompetitors();
   }catch(e){toast('Error adding');}
@@ -544,6 +821,342 @@ function downloadReport(){
 function shareReportWhatsApp(){
   const txt=`${BIZ.business_name||'Our business'} reputation update: ${STATS.avg_rating?STATS.avg_rating.toFixed(1):'—'}★ across ${STATS.total_reviews||0} reviews. Managed by Repute India AI.`;
   window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');
+}
+
+// ============================================================
+// AI BUSINESS OS — everything below powers the new tabs.
+// These features were already built in the backend; this is the
+// front door to them.
+// ============================================================
+
+let PROFILE = {}, ARYA_CONV = [], LOADED = {};
+
+// Save the owner typing things we already know
+function prefillForms(){
+  const ind = document.getElementById('schIndustry');
+  const st  = document.getElementById('schState');
+  if(ind && !ind.value) ind.value = BIZ.category || '';
+  if(st  && !st.value)  st.value  = BIZ.state || BIZ.city || '';
+}
+
+async function loadProfile(){
+  try{
+    const d = await getJSON(`/api/business-profile/${bizId}`);
+    if(d && d.success && d.profile) PROFILE = d.profile;
+  }catch(e){}
+}
+
+// The details every AI feature needs about this business
+function ctx(extra){
+  return Object.assign({
+    business_id: bizId,
+    business_name: BIZ.business_name || '',
+    business_category: BIZ.category || '',
+    business_city: BIZ.city || '',
+    products_services: PROFILE.products_services || '',
+    target_customers: PROFILE.target_customers || ''
+  }, extra || {});
+}
+
+function busy(id, msg){
+  const el = document.getElementById(id);
+  if(el) el.innerHTML = `<div class="thinking"><span class="dot"></span><span class="dot"></span><span class="dot"></span> ${esc(msg||'Arya is thinking…')}</div>`;
+}
+function fail(id, e){
+  if(e && e.message === 'AUTH') return;          // already redirecting to login
+  const el = document.getElementById(id);
+  if(el) el.innerHTML = `<div class="muted" style="padding:12px 0">Could not generate that right now — the server may be waking up. Please try again.</div>`;
+}
+// Show plain AI text with a copy button
+function showText(id, text){
+  const el = document.getElementById(id);
+  el.textContent = text || '';
+  const box = document.createElement('div');
+  box.className = 'out-actions';
+  box.innerHTML = `<button class="btn" onclick="copyOut('${id}')">📋 Copy</button>
+                   <button class="btn" onclick="waShare('${id}')">↗ Send on WhatsApp</button>`;
+  el.appendChild(box);
+}
+function copyOut(id){
+  const el = document.getElementById(id);
+  const t = (el.innerText || '').replace(/📋 Copy|↗ Send on WhatsApp/g,'').trim();
+  navigator.clipboard.writeText(t).then(()=>toast('Copied ✓'), ()=>toast('Could not copy'));
+}
+function waShare(id){
+  const el = document.getElementById(id);
+  const t = (el.innerText || '').replace(/📋 Copy|↗ Send on WhatsApp/g,'').trim();
+  window.open('https://wa.me/?text='+encodeURIComponent(t), '_blank');
+}
+
+// ---- TODAY: DAILY BRIEFING ----
+async function loadBriefing(force){
+  if(LOADED.briefing && !force) return;
+  LOADED.briefing = true;
+  document.getElementById('tdBiz').textContent = BIZ.business_name || 'your business';
+  busy('briefingBox','Preparing your briefing…');
+  try{
+    const d = await post('/api/daily-briefing', ctx({
+      unreplied: STATS.unreplied_count || 0,
+      avg_rating: STATS.avg_rating || 0,
+      total_reviews: STATS.total_reviews || 0
+    }));
+    const b = (d && d.briefing) || null;
+    if(!b){ fail('briefingBox'); return; }
+    const cards = (b.cards || []).map(c=>{
+      const cls = c.type === 'urgent' ? 'urgent' : (c.type === 'scheme' ? 'high' : '');
+      const target = ({'ai-assistant':'arya','schemes':'schemes','marketing':'marketing','reputation':'reviews'})[c.action_target] || '';
+      const btn = (c.action_label && target) ? `<button class="btn" style="margin-top:9px" onclick="go('${target}')">${esc(c.action_label)} →</button>` : '';
+      return `<div class="ai-item"><span class="tagline ${cls}">${esc(c.type||'tip')}</span>
+        <h4>${esc(c.title||'')}</h4><p>${esc(c.text||'')}</p>${btn}</div>`;
+    }).join('');
+    document.getElementById('briefingBox').innerHTML =
+      `<div class="card" style="margin-bottom:14px"><p style="font-size:15px;line-height:1.65;color:var(--ink2)">${esc(b.intro||'')}</p></div>${cards}`;
+  }catch(e){ fail('briefingBox', e); }
+}
+
+// ---- ARYA: AI BUSINESS ASSISTANT ----
+const ARYA_IDEAS = [
+  'Do I need GST registration?',
+  'How do I get MSME registered?',
+  'How should I price my services?',
+  'How do I get more customers this month?',
+  'What licences does my business need?'
+];
+function initArya(){
+  if(LOADED.arya) return;
+  LOADED.arya = true;
+  document.getElementById('aryaSuggest').innerHTML =
+    ARYA_IDEAS.map(q=>`<button onclick="askArya(${JSON.stringify(q).replace(/"/g,'&quot;')})">${esc(q)}</button>`).join('');
+  aryaSay('ai', `Namaste! I'm Arya, your business advisor. I know ${BIZ.business_name||'your business'}${BIZ.city?' in '+BIZ.city:''} — ask me anything about GST, licences, schemes, hiring, pricing or marketing.`);
+}
+function aryaSay(who, text){
+  const c = document.getElementById('aryaChat');
+  const d = document.createElement('div');
+  d.className = 'msg ' + who;
+  d.innerHTML = `<div class="who">${who==='ai'?'A':'You'}</div><div class="txt">${esc(text)}</div>`;
+  c.appendChild(d); c.scrollTop = c.scrollHeight;
+  return d;
+}
+async function askArya(preset){
+  const inp = document.getElementById('aryaInput');
+  const q = (preset || inp.value || '').trim();
+  if(!q) return;
+  inp.value = '';
+  aryaSay('user', q);
+  const t = aryaSay('ai', 'Thinking…');
+  try{
+    const d = await post('/api/ai-assistant', ctx({
+      message: q,
+      business_profile: PROFILE,
+      conversation: ARYA_CONV.slice(-10)
+    }));
+    const reply = (d && d.reply) || 'Sorry, I could not answer that just now. Please try again.';
+    t.querySelector('.txt').textContent = reply;
+    ARYA_CONV.push({ role:'user', content:q }, { role:'assistant', content:reply });
+    document.getElementById('aryaChat').scrollTop = 99999;
+  }catch(e){
+    if(e && e.message === 'AUTH') return;
+    t.querySelector('.txt').textContent = 'Could not reach Arya — the server may be waking up. Please try again.';
+  }
+}
+
+// ---- MARKETING STUDIO ----
+function mkGo(v, btn){
+  document.querySelectorAll('#v-marketing .subview').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('#mkTabs .subtab').forEach(e=>e.classList.remove('active'));
+  document.getElementById('mk-'+v).classList.add('active');
+  btn.classList.add('active');
+}
+async function genSocial(){
+  const theme = document.getElementById('soTheme').value.trim();
+  if(!theme){ toast('Tell Arya what the post is about'); return; }
+  busy('soOut','Writing your post…');
+  try{
+    const d = await post('/api/generate-marketing', ctx({
+      platform: document.getElementById('soPlatform').value,
+      theme, tone: document.getElementById('soTone').value,
+      language: document.getElementById('soLang').value,
+      details: document.getElementById('soDetails').value.trim()
+    }));
+    d && d.content ? showText('soOut', d.content) : fail('soOut');
+  }catch(e){ fail('soOut', e); }
+}
+async function genPoster(){
+  const theme = document.getElementById('poTheme').value.trim();
+  if(!theme){ toast('Tell Arya the occasion or theme'); return; }
+  busy('poOut','Writing poster copy…');
+  try{
+    const d = await post('/api/poster-copy', ctx({
+      theme, headline: document.getElementById('poHeadline').value.trim(),
+      offer: document.getElementById('poOffer').value.trim()
+    }));
+    const p = d && d.poster;
+    if(!p){ fail('poOut'); return; }
+    document.getElementById('poOut').innerHTML = (typeof p === 'string')
+      ? `<div class="out">${esc(p)}</div>`
+      : Object.keys(p).map(k=>`<div class="ai-item"><h4>${esc(k.replace(/_/g,' '))}</h4><p>${esc(Array.isArray(p[k])?p[k].join(' · '):String(p[k]))}</p></div>`).join('');
+  }catch(e){ fail('poOut', e); }
+}
+async function genAd(){
+  const product = document.getElementById('adProduct').value.trim();
+  if(!product){ toast('What are you advertising?'); return; }
+  busy('adOut','Writing your ad…');
+  try{
+    const d = await post('/api/ad-copy', ctx({
+      ad_platform: document.getElementById('adPlatform').value,
+      product, goal: document.getElementById('adGoal').value
+    }));
+    d && d.copy ? showText('adOut', d.copy) : fail('adOut');
+  }catch(e){ fail('adOut', e); }
+}
+async function genVideo(){
+  const topic = document.getElementById('viTopic').value.trim();
+  if(!topic){ toast('What should the video be about?'); return; }
+  busy('viOut','Writing your script…');
+  try{
+    const d = await post('/api/video-script', ctx({
+      topic, video_type: document.getElementById('viType').value,
+      language: document.getElementById('viLang').value
+    }));
+    d && d.script ? showText('viOut', d.script) : fail('viOut');
+  }catch(e){ fail('viOut', e); }
+}
+async function genCalendar(){
+  busy('caOut','Planning your month…');
+  try{
+    const d = await post('/api/content-calendar', ctx({
+      goal: document.getElementById('caGoal').value,
+      frequency: document.getElementById('caFreq').value
+    }));
+    const list = (d && d.calendar) || [];
+    if(!list.length){ fail('caOut'); return; }
+    document.getElementById('caOut').innerHTML = list.map((c,i)=>
+      `<div class="ai-item"><span class="tagline">${esc(c.platform||'Post')}</span>
+       <h4>Day ${esc(String(c.day||i+1))} · ${esc(c.theme||'')}</h4>
+       <p>${esc(c.hook||c.idea||'')}</p></div>`).join('');
+  }catch(e){ fail('caOut', e); }
+}
+async function genBrand(){
+  busy('brOut','Building your brand kit…');
+  try{
+    const d = await post('/api/brand-kit', ctx({}));
+    const k = d && d.kit;
+    if(!k){ fail('brOut'); return; }
+    const colors = (k.colors || k.palette || []);
+    const swatches = Array.isArray(colors) ? colors.map(c=>
+      `<div class="swatch"><span class="chip" style="background:${esc(c.hex||'#ccc')}"></span>
+       <div><div style="font-size:13.5px;font-weight:600">${esc(c.name||'')}</div>
+       <div class="muted">${esc(c.hex||'')}</div></div></div>`).join('') : '';
+    document.getElementById('brOut').innerHTML = `
+      ${swatches ? `<div class="ai-item"><h4>Your colours</h4>${swatches}</div>` : ''}
+      ${(k.heading_font||k.body_font) ? `<div class="ai-item"><h4>Your fonts</h4>
+        <p>Headings: <b>${esc(k.heading_font||'—')}</b><br>Body text: <b>${esc(k.body_font||'—')}</b></p></div>` : ''}
+      ${k.brand_voice ? `<div class="ai-item"><h4>How your brand should speak</h4><p>${esc(k.brand_voice)}</p></div>` : ''}
+      ${k.tagline ? `<div class="ai-item"><h4>Tagline</h4><p>${esc(k.tagline)}</p></div>` : ''}`;
+  }catch(e){ fail('brOut', e); }
+}
+async function genFestivals(){
+  busy('feOut','Checking the calendar…');
+  try{
+    const d = await post('/api/festival-calendar', ctx({ date: new Date().toISOString().slice(0,10) }));
+    const list = (d && d.occasions) || [];
+    if(!list.length){ fail('feOut'); return; }
+    document.getElementById('feOut').innerHTML = list.map(o=>
+      `<div class="ai-item"><h4>${esc(o.emoji||'📅')} ${esc(o.name||'')}</h4>
+       <div class="meta">${esc(o.date||'')}</div>
+       <p>${esc(o.campaign_idea||'')}</p></div>`).join('');
+  }catch(e){ fail('feOut', e); }
+}
+
+// ---- SCHEMES & LOANS ----
+function scGo(v, btn){
+  document.querySelectorAll('#v-schemes .subview').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('#v-schemes .subtab').forEach(e=>e.classList.remove('active'));
+  document.getElementById('sc-'+v).classList.add('active');
+  btn.classList.add('active');
+}
+async function genSchemes(){
+  busy('schOut','Searching government schemes…');
+  try{
+    const d = await post('/api/government-schemes', ctx({
+      industry: document.getElementById('schIndustry').value.trim() || BIZ.category || '',
+      state: document.getElementById('schState').value.trim() || BIZ.city || '',
+      scheme_type: document.getElementById('schType').value
+    }));
+    const list = (d && d.schemes) || [];
+    if(!list.length){ fail('schOut'); return; }
+    document.getElementById('schOut').innerHTML = list.map(s=>
+      `<div class="ai-item"><h4>${esc(s.name||'')}</h4>
+       <div class="meta">${esc(s.ministry||'')}${s.eligibility?' · '+esc(s.eligibility):''}</div>
+       <p>${esc(s.description||'')}</p>
+       ${s.eligibility_details?`<p><b>Who can apply:</b> ${esc(s.eligibility_details)}</p>`:''}
+       ${s.how_to_apply?`<p><b>How to apply:</b> ${esc(s.how_to_apply)}</p>`:''}
+       ${s.website?`<a href="${esc(s.website)}" target="_blank" rel="noopener">Official website →</a>`:''}</div>`).join('');
+  }catch(e){ fail('schOut', e); }
+}
+async function genLoans(){
+  busy('lnOut','Matching you to loans…');
+  try{
+    const d = await post('/api/loan-match', ctx({
+      purpose: document.getElementById('lnPurpose').value,
+      amount: document.getElementById('lnAmount').value,
+      profile: PROFILE
+    }));
+    const list = (d && d.loans) || [];
+    if(!list.length){ fail('lnOut'); return; }
+    document.getElementById('lnOut').innerHTML = list.map(l=>{
+      const lvl = (l.match_level||'').toLowerCase();
+      const cls = lvl === 'high' ? 'high' : (lvl === 'medium' ? '' : '');
+      return `<div class="ai-item">
+       ${l.match_level?`<span class="tagline ${cls}">${esc(l.match_level)} match</span>`:''}
+       <h4>${esc(l.name||'')}</h4>
+       <div class="meta">${esc(l.lender||'')}${l.amount_range?' · '+esc(l.amount_range):''}${l.interest_rate?' · '+esc(l.interest_rate):''}</div>
+       <p>${esc(l.description||'')}</p>
+       ${l.eligibility?`<p><b>Why you may qualify:</b> ${esc(l.eligibility)}</p>`:''}
+       ${l.collateral?`<p><b>Collateral:</b> ${esc(l.collateral)}</p>`:''}
+       ${l.how_to_apply?`<p><b>How to apply:</b> ${esc(l.how_to_apply)}</p>`:''}</div>`;
+    }).join('');
+  }catch(e){ fail('lnOut', e); }
+}
+
+// ---- DOCUMENT GENERATOR ----
+const DOC_FIELDS = {
+  nda: ['Other party name','Purpose of sharing information','How many years should it stay confidential'],
+  invoice: ['Customer name','Items or services (one per line)','Total amount','Invoice number'],
+  quotation: ['Customer name','What you are quoting for','Amount','Validity of the quote'],
+  offer_letter: ['Candidate name','Job title','Monthly or annual salary','Joining date'],
+  employment_contract: ['Employee name','Job title','Salary','Working hours and notice period'],
+  experience_letter: ['Employee name','Job title','From date','To date'],
+  warning_letter: ['Employee name','What the issue is','What must improve'],
+  service_agreement: ['Client name','What service you will provide','Fee and payment terms','Duration'],
+  vendor_agreement: ['Vendor name','What they will supply','Payment terms','Duration'],
+  partnership_deed: ['Partner names','Business activity','Profit sharing ratio','Capital contributed'],
+  business_proposal: ['Client name','What you are proposing','Price','Why they should choose you']
+};
+function dcFields(){
+  const t = document.getElementById('dcType').value;
+  document.getElementById('dcFieldBox').innerHTML = (DOC_FIELDS[t] || []).map((f,i)=>
+    `<div class="field"><label>${esc(f)}</label><input class="input" id="dcf${i}" placeholder="${esc(f)}"></div>`).join('');
+}
+async function genDoc(){
+  const t = document.getElementById('dcType').value;
+  const labels = DOC_FIELDS[t] || [];
+  const fields = {};
+  labels.forEach((f,i)=>{
+    const el = document.getElementById('dcf'+i);
+    if(el && el.value.trim()) fields[f] = el.value.trim();
+  });
+  if(!Object.keys(fields).length){ toast('Fill in at least one detail'); return; }
+  busy('dcOut','Drafting your document…');
+  try{
+    const d = await post('/api/generate-document', {
+      doc_type: t,
+      doc_name: document.getElementById('dcType').selectedOptions[0].textContent,
+      fields,
+      business_name: BIZ.business_name || ''
+    });
+    d && d.document ? showText('dcOut', d.document) : fail('dcOut');
+  }catch(e){ fail('dcOut', e); }
 }
 
 // ---- ACTIVATION WALL ----
