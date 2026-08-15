@@ -28,6 +28,9 @@
   set('--txt',t.txt); set('--txt2',t.txt2); set('--txt3',t.txt3);
   set('--ac',t.ac); set('--ac2',t.ac2); set('--ac-ink',t.acInk); set('--ac-glow',t.acGlow);
   set('--wash1',t.wash1 || 'transparent'); set('--wash2',t.wash2 || 'transparent');
+  /* status colours — light-themed industries need their own */
+  set('--red',t.red); set('--amber',t.amber); set('--green',t.green);
+  set('--red-bg',t.redBg); set('--amber-bg',t.amberBg); set('--green-bg',t.greenBg);
   if(t.font){ set('--display',t.font); set('--sans',t.font); }
   if(t.fontBody) set('--sans',t.fontBody);
   if(t.fontUrl){
@@ -42,10 +45,16 @@
   const initials = n => String(n||'').split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase();
   const arr = a => Array.isArray(a) ? a : [];
 
-  const PAGES = [
+  const PAGES = D.pages || [
     ['index.html','Overview'], ['website.html','Website'], ['crm.html','CRM'],
     ['app.html','App'], ['features.html','Features']
   ];
+
+  /* the interactive screens need their own stylesheet */
+  (function(){
+    const l=document.createElement('link'); l.rel='stylesheet'; l.href='../engine/apps.css';
+    document.head.appendChild(l);
+  })();
 
   function chrome(){
     const tabs = PAGES.map(p =>
@@ -75,6 +84,7 @@
 
   function pageIndex(){
     const o = D.overview || {};
+    const H = D.hero || { h1:D.name, lead:'' };
     const cards = arr(o.cards).map((c,i)=>
       '<a class="card reveal'+(i%2?' d1':'')+'" href="'+e(c.link)+'"><div class="ic">'+e(c.ic)+'</div>' +
       '<h3 class="h-sm">'+e(c.h)+'</h3><p>'+e(c.p)+'</p><span class="go">'+e(c.go||'Open')+' →</span></a>').join('');
@@ -84,11 +94,11 @@
 
     return '<section class="hero"><div class="wrap">' +
       '<div class="hero-tag reveal"><span class="pip"></span> '+e(D.heroTag||'Live demo')+'</div>' +
-      '<h1 class="h-xl reveal d1">'+raw(D.hero.h1)+'</h1>' +
-      '<p class="lead reveal d2" style="max-width:670px;margin-top:22px">'+e(D.hero.lead)+'</p>' +
+      '<h1 class="h-xl reveal d1">'+raw(H.h1)+'</h1>' +
+      '<p class="lead reveal d2" style="max-width:670px;margin-top:22px">'+e(H.lead)+'</p>' +
       '<div class="hero-actions reveal d3">' +
-        '<a href="crm.html" class="btn btn-ac btn-arrow">'+e(D.hero.cta1||'Open the CRM')+' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>' +
-        '<a href="website.html" class="btn btn-glass">'+e(D.hero.cta2||'See the website')+'</a>' +
+        '<a href="crm.html" class="btn btn-ac btn-arrow">'+e(H.cta1||'Open the CRM')+' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>' +
+        '<a href="website.html" class="btn btn-glass">'+e(H.cta2||'See the website')+'</a>' +
       '</div></div></section>' +
 
       '<section class="sec" style="padding-top:0"><div class="wrap">' +
@@ -249,10 +259,160 @@
       '</div></section>';
   }
 
+  /* ============================================================
+     BLOCK RENDERER — the pieces that make up one app screen
+     ============================================================ */
+  function block(b){
+    const tap = b.goto ? ' tap" data-goto="'+e(b.goto)+'"' : '"';
+    switch(b.type){
+      case 'hero':  return '<div class="b-hero"><div class="v">'+e(b.v)+'</div><div class="k">'+e(b.k)+'</div></div>';
+      case 'kpis':  return '<div class="b-kpis">'+arr(b.items).map(x=>
+                      '<div class="x"><div class="v">'+e(x.v)+'</div><div class="k">'+e(x.k)+'</div></div>').join('')+'</div>';
+      case 'text':  return '<p class="b-text">'+e(b.text)+'</p>';
+      case 'note':  return '<div class="b-note">'+raw(b.text)+'</div>';
+      case 'sec':   return '<div class="b-sec">'+e(b.text)+'</div>';
+      case 'meter': return '<div class="b-meter"><div class="lab"><span>'+e(b.label)+'</span><span>'+e(b.right||'')+'</span></div>' +
+                      '<div class="rail"><i style="width:'+Math.max(2,Math.min(100,b.pct))+'%"></i></div></div>';
+      case 'bars':  return '<div class="b-bars">'+arr(b.items).map(h=>'<i style="height:'+Math.max(4,Math.min(100,h))+'%"></i>').join('')+'</div>';
+      case 'chips': return '<div class="b-chips">'+arr(b.items).map(x=>'<span>'+e(x)+'</span>').join('')+'</div>';
+      case 'rows':  return arr(b.items).map(x=>
+                      '<div class="b-row'+(x.goto?' tap" data-goto="'+e(x.goto)+'':'"')+'>' +
+                      (x.ic?'<div class="ic">'+e(x.ic)+'</div>':'') +
+                      '<div class="m"><div class="nm">'+e(x.nm)+'</div>'+(x.sb?'<div class="sb">'+e(x.sb)+'</div>':'')+'</div>' +
+                      (x.rt?'<span class="rt">'+e(x.rt)+'</span>':'') +
+                      (x.goto?'<span class="chev">›</span>':'') + '</div>').join('');
+      case 'cards': return arr(b.items).map(x=>
+                      '<div class="b-card'+(x.goto?' tap" data-goto="'+e(x.goto)+'':'"')+'>' +
+                      '<div class="t">'+e(x.t)+'</div><div class="d">'+e(x.d)+'</div></div>').join('');
+      case 'plan':  return '<div class="b-plan">'+arr(b.items).map(m=>
+                      '<div class="meal"><div class="h"><span class="t">'+e(m.t)+'</span><span class="c">'+e(m.c||'')+'</span></div>' +
+                      '<ul>'+arr(m.items).map(i=>'<li>'+e(i)+'</li>').join('')+'</ul></div>').join('')+'</div>';
+      case 'chat':  return '<div class="b-chat">'+arr(b.items).map(m=>
+                      '<div class="m '+(m.who==='me'?'me':'ai')+'">'+e(m.msg)+'</div>').join('')+'</div>';
+      case 'btn':   return '<div class="b-btn'+tap+'>'+e(b.text)+'</div>';
+      default:      return '';
+    }
+  }
+
+  function screen(id, s, homeId){
+    const back = (id !== homeId)
+      ? '<div class="scr-back" data-goto="'+e(s.back || homeId)+'">‹</div>' : '';
+    return '<div class="scr'+(id===homeId?' on':'')+'" data-scr="'+e(id)+'">' +
+      '<div class="scr-top">'+back+'<div><div class="scr-ttl">'+e(s.t)+'</div>' +
+      (s.s?'<div class="scr-sub">'+e(s.s)+'</div>':'')+'</div></div>' +
+      '<div class="scr-body">'+arr(s.blocks).map(block).join('')+'</div></div>';
+  }
+
+  function phoneSim(app){
+    const home = app.home || Object.keys(app.screens)[0];
+    const scr = Object.keys(app.screens).map(k=>screen(k, app.screens[k], home)).join('');
+    return '<div class="sim"><div class="glass">' +
+      '<div class="bar"><span>9:41</span><span>'+e(app.carrier||'●●●  ⌁  100%')+'</span></div>' + scr +
+      '</div></div>';
+  }
+
+  function deskSim(app){
+    const keys = Object.keys(app.screens);
+    const home = app.home || keys[0];
+    const nav = keys.map(k=>'<button data-goto="'+e(k)+'"'+(k===home?' class="cur"':'')+'>' +
+                 e(app.screens[k].nav || app.screens[k].t)+'</button>').join('');
+    const scr = keys.map(k=>screen(k, app.screens[k], home)).join('');
+    return '<div class="sim desk"><div class="glass">' +
+      '<div class="deskbar"><i class="dot"></i><i class="dot"></i><i class="dot"></i>' +
+      '<span class="t">'+e(app.name)+'</span></div>' +
+      '<div class="desknav">'+nav+'</div>'+scr+'</div></div>';
+  }
+
+  function pageApps(){
+    const A = D.apps || {};
+    const keys = Object.keys(A);
+    const tabs = keys.map((k,i)=>'<button data-app="'+e(k)+'"'+(i===0?' class="cur"':'')+'>' +
+                  e(A[k].icon||'')+' '+e(A[k].name)+'</button>').join('');
+
+    const views = keys.map((k,i)=>{
+      const app = A[k];
+      const body = app.desktop ? deskSim(app)
+        : '<div class="simwrap">'+phoneSim(app) +
+          '<div class="simnote"><h3>'+e(app.name)+'</h3><p>'+e(app.blurb||'')+'</p>' +
+          (arr(app.try).length ? '<div class="tryit"><div class="h">Try this in front of the client</div><ul>' +
+            arr(app.try).map(t=>'<li>'+e(t)+'</li>').join('')+'</ul></div>' : '') +
+          (arr(app.points).length ? '<div class="mt3">'+arr(app.points).map(p=>
+            '<div class="tick"><b>'+e(p.t)+'</b> — '+e(p.d)+'</div>').join('')+'</div>' : '') +
+          '</div></div>';
+      return '<div class="appview'+(i===0?' cur':'')+'" data-appview="'+e(k)+'">' +
+        (app.desktop && app.blurb ? '<p class="lead" style="margin-bottom:20px;max-width:700px">'+e(app.blurb)+'</p>' : '') +
+        body + '</div>';
+    }).join('');
+
+    return '<section class="sec"><div class="wrap">' +
+      '<div class="sec-head reveal"><span class="eyebrow">The apps</span>' +
+      '<h2 class="h-lg">'+raw((D.appsPage&&D.appsPage.title)||'Three apps. One system.')+'</h2>' +
+      '<p class="lead">'+e((D.appsPage&&D.appsPage.sub)||'')+'</p></div>' +
+      '<div class="appswitch">'+tabs+'</div>'+views +
+      '<p class="disc">These are working prototypes — tap anything. Sample data shown; a real build carries their brand and their customers.</p>' +
+      '</div></section>';
+  }
+
+  function pageProblems(){
+    const P = arr(D.problems);
+    const items = P.map((p,i)=>
+      '<div class="ps reveal">' +
+        '<div class="ps-p"><div class="lab">Problem '+(i+1)+'</div><h3>'+e(p.p)+'</h3>' +
+        '<p>'+e(p.detail)+'</p></div>' +
+        '<div class="ps-s"><div class="lab">What we build for it</div>' +
+        arr(p.fixes).map(f=>'<div class="fix"><span class="w '+e(f.w||'')+'">'+e(f.where)+'</span>' +
+          '<span>'+raw(f.d)+'</span></div>').join('') + '</div>' +
+      '</div>').join('');
+
+    return '<section class="sec"><div class="wrap wrap-tight">' +
+      '<div class="sec-head reveal"><span class="eyebrow">Problems &amp; solutions</span>' +
+      '<h2 class="h-lg">'+raw((D.problemsPage&&D.problemsPage.title)||'Every problem they have. And exactly what we build for it.')+'</h2>' +
+      '<p class="lead">'+e((D.problemsPage&&D.problemsPage.sub)||'Walk down this list with the owner. Let them nod at each problem before you show the fix.')+'</p></div>' +
+      items +
+      '<div class="card mt4 reveal"><h3 class="h-sm">How to use this page</h3>' +
+      '<p class="mt1 muted">Do not read it out. Ask them: <b style="color:var(--txt)">"which of these is costing you the most right now?"</b> Whichever they pick, open the app and show that exact screen. That is the whole sale.</p></div>' +
+      '<div style="margin-top:26px"><a class="btn btn-ac btn-arrow" href="apps.html">Open the apps and show them ' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>' +
+      '</div></section>';
+  }
+
   /* ---------- 3. draw it ---------- */
-  const build = { 'index':pageIndex, 'website':pageWebsite, 'crm':pageCRM, 'app':pageApp, 'features':pageFeatures };
+  const build = { 'index':pageIndex, 'website':pageWebsite, 'crm':pageCRM, 'app':pageApp,
+                  'features':pageFeatures, 'apps':pageApps, 'problems':pageProblems };
   const fn = build[page] || pageIndex;
   document.body.innerHTML = chrome() + fn() + footer();
+
+  /* ---------- 3b. make the prototypes actually work ----------
+     Any element with data-goto switches the screen inside its own
+     device. Any .appswitch button swaps which app is shown. */
+  document.addEventListener('click', function(ev){
+    const tab = ev.target.closest ? ev.target.closest('.appswitch button') : null;
+    if(tab){
+      const key = tab.getAttribute('data-app');
+      document.querySelectorAll('.appswitch button').forEach(b=>b.classList.toggle('cur', b===tab));
+      document.querySelectorAll('[data-appview]').forEach(v=>
+        v.classList.toggle('cur', v.getAttribute('data-appview')===key));
+      return;
+    }
+    const hit = ev.target.closest ? ev.target.closest('[data-goto]') : null;
+    if(!hit) return;
+    const device = hit.closest('.sim');
+    if(!device) return;
+    const target = hit.getAttribute('data-goto');
+    const screens = device.querySelectorAll('.scr');
+    let found = false;
+    screens.forEach(function(s){
+      const on = s.getAttribute('data-scr') === target;
+      s.classList.toggle('on', on);
+      if(on) found = true;
+    });
+    if(!found && screens.length) screens[0].classList.add('on');
+    // keep the desktop sidebar in step
+    const navBtns = device.querySelectorAll('.desknav button');
+    navBtns.forEach(b=>b.classList.toggle('cur', b.getAttribute('data-goto')===target));
+    const bodyEl = device.querySelector('.scr.on .scr-body');
+    if(bodyEl) bodyEl.scrollTop = 0;
+  });
 
   /* ---------- 4. scroll reveal + count-up ---------- */
   const items = document.querySelectorAll('.reveal');

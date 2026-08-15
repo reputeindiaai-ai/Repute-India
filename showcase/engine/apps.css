@@ -1,0 +1,131 @@
+/* ============================================================
+   INTERACTIVE APP SIMULATOR + PROBLEMS→SOLUTIONS
+   Loaded automatically by engine.js. Tappable prototypes:
+   clicking a row really does change the screen.
+   ============================================================ */
+
+/* ---- app switcher ---- */
+.appswitch{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:26px; }
+.appswitch button{ background:var(--panel); border:1px solid var(--line2); color:var(--txt2);
+  padding:11px 20px; border-radius:var(--r-full); font-size:.9rem; font-weight:600; cursor:pointer;
+  font-family:var(--sans); transition:.22s var(--ease); display:inline-flex; align-items:center; gap:9px; }
+.appswitch button:hover{ border-color:var(--ac); color:var(--ac); }
+.appswitch button.cur{ background:var(--ac); color:var(--ac-ink); border-color:transparent; }
+.appview{ display:none; } .appview.cur{ display:block; }
+
+/* ---- device frames ---- */
+.simwrap{ display:grid; grid-template-columns:300px 1fr; gap:34px; align-items:start; }
+@media(max-width:860px){ .simwrap{ grid-template-columns:1fr; } }
+.sim{ width:300px; max-width:100%; margin:0 auto; border:1px solid var(--line2); border-radius:38px;
+      background:var(--bg2); padding:11px; box-shadow:var(--sh-lg); position:sticky; top:70px; }
+.sim .glass{ background:var(--bg); border:1px solid var(--line); border-radius:29px; overflow:hidden;
+             height:588px; display:flex; flex-direction:column; position:relative; }
+.sim .bar{ height:26px; display:flex; align-items:center; justify-content:space-between; padding:0 16px;
+           font-size:.64rem; color:var(--txt3); flex:none; }
+
+/* ---- screens ---- */
+.scr{ display:none; flex-direction:column; height:100%; }
+.scr.on{ display:flex; }
+.scr-top{ padding:11px 16px 12px; border-bottom:1px solid var(--line); flex:none; display:flex; align-items:center; gap:10px; }
+.scr-back{ width:26px; height:26px; border-radius:50%; border:1px solid var(--line2); background:var(--panel);
+           display:grid; place-items:center; cursor:pointer; flex:none; color:var(--txt2); font-size:.9rem; }
+.scr-back:hover{ border-color:var(--ac); color:var(--ac); }
+.scr-ttl{ font-family:var(--display); font-weight:700; font-size:.96rem; line-height:1.2; }
+.scr-sub{ font-size:.7rem; color:var(--txt3); margin-top:1px; }
+.scr-body{ padding:14px 16px 18px; overflow-y:auto; flex:1; }
+.scr-body::-webkit-scrollbar{ width:0; }
+
+/* ---- blocks inside a screen ---- */
+.b-hero{ text-align:center; padding:14px 0 12px; }
+.b-hero .v{ font-family:var(--display); font-weight:800; font-size:2.4rem; color:var(--ac); letter-spacing:-.03em; line-height:1; }
+.b-hero .k{ font-size:.74rem; color:var(--txt2); margin-top:6px; }
+.b-kpis{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:4px 0 12px; }
+.b-kpis .x{ background:var(--panel); border:1px solid var(--line); border-radius:11px; padding:10px 11px; }
+.b-kpis .x .v{ font-family:var(--display); font-weight:800; font-size:1.15rem; letter-spacing:-.02em; }
+.b-kpis .x .k{ font-size:.65rem; color:var(--txt3); margin-top:2px; line-height:1.3; }
+.b-text{ font-size:.82rem; color:var(--txt2); line-height:1.6; margin:8px 0; }
+.b-note{ font-size:.78rem; line-height:1.55; padding:11px 13px; border-radius:11px; margin:10px 0;
+         background:color-mix(in srgb,var(--ac) 12%, transparent);
+         border:1px solid color-mix(in srgb,var(--ac) 32%, transparent); color:var(--txt); }
+.b-note b{ color:var(--ac); }
+.b-meter{ margin:10px 0 12px; }
+.b-meter .lab{ display:flex; justify-content:space-between; font-size:.72rem; color:var(--txt3); margin-bottom:6px; }
+.b-meter .rail{ height:8px; border-radius:99px; background:var(--panel2); overflow:hidden; }
+.b-meter .rail i{ display:block; height:100%; background:var(--ac); border-radius:99px; }
+.b-sec{ font-size:.65rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+        color:var(--txt3); margin:16px 0 7px; }
+.b-row{ display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--line); }
+.b-row:last-child{ border-bottom:none; }
+.b-row .ic{ flex:none; width:30px; height:30px; border-radius:9px; display:grid; place-items:center; font-size:.9rem;
+            background:var(--panel2); border:1px solid var(--line); }
+.b-row .m{ flex:1; min-width:0; }
+.b-row .nm{ font-size:.83rem; font-weight:600; }
+.b-row .sb{ font-size:.7rem; color:var(--txt3); margin-top:1px; }
+.b-row .rt{ font-size:.74rem; font-weight:700; color:var(--ac); white-space:nowrap; }
+.b-row.tap{ cursor:pointer; border-radius:10px; margin:0 -8px; padding-left:8px; padding-right:8px; transition:.18s; }
+.b-row.tap:hover{ background:var(--panel2); }
+.b-row.tap .chev{ color:var(--txt3); font-size:.85rem; flex:none; }
+.b-card{ background:var(--panel); border:1px solid var(--line); border-radius:13px; padding:12px 13px; margin-bottom:9px; }
+.b-card.tap{ cursor:pointer; transition:.18s; } .b-card.tap:hover{ border-color:var(--ac); background:var(--panel2); }
+.b-card .t{ font-family:var(--display); font-weight:700; font-size:.86rem; }
+.b-card .d{ font-size:.74rem; color:var(--txt2); margin-top:3px; line-height:1.5; }
+.b-plan .meal{ border:1px solid var(--line); border-radius:12px; padding:11px 12px; margin-bottom:9px; background:var(--panel); }
+.b-plan .meal .h{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+.b-plan .meal .t{ font-family:var(--display); font-weight:700; font-size:.82rem; }
+.b-plan .meal .c{ font-size:.68rem; color:var(--ac); font-weight:700; }
+.b-plan .meal li{ font-size:.74rem; color:var(--txt2); padding:3px 0 3px 12px; position:relative; list-style:none; }
+.b-plan .meal li::before{ content:''; position:absolute; left:0; top:11px; width:4px; height:4px; border-radius:50%; background:var(--ac); }
+.b-chips{ display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; }
+.b-chips span{ font-size:.68rem; padding:5px 10px; border-radius:99px; background:var(--panel2);
+               border:1px solid var(--line); color:var(--txt2); }
+.b-bars{ display:flex; align-items:flex-end; gap:4px; height:60px; margin:10px 0; }
+.b-bars i{ flex:1; background:linear-gradient(180deg,var(--ac),color-mix(in srgb,var(--ac) 20%,transparent));
+           border-radius:3px 3px 0 0; display:block; min-height:4px; }
+.b-chat{ margin:8px 0; }
+.b-chat .m{ font-size:.76rem; line-height:1.55; padding:9px 12px; border-radius:13px; margin-bottom:7px; max-width:88%; }
+.b-chat .m.ai{ background:color-mix(in srgb,var(--ac) 13%, transparent); border:1px solid color-mix(in srgb,var(--ac) 30%,transparent); }
+.b-chat .m.me{ background:var(--panel2); border:1px solid var(--line); margin-left:auto; }
+.b-btn{ display:block; text-align:center; background:var(--ac); color:var(--ac-ink); font-weight:700;
+        font-size:.8rem; padding:11px; border-radius:11px; margin-top:12px; cursor:pointer; }
+
+/* ---- the explainer beside the phone ---- */
+.simnote h3{ font-size:1.15rem; margin-bottom:8px; }
+.simnote > p{ color:var(--txt2); font-size:.95rem; }
+.tryit{ border:1px solid color-mix(in srgb,var(--ac) 34%, transparent);
+        background:color-mix(in srgb,var(--ac) 8%, transparent); border-radius:var(--r-lg);
+        padding:16px 18px; margin-top:18px; }
+.tryit .h{ font-size:.68rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--ac); margin-bottom:9px; }
+.tryit li{ font-size:.88rem; color:var(--txt2); padding:5px 0 5px 20px; position:relative; list-style:none; }
+.tryit li::before{ content:'\2192'; position:absolute; left:0; color:var(--ac); font-weight:700; }
+
+/* ---- desktop (owner CRM) frame ---- */
+.sim.desk{ width:100%; max-width:none; border-radius:var(--r-xl); padding:0; position:static; }
+.sim.desk .glass{ border-radius:var(--r-xl); height:auto; min-height:560px; }
+.sim.desk .scr-body{ padding:20px 22px 26px; }
+.deskbar{ display:flex; align-items:center; gap:9px; padding:11px 16px; border-bottom:1px solid var(--line); background:var(--panel); }
+.deskbar i.dot{ width:9px; height:9px; border-radius:50%; background:var(--line2); display:block; }
+.deskbar .t{ font-family:var(--display); font-weight:700; font-size:.88rem; margin-left:6px; }
+.desknav{ display:flex; gap:4px; overflow-x:auto; padding:10px 16px; border-bottom:1px solid var(--line); }
+.desknav button{ background:none; border:1px solid transparent; color:var(--txt2); font-size:.8rem;
+  padding:7px 13px; border-radius:99px; cursor:pointer; white-space:nowrap; font-family:var(--sans); }
+.desknav button:hover{ background:var(--panel2); color:var(--txt); }
+.desknav button.cur{ background:var(--ac); color:var(--ac-ink); font-weight:600; }
+.deskgrid{ display:grid; grid-template-columns:1fr 300px; gap:18px; }
+@media(max-width:900px){ .deskgrid{ grid-template-columns:1fr; } }
+
+/* ---- problems to solutions ---- */
+.ps{ border:1px solid var(--line); border-radius:var(--r-lg); overflow:hidden; margin-bottom:14px; background:var(--panel); }
+.ps-p{ padding:20px 22px; border-bottom:1px solid var(--line); background:var(--red-bg); }
+.ps-p .lab{ font-size:.66rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--red); }
+.ps-p h3{ font-size:1.06rem; margin:7px 0 5px; }
+.ps-p p{ font-size:.9rem; color:var(--txt2); }
+.ps-s{ padding:20px 22px; }
+.ps-s .lab{ font-size:.66rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--ac); margin-bottom:10px; }
+.ps-s .fix{ display:flex; gap:11px; padding:8px 0; font-size:.9rem; color:var(--txt2); align-items:flex-start; }
+.ps-s .fix .w{ flex:none; font-size:.62rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase;
+               padding:4px 9px; border-radius:99px; background:var(--panel2); border:1px solid var(--line);
+               color:var(--txt3); min-width:82px; text-align:center; }
+.ps-s .fix .w.app{ background:color-mix(in srgb,var(--ac) 16%,transparent); color:var(--ac); border-color:transparent; }
+.ps-s .fix .w.crm{ background:var(--amber-bg); color:var(--amber); border-color:transparent; }
+.ps-s .fix .w.ai{ background:var(--green-bg); color:var(--green); border-color:transparent; }
+.ps-s .fix b{ color:var(--txt); }
