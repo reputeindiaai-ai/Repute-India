@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anantam Realty OS — the CRM · Repute India AI</title>
+<meta name="description" content="A complete real estate CRM demo — every module a builder runs today, rebuilt for property, with an AI layer on top.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="crm.css">
+</head>
+<body>
+
+<div class="demoswitch"><div class="inner">
+  <a class="ds-home" href="../index.html"><span class="dot"></span> Vault</a>
+  <span class="ds-label">Real Estate · Developers &amp; Property Consultants</span>
+  <div class="tabs">
+    <a href="index.html">Overview</a>
+    <a href="problems.html">Problems → Fixes</a>
+    <a href="website.html">Website</a>
+    <a href="crm-live.html" class="cur">The CRM</a>
+    <a href="apps.html">Apps</a>
+    <a href="features.html">AI Features</a>
+  </div>
+</div></div>
+
+<div class="app" id="app">
+  <aside class="side">
+    <div class="side-brand">
+      <span class="mark">A</span>
+      <span class="txt">
+        <span class="nm" style="display:block">Anantam Group</span>
+        <span class="sb">Realty OS · Surat</span>
+      </span>
+    </div>
+    <div class="side-scroll" id="nav"></div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <button class="iconbtn" id="burger" title="Collapse menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="crumb" id="crumb"></div>
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input placeholder="Search leads, units, invoices, buyers…">
+      </div>
+      <button class="btn btn-line btn-sm" title="Android app for the field team">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg> CRM APK
+      </button>
+      <button class="btn btn-ac btn-sm">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg> New
+      </button>
+      <button class="iconbtn" id="theme" title="Light / dark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+      </button>
+      <button class="iconbtn" title="Notifications">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg>
+        <span class="dotn">4</span>
+      </button>
+      <span class="avatar">KJ</span>
+    </div>
+    <div class="view" id="view"></div>
+  </div>
+</div>
+
+<script src="crm-core.js"></script>
+<script src="crm-views.js"></script>
+<script src="crm-views2.js"></script>
+<script src="crm-views3.js"></script>
+<script>window.__boot();</script>
+</body>
+</html>
