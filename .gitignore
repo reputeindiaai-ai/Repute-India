@@ -13,12 +13,19 @@ index-new.html
 # ── Messy-named original photo (clean copy Image/founder.jpg is the one we publish) ──
 Image/Founder.jpg.jpeg
 
+# ── Signed agreements, PAN/Aadhaar, bank details — NEVER publish ──
+forms/
+
 # ── Internal sales scripts & office documents — keep local, NEVER publish ──
 showcase/*/sales.html
 sales-kit/
+owner-only/
 Sales Script.docx
 *.docx
 *.xlsx
+
+# ── Zipped kits ready to send — contain commission rates, NEVER publish ──
+*.zip
 
 # ── Dependencies / OS cruft ──
 node_modules/
