@@ -139,11 +139,11 @@
         ['Rahul Mehta','68','63','19','18','26.5%','₹1.54 Cr'],
         ['Priya Nair','54','48','12','11','20.4%','₹1.08 Cr'],
         ['Kunal Doshi','41','34','7','5','12.2%','₹78 L'],
-        ['Janki Patel','29','25','5','4','13.8%','₹84 L'],
+        ['Meera Thakkar','29','25','5','4','13.8%','₹84 L'],
         ['AI (auto-sent)','22','17','3','4','18.2%','₹1.21 Cr']
       ],
       chart:{ t:'Quotation conversion by executive', s:[{ name:'Sent', data:[68,54,41,29,22] }, { name:'Converted', data:[18,11,5,4,4] }],
-              l:['Rahul','Priya','Kunal','Janki','AI'], d:'Bar' },
+              l:['Rahul','Priya','Kunal','Meera','AI'], d:'Bar' },
       group:'Executive'
     },
     invoice: {
@@ -191,13 +191,13 @@
       rows:[
         ['Rahul Mehta','88','84','79','2','89.8%'],
         ['Priya Nair','76','71','62','3','81.6%'],
-        ['Archi Shah','64','61','54','1','84.4%'],
-        ['Mamta Mishra','71','66','55','3','77.5%'],
+        ['Vishal Rathod','64','61','54','1','84.4%'],
+        ['Dhara Sanghvi','71','66','55','3','77.5%'],
         ['Kunal Doshi','58','49','38','2','65.5%'],
-        ['Janki Patel','61','57','51','0','83.6%']
+        ['Meera Thakkar','61','57','51','0','83.6%']
       ],
       chart:{ t:'On-time completion by employee', s:[{ name:'On time %', data:[90,82,84,78,66,84] }],
-              l:['Rahul','Priya','Archi','Mamta','Kunal','Janki'], d:'Bar' },
+              l:['Rahul','Priya','Vishal','Dhara','Kunal','Meera'], d:'Bar' },
       group:'Employee'
     },
     attendance: {
@@ -211,14 +211,14 @@
         ['Rahul Mehta','Sales','22','21','172.40','41'],
         ['Priya Nair','Sales','22','20','164.10','33'],
         ['Kunal Doshi','Sales','21','19','151.76','18'],
-        ['Archi Shah','Recovery','22','22','176.20','6'],
-        ['Mamta Mishra','Accounts','22','21','168.90','0'],
-        ['Ketan Dave','Accounts','20','18','142.76','2'],
-        ['Janki Patel','Marketing','22','20','158.30','9'],
-        ['R. Solanki','Site','24','23','193.50','79']
+        ['Vishal Rathod','Recovery','22','22','176.20','6'],
+        ['Dhara Sanghvi','Accounts','22','21','168.90','0'],
+        ['Parth Gandhi','Accounts','20','18','142.76','2'],
+        ['Meera Thakkar','Marketing','22','20','158.30','9'],
+        ['R. Makwana','Site','24','23','193.50','79']
       ],
       chart:{ t:'Hours by employee', s:[{ name:'Hours', data:[172,164,152,176,169,143,158,194] }],
-              l:['Rahul','Priya','Kunal','Archi','Mamta','Ketan','Janki','Solanki'], d:'Bar' },
+              l:['Rahul','Priya','Kunal','Vishal','Dhara','Parth','Meera','Makwana'], d:'Bar' },
       group:'Employee',
       note:'<b>What is added:</b> a sales executive\'s attendance now includes GPS-stamped site-visit check-ins from the field app. You can finally tell the difference between someone who was out of office and someone who was out selling.'
     },
@@ -311,11 +311,11 @@
       ['Rahul Mehta','Senior Sales Consultant','Skies + Greens','18','₹4.2 Cr','26.5%','₹1,84,000'],
       ['Priya Nair','Sales Consultant','Skies','11','₹2.8 Cr','20.4%','₹1,12,000'],
       ['Kunal Doshi','Sales Consultant','Business Park','5','₹1.9 Cr','12.2%','₹58,000'],
-      ['Janki Patel','Marketing & Inbound','All projects','4','₹84 L','13.8%','₹42,000'],
-      ['Archi Shah','Recovery Executive','All projects','—','₹64.2 L recovered','—','₹36,000'],
-      ['Mamta Mishra','Accounts','All projects','—','—','—','—'],
-      ['Ketan Dave','Accounts & Compliance','All projects','—','—','—','—'],
-      ['R. Solanki','Site Engineer','Skies tower B','—','—','—','—']
+      ['Meera Thakkar','Marketing & Inbound','All projects','4','₹84 L','13.8%','₹42,000'],
+      ['Vishal Rathod','Recovery Executive','All projects','—','₹64.2 L recovered','—','₹36,000'],
+      ['Dhara Sanghvi','Accounts','All projects','—','—','—','—'],
+      ['Parth Gandhi','Accounts & Compliance','All projects','—','—','—','—'],
+      ['R. Makwana','Site Engineer','Skies tower B','—','—','—','—']
     ].map(function(r){ return [ H.who(r[0], r[1]), r[2], r[3], r[4], r[5], r[6] ]; });
     return head('Team', 'Who does what, and what each of them actually brought in.',
       ['Add employee', 'Roles & access', 'Export CSV']) +
@@ -337,8 +337,8 @@
       ['Rahul Mehta','18 bookings · ₹4.2 Cr','0.4% + slab bonus','₹1,68,000','₹16,000','₹1,84,000', h().pill('Due 31 Aug','a')],
       ['Priya Nair','11 bookings · ₹2.8 Cr','0.4%','₹1,12,000','₹0','₹1,12,000', h().pill('Due 31 Aug','a')],
       ['Kunal Doshi','5 bookings · ₹1.9 Cr','0.3% (below target)','₹57,000','₹1,000','₹58,000', h().pill('Due 31 Aug','a')],
-      ['Janki Patel','4 bookings · ₹84 L','0.5% inbound','₹42,000','₹0','₹42,000', h().pill('Due 31 Aug','a')],
-      ['Archi Shah','₹64.2 L recovered','0.5% of recovery','₹32,100','₹3,900','₹36,000', h().pill('Due 31 Aug','a')]
+      ['Meera Thakkar','4 bookings · ₹84 L','0.5% inbound','₹42,000','₹0','₹42,000', h().pill('Due 31 Aug','a')],
+      ['Vishal Rathod','₹64.2 L recovered','0.5% of recovery','₹32,100','₹3,900','₹36,000', h().pill('Due 31 Aug','a')]
     ].map(function(r){ return [ h().who(r[0], r[1]), r[2], r[3], r[4], '<b>' + r[5] + '</b>', r[6] ]; });
     return head('Incentives ' + nu(),
       'Calculated from the bookings and collections that are already in the system — so nobody has to argue about a spreadsheet at month end.',
@@ -489,10 +489,10 @@
         '<div class="card-b flush">' + H.table(
           ['Ticket', 'Raised by', 'Type', 'Age', { t:'Status', num:true }],
           [
-            [H.two('Add Vadodara to the city master','TKT-0412'), 'Mamta Mishra', 'Feature request', '2 days', H.pill('In progress','a')],
-            [H.two('Bulk demand run for 18th slab','TKT-0409'), 'Ketan Dave', 'How-to', '6 days', H.pill('Resolved','g')],
+            [H.two('Add Vadodara to the city master','TKT-0412'), 'Dhara Sanghvi', 'Feature request', '2 days', H.pill('In progress','a')],
+            [H.two('Bulk demand run for 18th slab','TKT-0409'), 'Parth Gandhi', 'How-to', '6 days', H.pill('Resolved','g')],
             [H.two('CP login for Vraj Realtors','TKT-0405'), 'Rahul Mehta', 'Access', '9 days', H.pill('Resolved','g')],
-            [H.two('Gujarati template for reminders','TKT-0398'), 'Archi Shah', 'Feature request', '14 days', H.pill('Shipped','g')]
+            [H.two('Gujarati template for reminders','TKT-0398'), 'Vishal Rathod', 'Feature request', '14 days', H.pill('Shipped','g')]
           ]) + '</div>') +
       H.card('What is included', 'Every month, not as an extra',
         '<div class="card-b">' + H.tl([

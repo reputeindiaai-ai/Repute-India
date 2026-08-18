@@ -310,7 +310,7 @@ window.DEMOS.realestate = {
           { type:'meter', label:'Finishing & club house', right:'12%', pct:12 },
           { type:'sec', text:'This month on site' },
           { type:'cards', items:[
-            { t:'18th slab shuttering complete', d:'14 photos · 06 Feb · verified by site engineer R. Solanki' },
+            { t:'18th slab shuttering complete', d:'14 photos · 06 Feb · verified by site engineer R. Makwana' },
             { t:'Club house excavation started', d:'6 photos · 28 Jan · ahead of schedule by 9 days' },
             { t:'Tower B lift shaft cast to 16th', d:'4 photos · 21 Jan' }
           ] },
@@ -354,7 +354,7 @@ window.DEMOS.realestate = {
           { type:'rows', items:[
             { nm:'Hiren Vasani', sb:'Booked A-0904 · paid 12 Dec 2026', rt:'✓ ₹50,000' },
             { nm:'Sanjay Modi', sb:'Booked C-0511 · paid 03 Aug 2026', rt:'✓ ₹50,000' },
-            { nm:'Ketan Dave', sb:'Site visit done · decision pending', rt:'In pipeline' }
+            { nm:'Bhargav Zaveri', sb:'Site visit done · decision pending', rt:'In pipeline' }
           ] },
           { type:'btn', text:'Refer someone on WhatsApp' },
           { type:'text', text:'Referred buyers close 3× faster and cost you nothing in advertising. This screen is why they get referred.' }
@@ -516,7 +516,7 @@ window.DEMOS.realestate = {
             { nm:'Aliya Shaikh · Shop 12', sb:'Booked 04 Feb · payout 28 Feb', rt:'₹1.03 L' },
             { nm:'Hiren Vasani · A-0904', sb:'Paid 12 Jan · TDS ₹5,240 deducted', rt:'✓ ₹5.24 L' },
             { nm:'Sanjay Modi · C-0511', sb:'Paid 03 Dec', rt:'✓ ₹4.81 L' },
-            { nm:'Ketan Dave · G-208', sb:'Paid 19 Nov', rt:'✓ ₹4.15 L' }
+            { nm:'Bhargav Zaveri · G-208', sb:'Paid 19 Nov', rt:'✓ ₹4.15 L' }
           ] },
           { type:'note', text:'Payout releases automatically once the buyer clears their agreement milestone. No follow-up calls to the accounts department.' }
         ] },

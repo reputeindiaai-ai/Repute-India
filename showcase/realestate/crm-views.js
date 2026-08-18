@@ -145,15 +145,15 @@ window.VIEWS = {};
   V.tasks = function(){
     var H = h();
     var rows = [
-      ['Raise 18th slab demands', 'Finance · Mamta Mishra', 'Today', H.pill('High','r'), '32 buyers · ₹5.9 Cr'],
+      ['Raise 18th slab demands', 'Finance · Dhara Sanghvi', 'Today', H.pill('High','r'), '32 buyers · ₹5.9 Cr'],
       ['Close Nikunj Patel — B-1104', 'Sales · Rahul Mehta', 'Today', H.pill('High','r'), 'Token ₹1 L expected'],
-      ['Chase Jayesh Kansara payment', 'Recovery · Archi', 'Overdue 3 days', H.pill('Critical','r'), '₹18.4 L · 3rd demand'],
-      ['CP agreement — Skyline Realty', 'Legal · Ketan', '21 Aug', H.pill('Medium','a'), 'Q3 brokerage slab'],
-      ['February site photos — Skies', 'Marketing · Janki', '22 Aug', H.pill('Medium','a'), 'For the buyer app'],
-      ['RERA quarterly filing — Greens', 'Compliance · Ketan', '30 Aug', H.pill('Medium','a'), 'Phase 2'],
+      ['Chase Jayesh Kansara payment', 'Recovery · Vishal', 'Overdue 3 days', H.pill('Critical','r'), '₹18.4 L · 3rd demand'],
+      ['CP agreement — Skyline Realty', 'Legal · Parth', '21 Aug', H.pill('Medium','a'), 'Q3 brokerage slab'],
+      ['February site photos — Skies', 'Marketing · Meera', '22 Aug', H.pill('Medium','a'), 'For the buyer app'],
+      ['RERA quarterly filing — Greens', 'Compliance · Parth', '30 Aug', H.pill('Medium','a'), 'Phase 2'],
       ['Business Park price revision', 'MD approval', '25 Aug', H.pill('Low'), '₹64L → ₹67L entry'],
-      ['Bhavna Joshi loan file — ITR', 'Finance · Mamta Mishra', '20 Aug', H.pill('Medium','a'), 'HDFC query'],
-      ['Snag closure — G-208 bathroom', 'Site · R. Solanki', '19 Aug', H.pill('High','r'), 'Raised by buyer in app']
+      ['Bhavna Joshi loan file — ITR', 'Finance · Dhara Sanghvi', '20 Aug', H.pill('Medium','a'), 'HDFC query'],
+      ['Snag closure — G-208 bathroom', 'Site · R. Makwana', '19 Aug', H.pill('High','r'), 'Raised by buyer in app']
     ].map(function(r){
       return [H.two(r[0], r[1]), r[2], r[3], r[4], '<button class="btn btn-line btn-sm">Open</button>'];
     });
@@ -181,8 +181,8 @@ window.VIEWS = {};
             [H.who('Rahul Mehta','Skies + Greens'), '18', '2', '4', '₹4.2 Cr', H.pill('On site','g')],
             [H.who('Priya Nair','Skies'), '14', '1', '3', '₹2.8 Cr', H.pill('On call','b')],
             [H.who('Kunal Doshi','Business Park'), '11', '0', '2', '₹1.9 Cr', H.pill('In office')],
-            [H.who('Archi Shah','Recovery desk'), '13', '—', '—', '₹1.37 Cr due', H.pill('On call','b')],
-            [H.who('Janki Patel','Marketing + inbound'), '8', '0', '2', '—', H.pill('In office')]
+            [H.who('Vishal Rathod','Recovery desk'), '13', '—', '—', '₹1.37 Cr due', H.pill('On call','b')],
+            [H.who('Meera Thakkar','Marketing + inbound'), '8', '0', '2', '—', H.pill('In office')]
           ]) + '</div>') +
       H.ai('Arya reads the day', [
         { t:'Kunal has made no site visits in 6 days', d:'Business Park enquiries are being answered but not converted to visits. His visit-to-lead ratio has fallen from 34% to 9%.' },
@@ -230,7 +230,7 @@ window.VIEWS = {};
       ['Bhavna Joshi','+91 98•••• ••74','MagicBricks','Greens · 3 BHK','₹95 L–1.1 Cr','Priya Nair',57,'Loan pending','b'],
       ['Paresh Doshi','+91 96•••• ••90','99acres','Skies · 2 BHK','₹55–60 L','Rahul Mehta',31,'Below budget',''],
       ['Hitesh Ramani','+91 93•••• ••42','Skyline Realty (CP)','Skies · 3 BHK','₹1.4–1.7 Cr','Kunal Doshi',69,'New','b'],
-      ['Sneha Kapadia','+91 91•••• ••63','Housing.com','Greens · 2 BHK','₹78–88 L','Janki Patel',44,'Nurture',''],
+      ['Sneha Kapadia','+91 91•••• ••63','Housing.com','Greens · 2 BHK','₹78–88 L','Meera Thakkar',44,'Nurture',''],
       ['Ronak Vaghela','+91 95•••• ••18','Referral · Hiren Vasani','Skies · 4 BHK','₹2.1 Cr','Rahul Mehta',77,'Visit booked','g']
     ].map(function(r){
       return [H.who(r[0], r[1]), H.e(r[2]), H.two(r[3], r[4]), H.e(r[5]), H.score(r[6]), H.pill(r[7], r[8])];
@@ -284,7 +284,7 @@ window.VIEWS = {};
       ['Devang Bhatt','Skies · 4 BHK','Tomorrow 12:30pm','Rahul Mehta','Self · with family', H.pill('Confirmed','g'), '91%'],
       ['Aliya Shaikh','Business Park','Tomorrow 4:00pm','Kunal Doshi','CP: Skyline Realty', H.pill('Confirmed','g'), '84%'],
       ['Ronak Vaghela','Skies · 4 BHK','21 Aug 11:00am','Rahul Mehta','Self', H.pill('Confirmed','g'), '88%'],
-      ['Sneha Kapadia','Greens · 2 BHK','21 Aug 5:30pm','Janki Patel','Cab from Vesu', H.pill('At risk','r'), '24%'],
+      ['Sneha Kapadia','Greens · 2 BHK','21 Aug 5:30pm','Meera Thakkar','Cab from Vesu', H.pill('At risk','r'), '24%'],
       ['Hitesh Ramani','Skies · 3 BHK','22 Aug 10:30am','Kunal Doshi','CP: Skyline Realty', H.pill('Confirmed','g'), '79%']
     ].map(function(r){
       return [H.who(r[0]), H.two(r[1], r[4]), r[2], r[3], r[5], '<b>' + r[6] + '</b>'];
@@ -319,7 +319,7 @@ window.VIEWS = {};
       ['QT-2026-0417','Aliya Shaikh','Business Park Shop 12','₹68,42,000','17 Aug', H.pill('Opened 3×','g'), 'Kunal Doshi'],
       ['QT-2026-0416','Ronak Vaghela','Skies A-0806 · 4 BHK','₹2,11,40,000','16 Aug', H.pill('Sent','b'), 'Rahul Mehta'],
       ['QT-2026-0415','Bhavna Joshi','Greens G-406 · 3 BHK','₹1,02,18,400','14 Aug', H.pill('Negotiating','a'), 'Priya Nair'],
-      ['QT-2026-0414','Sneha Kapadia','Greens G-304 · 2 BHK','₹82,40,000','12 Aug', H.pill('Not opened',''), 'Janki Patel'],
+      ['QT-2026-0414','Sneha Kapadia','Greens G-304 · 2 BHK','₹82,40,000','12 Aug', H.pill('Not opened',''), 'Meera Thakkar'],
       ['QT-2026-0413','Paresh Doshi','Skies C-0402 · 2 BHK','₹94,10,000','09 Aug', H.pill('Lost','r'), 'Rahul Mehta']
     ].map(function(r){ return [ '<b>' + r[0] + '</b>', H.who(r[1]), r[2], r[3], r[4], r[5], r[6] ]; });
 
@@ -360,7 +360,7 @@ window.VIEWS = {};
       ['BK-2026-0091','Jayesh Kansara','Skies B-0703','₹1.51 Cr','02 Jun 2026','CLP · 9 milestones', H.pill('Payment overdue','r'),'Priya Nair'],
       ['BK-2026-0090','Hiren Vasani','Skies A-0904','₹1.72 Cr','12 Dec 2025','Down payment', H.pill('Registered','b'),'Rahul Mehta'],
       ['BK-2026-0089','Sanjay Modi','Greens C-0511','₹88.4 L','03 Aug 2025','CLP · 7 milestones', H.pill('Registered','b'),'Priya Nair'],
-      ['BK-2026-0088','Ketan Dave','Greens G-208','₹79.2 L','19 Nov 2025','Flexi', H.pill('Possession due','a'),'Janki Patel'],
+      ['BK-2026-0088','Bhargav Zaveri','Greens G-208','₹79.2 L','19 Nov 2025','Flexi', H.pill('Possession due','a'),'Meera Thakkar'],
       ['BK-2026-0087','Aliya Shaikh','Business Park Shop 12','₹68.4 L','04 Aug 2026','Down payment', H.pill('Agreement pending','a'),'Kunal Doshi']
     ].map(function(r){
       return ['<b>' + r[0] + '</b>', H.who(r[1]), r[2], r[3], r[4], r[5], r[6], r[7]];
@@ -386,7 +386,7 @@ window.VIEWS = {};
       ['INV-2026-0310','Jayesh Kansara','3rd demand · 18th slab · B-0703','₹18,40,000','₹92,000','27 Jul', H.pill('Overdue 22d','r')],
       ['INV-2026-0309','Aliya Shaikh','Booking amount · Shop 12','₹6,84,000','₹41,040','04 Aug', H.pill('Paid','g')],
       ['INV-2026-0308','Bhavna Joshi','On agreement · G-406','₹15,32,760','₹76,638','29 Jul', H.pill('Part paid','a')],
-      ['INV-2026-0307','Ketan Dave','Possession demand · G-208','₹12,40,000','₹62,000','21 Jul', H.pill('Overdue 28d','r')],
+      ['INV-2026-0307','Bhargav Zaveri','Possession demand · G-208','₹12,40,000','₹62,000','21 Jul', H.pill('Overdue 28d','r')],
       ['INV-2026-0306','Hiren Vasani','Final · A-0904','₹28,70,000','₹1,43,500','12 Jul', H.pill('Paid','g')]
     ].map(function(r){
       return ['<b>' + r[0] + '</b>', H.who(r[1]), r[2], r[3], r[4], r[5], r[6],
@@ -410,7 +410,7 @@ window.VIEWS = {};
     var H = h();
     var rows = [
       ['Jayesh Kansara','Skies B-0703','₹18,40,000','22 days','₹40,480','2 sent, both ignored', H.pill('High risk','r'), 87],
-      ['Ketan Dave','Greens G-208','₹12,40,000','28 days','₹34,720','3 sent · promised 25 Aug', H.pill('High risk','r'), 79],
+      ['Bhargav Zaveri','Greens G-208','₹12,40,000','28 days','₹34,720','3 sent · promised 25 Aug', H.pill('High risk','r'), 79],
       ['Bhavna Joshi','Greens G-406','₹7,66,380','9 days','₹7,663','Loan disbursement awaited', H.pill('Explained','a'), 41],
       ['Rutvik Shah','Skies C-1102','₹15,80,000','6 days','₹4,740','1 sent · opened', H.pill('Watch','a'), 55],
       ['Nilesh Bhagat','Greens G-112','₹9,20,000','4 days','₹1,840','Reminder scheduled', H.pill('Watch','a'), 38],

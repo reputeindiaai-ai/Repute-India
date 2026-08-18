@@ -221,7 +221,7 @@
       ['Bhavna Joshi','Greens G-406','✓','✓','✓','—','—', H.pill('Registered','b')],
       ['Hiren Vasani','Skies A-0904','✓','✓','✓','✓','—', H.pill('TDS filed','b')],
       ['Sanjay Modi','Greens C-0511','✓','✓','✓','✓','✓', H.pill('Complete','g')],
-      ['Ketan Dave','Greens G-208','✓','✓','✓','✓','—', H.pill('Possession due','a')]
+      ['Bhargav Zaveri','Greens G-208','✓','✓','✓','✓','—', H.pill('Possession due','a')]
     ].map(function(r){
       return [H.who(r[0], r[1]), r[2], r[3], r[4], r[5], r[6], r[7]];
     });
@@ -290,7 +290,7 @@
         '<div class="card-b flush">' + h().table(
           ['Buyer / unit', 'Stage', 'Scheduled', { t:'Dues', num:true }, { t:'Status', num:true }],
           [
-            [h().who('Ketan Dave','Greens G-208'), 'Final demand raised', '02 Sep', '₹12.4 L', h().pill('Payment pending','r')],
+            [h().who('Bhargav Zaveri','Greens G-208'), 'Final demand raised', '02 Sep', '₹12.4 L', h().pill('Payment pending','r')],
             [h().who('Sanjay Modi','Greens C-0511'), 'Handover done', '11 Aug', '₹0', h().pill('Complete','g')],
             [h().who('Rekha Chauhan','Greens G-114'), 'Snag inspection', '28 Aug', '₹0', h().pill('3 snags open','a')],
             [h().who('Amit Solanki','Greens G-302'), 'Keys ready', '30 Aug', '₹0', h().pill('Scheduled','b')],
@@ -309,12 +309,12 @@
   V.pssnags = function(){
     var H = h();
     var rows = [
-      ['SNG-0311','Rekha Chauhan','Greens G-114','Bathroom tile hollow · 2 places','07 Aug','11 days','R. Solanki', H.pill('Open','r')],
-      ['SNG-0310','Rekha Chauhan','Greens G-114','Kitchen window alignment','07 Aug','11 days','R. Solanki', H.pill('Open','r')],
+      ['SNG-0311','Rekha Chauhan','Greens G-114','Bathroom tile hollow · 2 places','07 Aug','11 days','R. Makwana', H.pill('Open','r')],
+      ['SNG-0310','Rekha Chauhan','Greens G-114','Kitchen window alignment','07 Aug','11 days','R. Makwana', H.pill('Open','r')],
       ['SNG-0309','Amit Solanki','Greens G-302','Main door lock stiff','14 Aug','4 days','Site team', H.pill('In progress','a')],
       ['SNG-0308','Priti Vora','Greens G-407','Balcony grouting','15 Aug','3 days','Site team', H.pill('In progress','a')],
-      ['SNG-0307','Sanjay Modi','Greens C-0511','Geyser point shifted','04 Aug','Closed in 2 days','R. Solanki', H.pill('Closed','g')],
-      ['SNG-0306','Ketan Dave','Greens G-208','Paint touch-up · living room','01 Aug','Closed in 3 days','Site team', H.pill('Closed','g')]
+      ['SNG-0307','Sanjay Modi','Greens C-0511','Geyser point shifted','04 Aug','Closed in 2 days','R. Makwana', H.pill('Closed','g')],
+      ['SNG-0306','Bhargav Zaveri','Greens G-208','Paint touch-up · living room','01 Aug','Closed in 3 days','Site team', H.pill('Closed','g')]
     ].map(function(r){ return [ '<b>' + r[0] + '</b>', H.who(r[1], r[2]), r[3], r[4], r[5], r[6], r[7] ]; });
 
     return head('Snags & Requests ' + nu(),
@@ -414,7 +414,7 @@
       ['Kunal Doshi','Aliya Shaikh','8m 41s','Gujarati','Parking allocation for showroom','Confirm 2 slots in writing', 79],
       ['Rahul Mehta','Ronak Vaghela','4m 55s','English','Comparing with Shalin Elite','Send comparison sheet', 82],
       ['Priya Nair','Bhavna Joshi','5m 22s','Gujarati','Loan delay anxiety','Escalate to panel RM', 58],
-      ['Archi Shah','Jayesh Kansara','2m 11s','Hindi','Cash flow — asked for 30 days','Restructure or notice', 34]
+      ['Vishal Rathod','Jayesh Kansara','2m 11s','Hindi','Cash flow — asked for 30 days','Restructure or notice', 34]
     ].map(function(r){
       return [H.who(r[0]), H.who(r[1]), r[2], r[3], '<b>' + r[4] + '</b>', r[5], H.score(r[6])];
     });
