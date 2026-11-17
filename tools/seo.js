@@ -4,6 +4,8 @@
 const fs=require('fs'),cp=require('child_process');
 const SITE='https://reputeindiaai.com/';
 const TODAY=process.argv[2];
+const GA_ID='G-4C79ZY0CE7';
+const NO_GA=new Set(['admin.html','dashboard.html']);
 const PRIVATE=new Set(['admin.html','dashboard.html','onboarding.html']);
 const IND={clinics:'Clinics & Doctors',coaching:'Coaching & Education',gyms:'Gyms & Fitness',jewellery:'Jewellery',realestate:'Real Estate',restaurants:'Restaurants & Cafes',salons:'Salons & Beauty'};
 const PAGE={index:'Demo overview',app:'Customer app demo',apps:'App demos',crm:'CRM demo',features:'AI features',problems:'Problems and fixes',website:'Website demo','crm-live':'Live CRM demo'};
@@ -15,6 +17,15 @@ for(const f of files){
   let h=fs.readFileSync(f,'utf8');
   const nl=h.includes('\r\n')?'\r\n':'\n';
   h=h.replace(/<!-- SEO:start -->[\s\S]*?<!-- SEO:end -->\r?\n?/,'');
+  // Google Analytics 4: right after <head> on every public page. Never on admin or dashboard.
+  h=h.replace(/<!-- GA4:start -->[\s\S]*?<!-- GA4:end -->\r?\n?/,'');
+  if(!NO_GA.has(f)){
+    if(!/<head>\r?\n/.test(h)) throw new Error('no <head> line in '+f);
+    h=h.replace(/<head>\r?\n/,m0=>m0+['<!-- GA4:start -->',
+      '<script async src="https://www.googletagmanager.com/gtag/js?id='+GA_ID+'"></script>',
+      "<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','"+GA_ID+"');</script>",
+      '<!-- GA4:end -->'].join(nl)+nl);
+  }
   const url=SITE+f.replace(/(^|\/)index\.html$/,'$1');
   let block=['<link rel="icon" href="/favicon.ico" sizes="any">','<link rel="apple-touch-icon" href="/apple-touch-icon.png">'];
   if(PRIVATE.has(f)){
@@ -43,8 +54,8 @@ for(const f of files){
     const re=/(<meta name="viewport"[^>]*>\r?\n)/;
     if(!re.test(h)) throw new Error('no viewport tag in '+f);
     h=h.replace(re,(m0)=>m0+'<!-- SEO:start -->'+nl+block.join(nl)+nl+'<!-- SEO:end -->'+nl);
-    fs.writeFileSync(f,h);
   }
+  fs.writeFileSync(f,h);
   if(!PRIVATE.has(f)) urls.push(url);
 }
 urls.sort((a,b)=>a.length-b.length||a.localeCompare(b));

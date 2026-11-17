@@ -1,5 +1,6 @@
 /* Builds the search-targeted solution pages (one folder each) from the homepage design.
-   Run from the project root:   node tools/build-pages.js
+   Run from the project root:   node tools/build-pages.js   and then   node tools/seo.js YYYY-MM-DD
+   (seo.js adds the Google Analytics tag and rebuilds the sitemap).
    It copies the homepage's styles, navigation, contact form and footer, so the pages always match.
    HONESTY RULES for the copy below: no invented numbers, client names, testimonials or reviews;
    no integrations we have not built; never "#1", "best" or "top" about ourselves. */
@@ -361,7 +362,6 @@ function page(p){
 <meta name="twitter:title" content="${esc(p.title)}">
 <meta name="twitter:description" content="${esc(p.desc)}">
 <meta name="twitter:image" content="${SITE}/assets/og-image.png">
-<!-- Google Analytics 4 tag goes here when Kushal sends the Measurement ID (G-XXXXXXX) -->
 ${FONTJS}
 <link rel="preload" href="/assets/fonts/inter-tight.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
