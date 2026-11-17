@@ -5,7 +5,9 @@ const fs=require('fs'),cp=require('child_process');
 const SITE='https://reputeindiaai.com/';
 const TODAY=process.argv[2];
 const GA_ID='G-4C79ZY0CE7';
-const NO_GA=new Set(['admin.html','dashboard.html']);
+const NO_GA=new Set(['admin.html','dashboard.html','onboarding.html']);
+// EU + EEA + UK + Switzerland: analytics needs consent here
+const EU_UK=['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH'];
 const PRIVATE=new Set(['admin.html','dashboard.html','onboarding.html']);
 const IND={clinics:'Clinics & Doctors',coaching:'Coaching & Education',gyms:'Gyms & Fitness',jewellery:'Jewellery',realestate:'Real Estate',restaurants:'Restaurants & Cafes',salons:'Salons & Beauty'};
 const PAGE={index:'Demo overview',app:'Customer app demo',apps:'App demos',crm:'CRM demo',features:'AI features',problems:'Problems and fixes',website:'Website demo','crm-live':'Live CRM demo'};
@@ -23,7 +25,17 @@ for(const f of files){
     if(!/<head>\r?\n/.test(h)) throw new Error('no <head> line in '+f);
     h=h.replace(/<head>\r?\n/,m0=>m0+['<!-- GA4:start -->',
       '<script async src="https://www.googletagmanager.com/gtag/js?id='+GA_ID+'"></script>',
-      "<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','"+GA_ID+"');</script>",
+      // Consent Mode v2. Analytics is OFF by default for UK/EU visitors (by Google's own location check AND by the
+      // visitor's time zone) until they press Accept in the banner. Advertising signals are always off.
+      "<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}"
+      +"(function(){var c=null,tz='';try{c=localStorage.getItem('ri_consent')}catch(e){}try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''}catch(e){}"
+      +"var eu=/^(Europe\\/|Atlantic\\/(Reykjavik|Canary|Madeira|Azores|Faroe)|Arctic\\/)/.test(tz);window.__ri={eu:eu,choice:c};"
+      +"var ads={ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'};"
+      +"gtag('consent','default',Object.assign({analytics_storage:'denied',wait_for_update:500,region:"+JSON.stringify(EU_UK).replace(/"/g,"'")+"},ads));"
+      +"gtag('consent','default',Object.assign({analytics_storage:(eu||c==='denied')?'denied':'granted'},ads));"
+      +"if(c)gtag('consent','update',{analytics_storage:c==='granted'?'granted':'denied'});})();"
+      +"gtag('js',new Date());gtag('config','"+GA_ID+"');</script>",
+      '<script src="/assets/consent.js" defer></script>',
       '<!-- GA4:end -->'].join(nl)+nl);
   }
   const url=SITE+f.replace(/(^|\/)index\.html$/,'$1');
