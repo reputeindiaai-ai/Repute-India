@@ -71,6 +71,10 @@ const WORLD=['Worldwide','India','United Arab Emirates','Kenya','Tanzania','Ugan
 const BUILD=[['Starter','Premium website',29000,2750,749],
              ['Growth','Website + your own CRM',79000,6900,1899],
              ['Complete','Website, CRM, customer and staff apps, AI',149000,12900,3499]];
+const money=(k,b)=>k==='in'?'₹'+b[2].toLocaleString('en-IN'):k==='ae'?'AED '+b[3].toLocaleString('en-US'):'US$'+b[4].toLocaleString('en-US');
+const CURNAME={in:'INR for India',ae:'AED for the UAE',us:'USD elsewhere'};
+// p.cur = the currencies named in the headline, in order; the rest follow in the price rows
+const ORDER=p=>p.cur.concat(['in','ae','us'].filter(k=>!p.cur.includes(k)));
 const FROM={in:['India','₹4,999'],ae:['UAE','AED 799'],uk:['UK','£179'],us:['USA and elsewhere','US$219'],ea:['East Africa','US$59']};
 const P=[
 { slug:'whatsapp-crm-for-clinics', short:'WhatsApp CRM for clinics',
@@ -346,12 +350,12 @@ function page(p){
     ? PLANS.replace('<div class="sub" id="plans">','<div id="plans">')
     : `<div class="sub-head"><h2 class="h-md" data-rv>Pricing</h2></div>
       <div class="quote-box" data-rv>
-        <div><h3>From ₹29,000. <span class="it acc">Final quote after a free consultation.</span></h3>
-          <p>These are starting prices for a one-time build: in INR for India, AED for the UAE and USD elsewhere. ${esc(p.fit)} You get a written scope and a fixed price before any work starts.</p>
+        <div><h3>From ${p.cur.map(k=>money(k,BUILD[0])).join(" · ")}. <span class="it acc">Final quote after a free consultation.</span></h3>
+          <p>These are starting prices for a one-time build. ${esc(p.fit)} You get a written scope and a fixed price before any work starts.</p>
           <div class="demo-links" style="margin-top:22px"><a class="btn btn-acc" href="#contact" data-ev="cta_consult">Get my quote ${ARROW}</a><a class="btn btn-ghost" href="/#plans" data-ev="cta_ai_plans">See AI Search plans</a></div></div>
         <div class="from"><div style="border:none;padding-top:0"><span class="label">One-time build · from</span></div>
-          ${BUILD.map(b=>'<div class="pk"><span><b>'+b[0]+'</b>'+b[1]+'</span><span class="pr">₹'+b[2].toLocaleString('en-IN')+' · AED '+b[3].toLocaleString('en-US')+' · US$'+b[4].toLocaleString('en-US')+'</span></div>').join('')}
-          <p class="fine">Starting prices. Final quote after a free consultation. AI search visibility is a separate monthly plan from ${p.from.map(k=>FROM[k][1]+' ('+FROM[k][0]+')').join(', ')}.</p></div>
+          ${BUILD.map(b=>'<div class="pk"><span><b>'+b[0]+'</b>'+b[1]+'</span><span class="pr">'+ORDER(p).map(k=>money(k,b)).join(' · ')+'</span></div>').join('')}
+          <p class="fine">Starting prices. Final quote after a free consultation. AI search visibility is a separate monthly plan from ${p.from.slice().sort((x,y)=>ORDER(p).indexOf(x==='ea'?'us':x)-ORDER(p).indexOf(y==='ea'?'us':y)).map(k=>FROM[k][1]+' ('+FROM[k][0]+')').join(', ')}.</p></div>
       </div>`;
   return `<!DOCTYPE html>
 <html lang="en">
@@ -482,6 +486,16 @@ const FIT={
  'crm-for-coaching-institutes':'A coaching CRM is usually the Growth package, or Complete with the student app.',
  'app-development-for-small-business':'Customer and staff apps are part of the Complete package.'};
 for(const p of P) p.fit=FIT[p.slug]||'';
+/* which currency leads on each page: the country the page is about comes first; ₹ leads only on India-focused pages */
+const CUR={
+ 'whatsapp-crm-for-clinics':['in','ae','us'],        // India, UAE, Kenya: all three side by side
+ 'custom-crm-development-dubai':['ae'],              // Dubai: AED first
+ 'real-estate-website-and-app':['in','ae'],          // India + UAE
+ 'crm-for-coaching-institutes':['in'],               // India-focused
+ 'custom-crm-for-small-business':['us','ae','in'],   // global
+ 'whatsapp-automation':['us','ae','in'],             // global
+ 'app-development-for-small-business':['us','ae','in']};
+for(const p of P) p.cur=CUR[p.slug]||['in'];
 
 /* ---------- privacy page ---------- */
 function privacy(){
@@ -545,7 +559,9 @@ ${NAV}<main>
     <h2>Your choices</h2>
     <p>You can change your analytics choice here at any time:</p>
     <div class="demo-links" style="margin:6px 0 14px"><button type="button" class="btn btn-accent" onclick="riConsent(true);this.textContent='Analytics is on'">Allow analytics</button><button type="button" class="btn btn-ghost" onclick="riConsent(false);this.textContent='Analytics is off'">Turn analytics off</button></div>
-    <p>To see, correct or delete the information we hold about you, email <a href="mailto:support@reputeindiaai.com">support@reputeindiaai.com</a>. If you are in the UK or the EU you also have the right to complain to your data protection authority.</p>
+    <h2>Privacy requests and complaints</h2>
+    <p><b>Email <a href="mailto:support@reputeindiaai.com">support@reputeindiaai.com</a> to access, correct or delete your data, or to withdraw your consent.</b> Please write from the email address or phone number you used with us, so we can find your details. You can also write to us at the address above or message +91 97371 33331.</p>
+    <p>If you are unhappy with how we have handled your information, contact us at the same email first. If you are in the UK or the EU you also have the right to complain to your data protection authority, and in India to the Data Protection Board.</p>
 
     <h2>Changes to this page</h2>
     <p>If we change how we handle information, we will update this page and the date at the top.</p>
