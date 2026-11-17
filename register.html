@@ -3,6 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- SEO:start -->
+<meta name="description" content="Repute India AI builds websites, CRMs, apps, AI agents and automation, and gets your business found in AI search.">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="https://reputeindiaai.com/register.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Repute India AI">
+<meta property="og:url" content="https://reputeindiaai.com/register.html">
+<meta property="og:title" content="Register — Repute India AI">
+<meta property="og:description" content="Repute India AI builds websites, CRMs, apps, AI agents and automation, and gets your business found in AI search.">
+<meta property="og:image" content="https://reputeindiaai.com/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Register — Repute India AI">
+<meta name="twitter:description" content="Repute India AI builds websites, CRMs, apps, AI agents and automation, and gets your business found in AI search.">
+<meta name="twitter:image" content="https://reputeindiaai.com/assets/og-image.png">
+<!-- SEO:end -->
 <title>Register — Repute India AI</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -253,6 +271,7 @@ async function registerBusiness() {
     const data = await res.json();
 
     if (data.success) {
+      try{ if(typeof gtag==='function') gtag('event','sign_up'); }catch(e){}
       localStorage.setItem('ri_business_id', data.business.id);
       localStorage.setItem('ri_business_name', data.business.business_name);
       localStorage.setItem('ri_phone', phone);

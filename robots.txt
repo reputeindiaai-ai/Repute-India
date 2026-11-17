@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /owner-only/
+Disallow: /forms/
+Disallow: /dashboard.html
+
+Sitemap: https://reputeindiaai.com/sitemap.xml

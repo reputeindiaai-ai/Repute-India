@@ -398,5 +398,12 @@
     if (body) body.scrollTop = 0;
   });
 
-  draw();
+  /* build the phone demo only when the visitor is getting close to it — keeps the first load light */
+  if ('IntersectionObserver' in window){
+    var lazy = new IntersectionObserver(function(es){
+      if (!es[0].isIntersecting) return;
+      lazy.disconnect(); draw();
+    }, { rootMargin:'900px 0px' });
+    lazy.observe(wrapEl);
+  } else { draw(); }
 })();
