@@ -70,7 +70,7 @@
       ['Vraj Realtors','Hitesh Ramani · B-1204','₹1,61,000','₹8,050','₹1,52,950','Token received', h().pill('On hold','')],
       ['Grihasthan Consultants','Ronak Vaghela · A-0806','₹4,22,800','₹21,140','₹4,01,660','Awaiting agreement', h().pill('Scheduled','b')],
       ['Skyline Realty','Hiren Vasani · A-0904','₹5,24,000','₹26,200','₹4,97,800','Registered', h().pill('Paid','g')],
-      ['Surat Property Hub','Sneha Kapadia · G-304','₹1,64,800','₹8,240','₹1,56,560','Registered', h().pill('Paid','g')]
+      ['Vadodara Property Hub','Sneha Kapadia · G-304','₹1,64,800','₹8,240','₹1,56,560','Registered', h().pill('Paid','g')]
     ].map(function(r){ return [ h().two(r[0], r[1]), r[2], r[3], r[4], r[5], r[6] ]; });
 
     return head('Brokerage Payouts ' + nu(),
@@ -358,20 +358,20 @@
   /* ================= MASTERS ================= */
   var MASTERS = {
     'Contact':      { c:['Name','Type','Mobile','Email','City','Linked to'], r:[
-      ['Nikunj Patel','Buyer','+91 98•••• ••21','nikunj@•••.com','Surat','Skies B-1104'],
-      ['Skyline Realty','Channel partner','+91 99•••• ••14','skyline@•••.in','Surat','41 leads'],
-      ['Sagar Infra','Contractor','+91 90•••• ••77','sagar@•••.in','Surat','Tower B'],
-      ['HDFC — Nilesh Shah','Banker','+91 98•••• ••32','—','Surat','19 loan files'],
-      ['Adv. K. Trivedi','Advocate','+91 97•••• ••05','—','Surat','Agreements']] },
+      ['Nikunj Patel','Buyer','+91 98•••• ••21','nikunj@•••.com','Vadodara','Skies B-1104'],
+      ['Skyline Realty','Channel partner','+91 99•••• ••14','skyline@•••.in','Vadodara','41 leads'],
+      ['Sagar Infra','Contractor','+91 90•••• ••77','sagar@•••.in','Vadodara','Tower B'],
+      ['HDFC — Nilesh Shah','Banker','+91 98•••• ••32','—','Vadodara','19 loan files'],
+      ['Adv. K. Trivedi','Advocate','+91 97•••• ••05','—','Vadodara','Agreements']] },
     'Company':      { c:['Company','GSTIN','PAN','Type','Projects'], r:[
       ['Anantam Group','24AABCA1234F1Z5','AABCA1234F','Developer','3'],
       ['Anantam Realty LLP','24AABCA9911K1Z2','AABCA9911K','SPV — Business Park','1'],
       ['Anantam Facility Services','24AABCA7742M1Z8','AABCA7742M','Maintenance','2']] },
     'Branch':       { c:['Branch','City','Address','Team','Projects'], r:[
-      ['Head Office','Surat','Ring Road','9','All'],
-      ['Skies site office','Surat','Vesu','4','Anantam Skies'],
-      ['Greens site office','Surat','Pal','3','Anantam Greens'],
-      ['Vadodara desk','Vadodara','Alkapuri','2','Enquiries only']] },
+      ['Head Office','Vadodara','Ring Road','9','All'],
+      ['Skies site office','Vadodara','Gotri','4','Anantam Skies'],
+      ['Greens site office','Vadodara','Bhayli','3','Anantam Greens'],
+      ['Anand desk','Anand','Vidyanagar','2','Enquiries only']] },
     'Customer':     { c:['Customer','Type','Unit','Value','Stage'], r:[
       ['Nikunj Patel','Individual','Skies B-1104','₹1.58 Cr','Agreement'],
       ['Aliya Shaikh','Firm','Business Park Shop 12','₹68.4 L','Agreement'],
@@ -427,12 +427,12 @@
       ['Gujarat','India','4.9%','1.0%'],['Maharashtra','India','6.0%','1.0%'],
       ['Rajasthan','India','5.0%','1.0%'],['Madhya Pradesh','India','7.5%','0.8%']] },
     'City':         { c:['City','State','Projects','Enquiries YTD'], r:[
-      ['Surat','Gujarat','3','487'],['Vadodara','Gujarat','0','31'],
+      ['Vadodara','Gujarat','3','487'],['Anand','Gujarat','0','31'],
       ['Ahmedabad','Gujarat','0','24'],['Navsari','Gujarat','0','9']] },
     'Project':      { c:['Project','Location','RERA number','Units','Possession'], r:[
-      ['Anantam Skies','Vesu, Surat','PR/GJ/SURAT/2024/01847','178','Dec 2027'],
-      ['Anantam Greens','Pal, Surat','PR/GJ/SURAT/2023/00914','96','Mar 2027'],
-      ['Anantam Business Park','Ring Road, Surat','PR/GJ/SURAT/2025/02611','44','Jun 2029']] },
+      ['Anantam Skies','Gotri, Vadodara','PR/GJ/VADODARA/2024/01847','178','Dec 2027'],
+      ['Anantam Greens','Bhayli, Vadodara','PR/GJ/VADODARA/2023/00914','96','Mar 2027'],
+      ['Anantam Business Park','Ring Road, Vadodara','PR/GJ/VADODARA/2025/02611','44','Jun 2029']] },
     'Tower':        { c:['Tower','Project','Floors','Units per floor','Total'], r:[
       ['Tower A','Anantam Skies','16','4','64'],['Tower B','Anantam Skies','18','4','72'],
       ['Tower C','Anantam Skies','14','4','56'],['Greens Block G','Anantam Greens','12','8','96']] },
@@ -489,7 +489,7 @@
         '<div class="card-b flush">' + H.table(
           ['Ticket', 'Raised by', 'Type', 'Age', { t:'Status', num:true }],
           [
-            [H.two('Add Vadodara to the city master','TKT-0412'), 'Dhara Sanghvi', 'Feature request', '2 days', H.pill('In progress','a')],
+            [H.two('Add Anand to the city master','TKT-0412'), 'Dhara Sanghvi', 'Feature request', '2 days', H.pill('In progress','a')],
             [H.two('Bulk demand run for 18th slab','TKT-0409'), 'Parth Gandhi', 'How-to', '6 days', H.pill('Resolved','g')],
             [H.two('CP login for Vraj Realtors','TKT-0405'), 'Rahul Mehta', 'Access', '9 days', H.pill('Resolved','g')],
             [H.two('Gujarati template for reminders','TKT-0398'), 'Vishal Rathod', 'Feature request', '14 days', H.pill('Shipped','g')]

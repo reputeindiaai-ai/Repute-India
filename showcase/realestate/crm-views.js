@@ -197,11 +197,11 @@ window.VIEWS = {};
       ['New project', 'RERA filings']) +
       '<div class="grid g3">' +
       [
-        { n:'Anantam Skies', l:'Vesu, Surat · 178 units · RERA PR/GJ/SURAT/2024/01847',
+        { n:'Anantam Skies', l:'Gotri, Vadodara · 178 units · RERA PR/GJ/VADODARA/2024/01847',
           p:62, s:'68% sold · ₹141 Cr booked', m:'Slab 21 of 34 cast · possession Dec 2027', tone:'g' },
-        { n:'Anantam Greens', l:'Pal, Surat · 96 units · phase 2 · RERA PR/GJ/SURAT/2023/00914',
+        { n:'Anantam Greens', l:'Bhayli, Vadodara · 96 units · phase 2 · RERA PR/GJ/VADODARA/2023/00914',
           p:88, s:'81% sold · ₹64 Cr booked', m:'Finishing stage · possession Mar 2027', tone:'g' },
-        { n:'Anantam Business Park', l:'Ring Road, Surat · 44 units · RERA PR/GJ/SURAT/2025/02611',
+        { n:'Anantam Business Park', l:'Ring Road, Vadodara · 44 units · RERA PR/GJ/VADODARA/2025/02611',
           p:24, s:'39% sold · ₹22 Cr booked', m:'Excavation done · possession Jun 2029', tone:'a' }
       ].map(function(p){
         return H.card(p.n, null,
@@ -284,7 +284,7 @@ window.VIEWS = {};
       ['Devang Bhatt','Skies · 4 BHK','Tomorrow 12:30pm','Rahul Mehta','Self · with family', H.pill('Confirmed','g'), '91%'],
       ['Aliya Shaikh','Business Park','Tomorrow 4:00pm','Kunal Doshi','CP: Skyline Realty', H.pill('Confirmed','g'), '84%'],
       ['Ronak Vaghela','Skies · 4 BHK','21 Aug 11:00am','Rahul Mehta','Self', H.pill('Confirmed','g'), '88%'],
-      ['Sneha Kapadia','Greens · 2 BHK','21 Aug 5:30pm','Meera Thakkar','Cab from Vesu', H.pill('At risk','r'), '24%'],
+      ['Sneha Kapadia','Greens · 2 BHK','21 Aug 5:30pm','Meera Thakkar','Cab from Gotri', H.pill('At risk','r'), '24%'],
       ['Hitesh Ramani','Skies · 3 BHK','22 Aug 10:30am','Kunal Doshi','CP: Skyline Realty', H.pill('Confirmed','g'), '79%']
     ].map(function(r){
       return [H.who(r[0]), H.two(r[1], r[4]), r[2], r[3], r[5], '<b>' + r[6] + '</b>'];
@@ -469,7 +469,7 @@ window.VIEWS = {};
     var rows = [
       ['Skyline Realty','GJ/CP/2023/0912','34','19','7','21%','₹18.4 L','₹4.2 L', 92,'g'],
       ['Grihasthan Consultants','GJ/CP/2024/1188','28','14','5','18%','₹12.1 L','₹0','', 78,'g'],
-      ['Surat Property Hub','GJ/CP/2022/0641','61','12','3','5%','₹7.4 L','₹1.1 L', 34,'a'],
+      ['Vadodara Property Hub','GJ/CP/2022/0641','61','12','3','5%','₹7.4 L','₹1.1 L', 34,'a'],
       ['Vraj Realtors','GJ/CP/2025/1902','19','9','3','16%','₹6.8 L','₹0', 71,'g'],
       ['Anmol Estates','GJ/CP/2024/1455','44','6','1','2%','₹2.2 L','₹0', 18,'r']
     ].map(function(r){
@@ -494,7 +494,7 @@ window.VIEWS = {};
           acts:['Restrict access','See leads'] },
         { t:'Skyline Realty has earned the next launch', d:'21% conversion and a 34-day average close against a 51-day partner average. Give them first access to Business Park phase 2.',
           acts:['Grant early access'] },
-        { t:'Surat Property Hub floods, does not convert', d:'61 leads, 5% conversion. 38 of those leads had already enquired directly — the first-claim rule caught every one of them automatically.' }
+        { t:'Vadodara Property Hub floods, does not convert', d:'61 leads, 5% conversion. 38 of those leads had already enquired directly — the first-claim rule caught every one of them automatically.' }
       ], 'Insight') + '</div>' +
       '<div class="mt">' + H.note('<b>The first-claim rule:</b> when a CP submits a client, the system checks the mobile number against every existing enquiry and stamps the claim with a date and time. Valid for 90 days. The argument about "my client" is settled before it starts — this alone is why good brokers prefer one builder over another.') + '</div>';
   };

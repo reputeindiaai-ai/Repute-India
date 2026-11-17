@@ -1,6 +1,6 @@
 # Repute India AI
 
-> Repute India AI is a software and AI company based in Gujarat, India. It builds websites, CRMs, custom business systems, mobile apps, AI agents and WhatsApp automation for businesses, and runs "Get Found in AI Search", a monthly service that gets a business named when customers ask ChatGPT, Gemini, Perplexity or Google for a recommendation.
+> Repute India AI is a software and AI company based in Vadodara, Gujarat, India. It builds websites, CRMs, custom business systems, mobile apps, AI agents and WhatsApp automation for businesses, and runs "Get Found in AI Search", a monthly service that gets a business named when customers ask ChatGPT, Gemini, Perplexity or Google for a recommendation.
 
 ## Services
 
@@ -26,7 +26,10 @@
 
 ## Contact
 
+- Name: Repute India AI
+- Address: Vadodara, Gujarat, India
 - Phone and WhatsApp: +91 97371 33331
+- Areas served: India, United Arab Emirates, Kenya, Tanzania, Uganda
 - Email: support@reputeindiaai.com
 - Website: https://reputeindiaai.com/
 - Industry demos: https://reputeindiaai.com/showcase/index.html

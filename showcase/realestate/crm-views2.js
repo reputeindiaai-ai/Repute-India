@@ -454,13 +454,13 @@
     var chat = '<div class="card-b" style="max-height:420px;overflow-y:auto">' +
       [
         ['them','Hi, saw the 3 BHK at Anantam Skies on 99acres. Is it still available?','11:42 pm'],
-        ['us','Good evening! Yes — we have 12 three-bedroom homes available at Anantam Skies, Vesu. May I ask what budget range you are working with, and roughly when you would want possession?','11:42 pm'],
+        ['us','Good evening! Yes — we have 12 three-bedroom homes available at Anantam Skies, Gotri. May I ask what budget range you are working with, and roughly when you would want possession?','11:42 pm'],
         ['them','Around 1.5 crore. Possession within 2-3 years is fine.','11:44 pm'],
         ['us','Perfect. Three homes fit that exactly — B-1104 (₹1.58 Cr, east facing with a sunset deck), B-1204 (₹1.61 Cr) and C-1102 (₹1.49 Cr). All with December 2027 possession, RERA registered. Shall I send you the cost sheet for B-1104?','11:44 pm'],
         ['them','Yes please. And can I see it this weekend?','11:46 pm'],
         ['us','Sent 📄 I have Saturday 11:00am or Sunday 4:30pm free with Rahul, our senior consultant. Which suits you? We can also arrange a cab from your area.','11:46 pm'],
         ['them','Sunday 4:30 works.','11:47 pm'],
-        ['us','Booked ✅ Sunday, 4:30pm at Anantam Skies, Vesu. Rahul will call you tomorrow to confirm. Location pin and the brochure are on their way. Good night!','11:47 pm']
+        ['us','Booked ✅ Sunday, 4:30pm at Anantam Skies, Gotri. Rahul will call you tomorrow to confirm. Location pin and the brochure are on their way. Good night!','11:47 pm']
       ].map(function(m){
         var me = m[0] === 'us';
         return '<div style="display:flex;justify-content:' + (me ? 'flex-end' : 'flex-start') + ';margin-bottom:9px">' +
@@ -507,7 +507,7 @@
         '<div class="card-b flush">' + H.table(
           ['Reviewer', 'What they said', { t:'Rating', num:true }, { t:'Reply', num:true }],
           [
-            [H.who('Sanjay Modi','Greens C-0511'), 'Handover was two days early and the snag list was closed in three days. Rare in Surat.', '★ 5', H.pill('Replied','g')],
+            [H.who('Sanjay Modi','Greens C-0511'), 'Handover was two days early and the snag list was closed in three days. Rare in Vadodara.', '★ 5', H.pill('Replied','g')],
             [H.who('Hiren Vasani','Skies A-0904'), 'The app showing payment schedule and site photos every month is what made the difference.', '★ 5', H.pill('Replied','g')],
             [H.who('Rekha Chauhan','Greens G-114'), 'Good construction quality but the tile work in the bathroom needed rework twice.', '★ 3', H.pill('Draft ready','a')],
             [H.who('Amit Solanki','Greens G-302'), 'Sales team responded within minutes even at night. Very professional process.', '★ 5', H.pill('Replied','g')],

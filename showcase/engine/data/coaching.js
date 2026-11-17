@@ -45,7 +45,7 @@ window.DEMOS.coaching = {
     url: 'www.vidyapathacademy.in', brand: 'Vidya Path Academy',
     nav: ['Courses','Faculty','Results','Fees','Contact'], navCta: 'Book a free demo class',
     heroTitle: 'Where serious students<br>become <span class="ac">rank holders.</span>',
-    heroSub: 'JEE, NEET and Foundation batches in Surat. Small batches, senior faculty, and a parent portal that shows you exactly how your child is doing — every single week.',
+    heroSub: 'JEE, NEET and Foundation batches in Vadodara. Small batches, senior faculty, and a parent portal that shows you exactly how your child is doing — every single week.',
     heroCta: 'Book a free demo class', heroCta2: 'Download prospectus',
     stats: [
       { v:'1,840+', k:'Students taught' }, { v:'96', k:'Selections last year' },
@@ -58,7 +58,7 @@ window.DEMOS.coaching = {
       { ic:'📚', h:'Foundation (8th–10th)', p:'Builds the base early — school syllabus plus olympiad and entrance-exam foundation.', price:'₹38,000 / year' }
     ],
     testimonial: {
-      text: 'What changed everything for us was the parent app. I could see my daughter\'s attendance and test scores every week instead of waiting for a parents\' meeting. No other class in Surat does this.',
+      text: 'What changed everything for us was the parent app. I could see my daughter\'s attendance and test scores every week instead of waiting for a parents\' meeting. No other class in Vadodara does this.',
       who: 'Meenaben Patel, parent of a 2025 NEET qualifier'
     }
   },

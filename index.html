@@ -522,6 +522,7 @@ a.chan:hover{ padding-left:12px; color:var(--acc); }
 .fld::placeholder{ color:var(--txt3); } .fld:focus{ border-color:var(--ink); box-shadow:0 0 0 4px rgba(255,79,26,.16); }
 select.fld{ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230D0D0C' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; background-size:16px; padding-right:40px; }
 textarea.fld{ min-height:104px; resize:vertical; }
+.hp{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
 
 /* ---------- FOOTER ---------- */
 .foot{ background:var(--ink); color:var(--paper); border-radius:var(--r-xl) var(--r-xl) 0 0; padding:clamp(60px,8vw,110px) 0 0; overflow:hidden; --txt2:rgba(243,241,234,.72); --txt3:rgba(243,241,234,.62); --line:rgba(243,241,234,.13); --line2:rgba(243,241,234,.24); }
@@ -604,6 +605,8 @@ textarea.fld{ min-height:104px; resize:vertical; }
   "url":"https://reputeindiaai.com/",
   "logo":"https://reputeindiaai.com/assets/logo-512.png",
   "email":"support@reputeindiaai.com",
+  "telephone":"+919737133331",
+  "address":{"@type":"PostalAddress","addressLocality":"Vadodara","addressRegion":"Gujarat","addressCountry":"IN"},
   "contactPoint":{"@type":"ContactPoint","telephone":"+919737133331","contactType":"sales","areaServed":"IN","availableLanguage":["English","Hindi","Gujarati"]}
 }
 </script>
@@ -617,8 +620,8 @@ textarea.fld{ min-height:104px; resize:vertical; }
   "description":"Software and AI company building websites, CRMs, custom business systems, mobile apps, AI agents, WhatsApp automation and AI search visibility for businesses.",
   "telephone":"+919737133331",
   "email":"support@reputeindiaai.com",
-  "areaServed":["India","United Arab Emirates","United Kingdom","Australia","United States"],
-  "address":{"@type":"PostalAddress","addressRegion":"Gujarat","addressCountry":"IN"}
+  "areaServed":["India","United Arab Emirates","Kenya","Tanzania","Uganda"],
+  "address":{"@type":"PostalAddress","addressLocality":"Vadodara","addressRegion":"Gujarat","addressCountry":"IN"}
 }
 </script>
 <script type="application/ld+json">
@@ -702,7 +705,7 @@ textarea.fld{ min-height:104px; resize:vertical; }
           <div><b>Auto-reply sent</b><small>WhatsApp · in 30 seconds</small></div>
         </div>
         <div class="hv-card hv-b">
-          <div class="q">“Who is the best architect in Surat?”</div>
+          <div class="q">“Who is the best architect in Vadodara?”</div>
           <div class="a"><span>1</span> Your business</div>
           <div class="z" style="width:86%"></div><div class="z" style="width:58%"></div>
         </div>
@@ -1010,17 +1013,18 @@ textarea.fld{ min-height:104px; resize:vertical; }
         <a class="chan" data-rv href="https://wa.me/919737133331?text=Hi%21%20I%27d%20like%20to%20discuss%20a%20project%20with%20Repute%20India%20AI." target="_blank" rel="noopener"><div><small>WhatsApp · fastest</small><b>+91 97371 33331</b></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M8 7h9v9"/></svg></a>
         <a class="chan" data-rv href="tel:+919737133331"><div><small>Call</small><b>+91 97371 33331</b></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M8 7h9v9"/></svg></a>
         <a class="chan" data-rv href="mailto:support@reputeindiaai.com"><div><small>Email</small><b>support@reputeindiaai.com</b></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M8 7h9v9"/></svg></a>
-        <div class="chan" data-rv><div><small>Serving</small><b>Pan-India · UAE · UK · AU · US</b></div></div>
+        <div class="chan" data-rv><div><small>Based in</small><b>Vadodara, Gujarat, India</b></div></div>
       </div>
       <form class="form" data-rv style="--d:.1s" onsubmit="sendQuote();return false;">
         <div class="fgrid">
-          <div class="fg"><label class="fl" for="cName">Your name</label><input class="fld" id="cName" autocomplete="name" placeholder="e.g. Rajesh Shah"></div>
-          <div class="fg"><label class="fl" for="cPhone">Phone / WhatsApp</label><input class="fld" id="cPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+91 98765 43210"></div>
-          <div class="fg"><label class="fl" for="cEmail">Email</label><input class="fld" id="cEmail" type="email" autocomplete="email" placeholder="you@example.com"></div>
-          <div class="fg"><label class="fl" for="cBiz">Business name</label><input class="fld" id="cBiz" autocomplete="organization" placeholder="e.g. Shah Enterprises"></div>
+          <div class="fg"><label class="fl" for="cName">Your name</label><input class="fld" id="cName" maxlength="80" autocomplete="name" placeholder="e.g. Rajesh Shah"></div>
+          <div class="fg"><label class="fl" for="cPhone">Phone / WhatsApp</label><input class="fld" id="cPhone" maxlength="20" type="tel" inputmode="tel" autocomplete="tel" placeholder="+91 98765 43210"></div>
+          <div class="fg"><label class="fl" for="cEmail">Email</label><input class="fld" id="cEmail" maxlength="120" type="email" autocomplete="email" placeholder="you@example.com"></div>
+          <div class="fg"><label class="fl" for="cBiz">Business name</label><input class="fld" id="cBiz" maxlength="120" autocomplete="organization" placeholder="e.g. Shah Enterprises"></div>
           <div class="fg"><label class="fl" for="cService">Service required</label><select class="fld" id="cService"><option value="">Select a service</option><option>Website Development</option><option>CRM Development</option><option>Custom Business System</option><option>Get Found in AI Search</option><option>Mobile App</option><option>AI Agents</option><option>WhatsApp Automation</option><option>Reputation Management</option><option>Business Process Automation</option><option>E-commerce</option><option>Not sure — need advice</option></select></div>
           <div class="fg"><label class="fl" for="cBudget">Project budget</label><select class="fld" id="cBudget"><option value="">Select a budget range</option><option>Under ₹25,000</option><option>₹25,000 – ₹75,000</option><option>₹75,000 – ₹2,00,000</option><option>₹2,00,000+</option><option>Not sure yet</option></select></div>
-          <div class="fg full"><label class="fl" for="cMsg">Message (optional)</label><textarea class="fld" id="cMsg" placeholder="Tell us what you want to build..."></textarea></div>
+          <div class="hp" aria-hidden="true"><label for="cWeb">Leave this field empty</label><input id="cWeb" name="website" type="text" tabindex="-1" autocomplete="off" maxlength="200"></div>
+          <div class="fg full"><label class="fl" for="cMsg">Message (optional)</label><textarea class="fld" id="cMsg" maxlength="1000" placeholder="Tell us what you want to build..."></textarea></div>
         </div>
         <button type="submit" class="btn btn-accent btn-block">Send enquiry on WhatsApp <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
         <p class="muted" style="font-size:.78rem;text-align:center;margin-top:12px">Opens WhatsApp with your details filled in. Nothing is sent until you press send.</p>
@@ -1043,7 +1047,7 @@ textarea.fld{ min-height:104px; resize:vertical; }
     <div class="foot-cols">
       <div>
         <a class="brand" href="#home"><span class="orb"></span>Repute India AI</a>
-        <p>A software and AI company. We build websites, CRMs, apps, AI agents and automation — and get your business found in AI search.</p>
+        <p>A software and AI company based in Vadodara, Gujarat. We build websites, CRMs, apps, AI agents and automation — and get your business found in AI search.</p>
       </div>
       <div><h3>Services</h3><ul>
         <li><a href="#services">Websites</a></li><li><a href="#services">CRM &amp; business systems</a></li><li><a href="#services">Mobile apps</a></li><li><a href="#services">AI agents &amp; automation</a></li><li><a href="#ai-search">Get Found in AI Search</a></li>
@@ -1058,7 +1062,7 @@ textarea.fld{ min-height:104px; resize:vertical; }
         <li><a href="#plans">AI Search pricing</a></li>
       </ul></div>
     </div>
-    <div class="foot-bottom"><span>© <span id="yr">2026</span> Repute India AI · Made in Gujarat, India</span><span>Serving all of India · UAE · UK · Australia · USA</span></div>
+    <div class="foot-bottom"><span>© <span id="yr">2026</span> Repute India AI · Vadodara, Gujarat, India</span><span>Serving all of India · UAE · UK · Australia · USA</span></div>
   </div>
   <div class="mega" aria-hidden="true">Repute <em>AI</em></div>
 </footer>
@@ -1099,10 +1103,26 @@ document.addEventListener('click',function(e){
 })();
 
 /* ---------- enquiry form -> WhatsApp ---------- */
+/* Enquiries are also saved to the database, so a lead is not lost if the visitor closes WhatsApp.
+   This public key can ONLY add a row to the enquiries table — it cannot read, edit or delete anything. */
+var DB_URL='https://hycjoxfaspahxedtmlpz.supabase.co/rest/v1/enquiries';
+var DB_KEY='';   /* saving is switched OFF until five older tables in the same database are locked; see notes to Kushal */
+function saveEnquiry(row){
+  if(!DB_KEY) return;
+  try{
+    fetch(DB_URL,{ method:'POST', keepalive:true,
+      headers:{ 'Content-Type':'application/json', 'apikey':DB_KEY, 'Authorization':'Bearer '+DB_KEY, 'Prefer':'return=minimal' },
+      body:JSON.stringify(row) }).catch(function(){});
+  }catch(e){}
+}
 function sendQuote(){
   var g=function(id){ var el=document.getElementById(id); return el?el.value.trim():''; };
+  var cut=function(s,n){ return s?s.slice(0,n):null; };
+  if(g('cWeb')) return;                      /* spam trap was filled in: a bot, ignore it */
   var name=g('cName'), phone=g('cPhone');
   if(!name && !phone){ alert('Please enter at least your name and phone number so we can reach you.'); return; }
+  saveEnquiry({ name:cut(name,80), phone:cut(phone,20), email:cut(g('cEmail'),120), business:cut(g('cBiz'),120),
+    service:cut(g('cService'),60), budget:cut(g('cBudget'),40), message:cut(g('cMsg'),1000), page:cut(location.pathname,200) });
   var text="Hi! I'd like to discuss a project with Repute India AI.\n\n"
     +"Name: "+(name||'—')+"\nPhone: "+(phone||'—')+"\nEmail: "+(g('cEmail')||'—')
     +"\nBusiness: "+(g('cBiz')||'—')+"\nService: "+(g('cService')||'—')+"\nBudget: "+(g('cBudget')||'—')
@@ -1188,7 +1208,7 @@ function sendQuote(){
   var box=document.getElementById('aiDemo'); if(!box) return;
   var qEl=box.querySelector('[data-q]'), list=box.querySelector('[data-a]'), eng=box.querySelector('[data-eng]'),
       tabs=box.querySelectorAll('[data-mode]');
-  var Q=['Who is the best CA in Ahmedabad?','Best interior designer in Surat?','Top UPSC coaching institute in Gujarat?','Which dental clinic is best near me?'];
+  var Q=['Who is the best CA in Ahmedabad?','Best interior designer in Vadodara?','Top UPSC coaching institute in Gujarat?','Which dental clinic is best near me?'];
   var E=['ChatGPT','Gemini','Perplexity','Google AI Overview'];
   var i=0, mode='before', timer=null, token=0, vis=false;
   function row(cls,k,name,sub,badge){

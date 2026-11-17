@@ -55,7 +55,7 @@ window.DEMOS.realestate = {
     url: 'www.anantamgroup.in', brand: 'ANANTAM GROUP',
     nav: ['Projects','Residences','Commercial','About','Contact'], navCta: 'Book a site visit',
     heroTitle: 'Addresses built to be<br><span class="ac">handed down.</span>',
-    heroSub: 'Premium residences and commercial spaces across Surat, Vadodara and Ahmedabad. RERA registered. Delivered on time, every time, since 2004.',
+    heroSub: 'Premium residences and commercial spaces across Vadodara, Anand and Ahmedabad. RERA registered. Delivered on time, every time, since 2004.',
     heroCta: 'Book a site visit', heroCta2: 'Download brochure',
     stats: [
       { v:'21 yrs', k:'Building since 2004' },
@@ -65,8 +65,8 @@ window.DEMOS.realestate = {
     ],
     servicesLabel: 'Live projects',
     services: [
-      { ic:'🏙️', h:'Anantam Skies — Vesu, Surat', p:'3 & 4 BHK sky residences with private deck, club floor, sunset-facing balconies. 68% sold. Possession Dec 2027.', price:'₹1.42 Cr onwards' },
-      { ic:'🌿', h:'Anantam Greens — Pal, Surat', p:'2 & 3 BHK garden homes wrapped around a 1.4-acre central green. RERA delivered phase 1, phase 2 open.', price:'₹78 Lakh onwards' },
+      { ic:'🏙️', h:'Anantam Skies — Gotri, Vadodara', p:'3 & 4 BHK sky residences with private deck, club floor, sunset-facing balconies. 68% sold. Possession Dec 2027.', price:'₹1.42 Cr onwards' },
+      { ic:'🌿', h:'Anantam Greens — Bhayli, Vadodara', p:'2 & 3 BHK garden homes wrapped around a 1.4-acre central green. RERA delivered phase 1, phase 2 open.', price:'₹78 Lakh onwards' },
       { ic:'🏢', h:'Anantam Business Park — Ring Road', p:'Grade-A offices and showrooms with double-height frontage, 3-level parking and a leasing desk on site.', price:'₹64 Lakh onwards' }
     ],
     testimonial: {
@@ -148,7 +148,7 @@ window.DEMOS.realestate = {
           { nm:'February site photos', sb:'14 photos · 18th slab shuttering', rt:'View' },
           { nm:'Allotment letter', sb:'Signed 14 Aug 2025', rt:'PDF' },
           { nm:'Agreement to sale', sb:'Registered 02 Oct 2025', rt:'PDF' },
-          { nm:'RERA certificate', sb:'PR/GJ/SURAT/2024/01847', rt:'PDF' },
+          { nm:'RERA certificate', sb:'PR/GJ/VADODARA/2024/01847', rt:'PDF' },
           { nm:'Home loan · HDFC', sb:'Disbursed ₹68L of ₹94L sanctioned', rt:'Track' },
           { nm:'Raise a request', sb:'Snag, query or document copy', rt:'Open' }
         ], cap:'The trust builder. This is what stops the 9pm WhatsApp to your MD.' }
@@ -321,7 +321,7 @@ window.DEMOS.realestate = {
             { ic:'📄', nm:'Allotment letter', sb:'Issued 14 Aug 2025', rt:'PDF' },
             { ic:'📄', nm:'Agreement to sale', sb:'Registered 02 Oct 2025', rt:'PDF' },
             { ic:'📄', nm:'Payment receipts (5)', sb:'All milestones paid', rt:'PDF' },
-            { ic:'📄', nm:'RERA certificate', sb:'PR/GJ/SURAT/2024/01847', rt:'PDF' },
+            { ic:'📄', nm:'RERA certificate', sb:'PR/GJ/VADODARA/2024/01847', rt:'PDF' },
             { ic:'📄', nm:'Approved floor plan', sb:'Unit B-1104 · 1,845 sq ft', rt:'PDF' },
             { ic:'📄', nm:'Cost sheet', sb:'Base + floor rise + PLC + GST', rt:'PDF' },
             { ic:'📄', nm:'TDS 26QB acknowledgement', sb:'1% on ₹1.58 Cr · filed', rt:'PDF' }
