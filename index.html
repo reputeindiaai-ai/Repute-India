@@ -367,6 +367,9 @@ main > section:not(.hero), .foot{ content-visibility:auto; contain-intrinsic-siz
 .svc.star .no{ color:rgba(243,241,234,.7); } .svc.star p{ color:rgba(243,241,234,.76); max-width:520px; }
 .svc.star h3{ font-size:clamp(1.6rem,2.9vw,2.3rem); }
 .svc.star .arrow{ border-color:rgba(243,241,234,.3); }
+.sol{ margin-top:34px; display:grid; gap:16px; }
+.chips a{ font-size:.86rem; padding:11px 16px; border-radius:999px; border:1px solid var(--line2); color:var(--txt2); display:inline-flex; align-items:center; min-height:44px; transition:background .25s, color .25s, border-color .25s; }
+.chips a:hover{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
 .newtag{ font-family:var(--mono); font-size:.62rem; letter-spacing:.09em; background:var(--acc); color:var(--ink); padding:4px 10px; border-radius:999px; font-weight:600; }
 
 /* ---------- AI SEARCH (dark block) ---------- */
@@ -530,7 +533,7 @@ textarea.fld{ min-height:104px; resize:vertical; }
 .foot-cta h2{ font-size:clamp(2.1rem,5.6vw,4.6rem); letter-spacing:-.045em; }
 .foot-cta .acts{ display:flex; gap:10px; flex-wrap:wrap; }
 .foot-cta .btn-ghost{ border-color:var(--line2); color:var(--paper); } .foot-cta .btn-ghost:hover{ background:var(--paper); color:var(--ink); border-color:var(--paper); }
-.foot-cols{ display:grid; grid-template-columns:1.5fr 1fr 1fr 1.2fr; gap:30px; padding:clamp(40px,5vw,64px) 0; }
+.foot-cols{ display:grid; grid-template-columns:1.35fr 1fr 1.25fr .8fr 1.15fr; gap:26px; padding:clamp(40px,5vw,64px) 0; }
 .foot-cols p{ font-size:.92rem; color:var(--txt2); max-width:330px; margin-top:14px; }
 .foot-cols h3{ font-family:var(--mono); font-weight:400; font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--txt3); margin-bottom:16px; }
 .foot-cols li{ margin-bottom:10px; } .foot-cols li a{ font-size:.94rem; color:var(--txt2); transition:color .2s; } .foot-cols li a:hover{ color:var(--acc2); }
@@ -736,18 +739,22 @@ textarea.fld{ min-height:104px; resize:vertical; }
     </div>
     <div class="bento">
       <a class="svc" href="#contact" data-rv><div class="no">01 <span class="arrow"></span></div><h3>Website Development</h3><p>Fast, premium, conversion-built websites that make your business look world-class.</p></a>
-      <a class="svc" href="#contact" data-rv style="--d:.07s"><div class="no">02 <span class="arrow"></span></div><h3>CRM Development</h3><p>Capture every lead, automate follow-ups and close more — all in one system.</p></a>
+      <a class="svc" href="/custom-crm-for-small-business/" data-rv style="--d:.07s"><div class="no">02 <span class="arrow"></span></div><h3>CRM Development</h3><p>Capture every lead, automate follow-ups and close more — all in one system.</p></a>
       <a class="svc" href="#contact" data-rv style="--d:.14s"><div class="no">03 <span class="arrow"></span></div><h3>Custom Business Systems</h3><p>Bespoke operations software (ERP-style) built around exactly how you work.</p></a>
 
       <a class="svc w8 star" href="#ai-search" data-rv><div class="no"><span class="newtag">NEW · 04</span> <span class="arrow"></span></div><h3>Get Found in <span class="it acc">AI Search</span></h3><p>When a buyer asks ChatGPT, Gemini, Perplexity or Google for the best in your city, we make sure your business is one of the names in the answer. Plans from ₹4,999 a month.</p></a>
-      <a class="svc" href="#contact" data-rv style="--d:.07s"><div class="no">05 <span class="arrow"></span></div><h3>Mobile Apps</h3><p>Native-quality Android &amp; iOS apps that put your business in customers' pockets.</p></a>
+      <a class="svc" href="/app-development-for-small-business/" data-rv style="--d:.07s"><div class="no">05 <span class="arrow"></span></div><h3>Mobile Apps</h3><p>Native-quality Android &amp; iOS apps that put your business in customers' pockets.</p></a>
 
       <a class="svc" href="#contact" data-rv><div class="no">06 <span class="arrow"></span></div><h3>AI Agents</h3><p>Custom AI assistants that answer, qualify and support 24/7 in your customer's language.</p></a>
-      <a class="svc" href="#contact" data-rv style="--d:.07s"><div class="no">07 <span class="arrow"></span></div><h3>WhatsApp Automation</h3><p>Auto-replies, broadcasts, reminders and review requests — WhatsApp as a growth engine.</p></a>
+      <a class="svc" href="/whatsapp-automation/" data-rv style="--d:.07s"><div class="no">07 <span class="arrow"></span></div><h3>WhatsApp Automation</h3><p>Auto-replies, broadcasts, reminders and review requests — WhatsApp as a growth engine.</p></a>
       <a class="svc" href="#contact" data-rv style="--d:.14s"><div class="no">08 <span class="arrow"></span></div><h3>Reputation Management</h3><p>Monitor, respond to and grow your Google reviews — automatically.</p></a>
 
       <a class="svc w6" href="#contact" data-rv><div class="no">09 <span class="arrow"></span></div><h3>Business Process Automation</h3><p>Automate the repetitive work so your team focuses on growth, not data entry.</p></a>
       <a class="svc w6" href="#contact" data-rv style="--d:.07s"><div class="no">10 <span class="arrow"></span></div><h3>E-commerce</h3><p>Online stores built to convert browsers into paying buyers — fast and beautiful.</p></a>
+    </div>
+    <div class="sol" data-rv>
+      <span class="label">Popular solutions</span>
+      <div class="chips"><a href="/custom-crm-for-small-business/">Custom CRM for small business</a><a href="/custom-crm-development-dubai/">Custom CRM development in Dubai</a><a href="/whatsapp-automation/">WhatsApp automation</a><a href="/whatsapp-crm-for-clinics/">WhatsApp CRM for clinics</a><a href="/crm-for-coaching-institutes/">CRM for coaching institutes</a><a href="/real-estate-website-and-app/">Website + app for real estate</a><a href="/app-development-for-small-business/">Mobile apps for small business</a><a href="/ai-search-visibility-geo/">AI search visibility (GEO)</a></div>
     </div>
   </div>
 </section>
@@ -1051,6 +1058,9 @@ textarea.fld{ min-height:104px; resize:vertical; }
       </div>
       <div><h3>Services</h3><ul>
         <li><a href="#services">Websites</a></li><li><a href="#services">CRM &amp; business systems</a></li><li><a href="#services">Mobile apps</a></li><li><a href="#services">AI agents &amp; automation</a></li><li><a href="#ai-search">Get Found in AI Search</a></li>
+      </ul></div>
+      <div><h3>Solutions</h3><ul>
+        <li><a href="/custom-crm-for-small-business/">Custom CRM for small business</a></li><li><a href="/custom-crm-development-dubai/">Custom CRM development in Dubai</a></li><li><a href="/whatsapp-automation/">WhatsApp automation</a></li><li><a href="/whatsapp-crm-for-clinics/">WhatsApp CRM for clinics</a></li><li><a href="/crm-for-coaching-institutes/">CRM for coaching institutes</a></li><li><a href="/real-estate-website-and-app/">Website + app for real estate</a></li><li><a href="/app-development-for-small-business/">Mobile apps for small business</a></li><li><a href="/ai-search-visibility-geo/">AI search visibility (GEO)</a></li>
       </ul></div>
       <div><h3>Company</h3><ul>
         <li><a href="#work">Our work</a></li><li><a href="#industries">Industries</a></li><li><a href="showcase/index.html">Industry demos</a></li><li><a href="#faq">FAQ</a></li><li><a href="login.html">Client login</a></li>
